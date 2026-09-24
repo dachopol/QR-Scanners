@@ -79,6 +79,26 @@ class ScanActionResolverTest {
         assertEquals(13.7563, plainParsed.latitude, 0.0001)
         assertEquals(100.5018, plainParsed.longitude, 0.0001)
 
+        val queryCoordinates = ScanActionResolver.parseGeo("geo:0,0?q=13.7563%2C100.5018")
+        assertEquals(13.7563, queryCoordinates.latitude, 0.0001)
+        assertEquals(100.5018, queryCoordinates.longitude, 0.0001)
+
+        val labeledQuery = ScanActionResolver.parseGeo("geo:0,0?q=13.7563,100.5018(Bangkok)")
+        assertEquals(13.7563, labeledQuery.latitude, 0.0001)
+        assertEquals(100.5018, labeledQuery.longitude, 0.0001)
+        assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:0,0?q=Bangkok"))
+
+        val googleMapsQuery = ScanActionResolver.parseGeo(
+            "https://www.google.com/maps/search/?api=1&query=13.7563%2C100.5018"
+        )
+        assertEquals(13.7563, googleMapsQuery.latitude, 0.0001)
+        assertEquals(100.5018, googleMapsQuery.longitude, 0.0001)
+        assertEquals(QrType.GEO, ScanActionResolver.resolveType(
+            "https://www.google.com/maps/@13.7563,100.5018,15z"
+        ))
+        assertEquals(true, ScanActionResolver.isGoogleMapsLink("https://maps.app.goo.gl/abc123"))
+        assertEquals(false, ScanActionResolver.isGoogleMapsLink("https://example.com/maps?q=13,100"))
+
         assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:91,100"))
         assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:13,181"))
         assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:not-a-location"))
