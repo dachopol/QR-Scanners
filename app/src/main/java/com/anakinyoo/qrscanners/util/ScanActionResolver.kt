@@ -243,7 +243,8 @@ object ScanActionResolver {
         val host = uri.host?.lowercase() ?: return false
         return isGoogleMapsHost(host) &&
             (uri.path.orEmpty().startsWith("/maps", ignoreCase = true) ||
-                host == "maps.app.goo.gl" || (host == "goo.gl" && uri.path.orEmpty().startsWith("/maps")))
+                host == "maps.google.com" || host == "maps.app.goo.gl" ||
+                (host == "goo.gl" && uri.path.orEmpty().startsWith("/maps")))
     }
 
     private fun isGoogleMapsHost(host: String?): Boolean {
