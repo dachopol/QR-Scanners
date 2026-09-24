@@ -1,33 +1,25 @@
 # QR Scanners Test Plan & Verification Matrix
 
-## 1. Feature Coverage
-- [x] Camera Scanning: CameraX with ML Kit analyzer and debounce logic.
-- [x] Viewfinder & Laser: Animated scan guide and responsive bounding box.
-- [x] Flash Toggle: Real-time torch on/off.
-- [x] Zoom Control: 1x to 5x pinch and slider zoom.
-- [x] Gallery Image Scan: Android Photo Picker integration without broad media permissions.
-- [x] Result Handling:
-  - URLs: Browser launch, web search, copy, share.
-  - Wi-Fi: Parsing SSID, password, security type, auto-connect intent.
-  - Contact: vCard parsing, add to contacts.
-  - Phone / SMS / Email: Appropriate intent dispatch.
-  - Geo: Map viewing coordinates.
-- [x] QR Generator:
-  - Text, URL, Wi-Fi, Contact, Email, Phone, SMS, Geo.
-  - Multi-color palette selection.
-  - Bitmap generation via ZXing.
-  - Sharing via Android FileProvider.
-- [x] History & Favorites:
-  - Persistence via JSON store.
-  - Search, filtering, item deletion, wipe all, and CSV export.
-- [x] Preferences & Settings:
-  - Dark / Light / System theme.
-  - Thai / English / System locale.
-  - Vibrate, sound, auto-copy, auto-open toggles.
-- [x] Responsive / Adaptive UI:
-  - Handset portrait.
-  - Tablet / Foldable NavigationRail wide view.
+## PASS — source / automated
+- CameraX + ML Kit scanner implementation and debounce logic.
+- Android Photo Picker gallery scan without broad media permission.
+- QR generation for Text, URL, Wi-Fi, Contact, Email, Phone, SMS, and Geo.
+- Geo parser validates latitude -90..90 and longitude -180..180; invalid input is not converted to 0,0.
+- Map action tries Google Maps, then another map handler, then browser fallback.
+- History/favorites/local persistence, theme, Thai/English/System language, responsive handset/tablet layout are implemented.
+- GitHub Actions baseline passed unit tests, lint, debug/release builds, AAB build, and 16 KB APK alignment before this cleanup.
 
-## 2. Automated Tests
-- `ScanActionResolverTest`: Resolves URL, Wi-Fi, Contact, Phone, SMS, Geo, Text.
-- `QrPayloadBuilderTest`: Generates valid QR payloads for all types.
+## TO VERIFY — physical Android device
+- Real camera scanning on supported devices.
+- Torch/flash hardware behavior.
+- Zoom and front/rear camera switching.
+- Map handoff with real coordinates.
+- Wi-Fi connection request behavior on supported Android versions.
+
+## TO VERIFY — release / Play Console
+- Real upload-key signing and signed release AAB.
+- Final dependency tree and Data Safety answers.
+- Store listing, screenshots, content rating, target audience, ads declaration.
+- Closed-test requirement for the actual developer account.
+
+No device-specific item may be marked PASS without real evidence.

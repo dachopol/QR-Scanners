@@ -155,6 +155,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.anakinyoo.qrscanners.BuildConfig
 import com.anakinyoo.qrscanners.R
 import com.anakinyoo.qrscanners.camera.BarcodeScannerEngine
 import com.anakinyoo.qrscanners.data.AppPreferences
@@ -2125,7 +2126,7 @@ fun SettingsScreen(
                     )
                     Spacer(Modifier.height(12.dp))
                     Text(
-                        text = stringResource(R.string.app_version_label),
+                        text = stringResource(R.string.app_version_label, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.outline
                     )
