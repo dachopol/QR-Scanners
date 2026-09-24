@@ -168,6 +168,7 @@ import com.anakinyoo.qrscanners.model.QrType
 import com.anakinyoo.qrscanners.model.ScanResultData
 import com.anakinyoo.qrscanners.model.SmsData
 import com.anakinyoo.qrscanners.model.WifiData
+import com.anakinyoo.qrscanners.util.CurrentLocationProvider
 import com.anakinyoo.qrscanners.util.QrCodeGenerator
 import com.anakinyoo.qrscanners.util.QrPayloadBuilder
 import com.anakinyoo.qrscanners.util.ScanActionResolver
@@ -1210,6 +1211,70 @@ fun GeneratorScreen(
 
     var geoLat by remember { mutableStateOf("") }
     var geoLng by remember { mutableStateOf("") }
+    var isLocating by remember { mutableStateOf(false) }
+
+    val loadCurrentLocation: () -> Unit = {
+        isLocating = true
+        CurrentLocationProvider.requestCurrentLocation(
+            context = context,
+            onResult = { location ->
+                isLocating = false
+                if (location != null) {
+                    geoLat = String.format(Locale.US, "%.6f", location.latitude)
+                    geoLng = String.format(Locale.US, "%.6f", location.longitude)
+                    android.widget.Toast.makeText(
+                        context,
+                        context.getString(R.string.location_loaded),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    android.widget.Toast.makeText(
+                        context,
+                        context.getString(R.string.location_unavailable),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
+            onError = { message ->
+                isLocating = false
+                android.widget.Toast.makeText(
+                    context,
+                    message,
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+    }
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { grants ->
+        val granted =
+            grants[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                grants[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        if (granted) {
+            loadCurrentLocation()
+        } else {
+            android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.location_permission_denied),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    val requestCurrentLocation: () -> Unit = {
+        if (CurrentLocationProvider.hasPermission(context)) {
+            loadCurrentLocation()
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
 
     // Color options
     var selectedColorIndex by remember { mutableIntStateOf(0) }
@@ -1312,7 +1377,12 @@ fun GeneratorScreen(
                     }
                     FilterChip(
                         selected = selectedType == type,
-                        onClick = { selectedType = type },
+                        onClick = {
+                            selectedType = type
+                            if (type == QrType.GEO) {
+                                requestCurrentLocation()
+                            }
+                        },
                         label = { Text(label) },
                         modifier = Modifier.testTag("chip_type_${type.name.lowercase()}")
                     )
@@ -1471,6 +1541,24 @@ fun GeneratorScreen(
                             onValueChange = { geoLng = it },
                             label = { Text(stringResource(R.string.label_lng)) },
                             modifier = Modifier.weight(1f).testTag("input_geo_lng")
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    OutlinedButton(
+                        onClick = requestCurrentLocation,
+                        enabled = !isLocating,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("btn_current_location")
+                    ) {
+                        Icon(Icons.Default.LocationOn, contentDescription = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            if (isLocating) {
+                                stringResource(R.string.location_finding)
+                            } else {
+                                stringResource(R.string.use_current_location)
+                            }
                         )
                     }
                 }

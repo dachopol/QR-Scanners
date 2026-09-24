@@ -8,6 +8,7 @@
 - Scanned/generated payloads and history are stored in app-private local storage.
 - Gallery scanning uses Android Photo Picker; no broad photo/media permission is requested.
 - Camera is optional at runtime; gallery scan remains available without camera permission.
+- Foreground coarse/fine location is optional and used to fill a Location QR with the device's current coordinates. No background-location permission is requested and current coordinates are not sent to a developer backend.
 - App backup is disabled in the manifest.
 - No developer backend, account system, ads SDK, billing SDK, Firebase AI, Firebase App Check, Retrofit, OkHttp, or custom analytics SDK is included in the current app module.
 

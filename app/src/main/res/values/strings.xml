@@ -64,6 +64,11 @@
     <string name="label_message">Message</string>
     <string name="label_lat">Latitude (e.g. 13.7563)</string>
     <string name="label_lng">Longitude (e.g. 100.5018)</string>
+    <string name="use_current_location">Use current location</string>
+    <string name="location_finding">Finding current location…</string>
+    <string name="location_loaded">Current location loaded</string>
+    <string name="location_unavailable">Current location unavailable</string>
+    <string name="location_permission_denied">Location permission denied</string>
     <string name="btn_generate">Generate QR Code</string>
     <string name="btn_share_qr">Share QR Image</string>
     <string name="qr_saved_history">QR code saved to History</string>

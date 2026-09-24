@@ -13,7 +13,7 @@
 - Real camera scanning on supported devices.
 - Torch/flash hardware behavior.
 - Zoom and front/rear camera switching.
-- Map handoff with real coordinates.
+- Current-location permission, automatic coordinate fill, and map handoff with real coordinates.
 - Wi-Fi connection request behavior on supported Android versions.
 
 ## TO VERIFY — release / Play Console

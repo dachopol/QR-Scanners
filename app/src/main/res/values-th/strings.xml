@@ -64,6 +64,11 @@
     <string name="label_message">เนื้อหาข้อความ</string>
     <string name="label_lat">ละติจูด (เช่น 13.7563)</string>
     <string name="label_lng">ลองจิจูด (เช่น 100.5018)</string>
+    <string name="use_current_location">ใช้พิกัดปัจจุบัน</string>
+    <string name="location_finding">กำลังหาพิกัดปัจจุบัน…</string>
+    <string name="location_loaded">โหลดพิกัดปัจจุบันแล้ว</string>
+    <string name="location_unavailable">ไม่สามารถหาพิกัดปัจจุบันได้</string>
+    <string name="location_permission_denied">ไม่ได้รับอนุญาตให้เข้าถึงตำแหน่ง</string>
     <string name="btn_generate">สร้าง QR โค้ด</string>
     <string name="btn_share_qr">แชร์รูป QR</string>
     <string name="qr_saved_history">บันทึก QR โค้ดลงประวัติแล้ว</string>

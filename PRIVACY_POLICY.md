@@ -8,6 +8,11 @@ QR Scanners scans and creates QR codes and barcodes. Core scan content, generate
 - Camera access is used for real-time scanning. The app does not intentionally record or upload camera video.
 - Gallery scanning uses Android Photo Picker. The selected image is processed for barcode detection without requesting broad photo-library access.
 
+## Current location
+- When you choose the Location QR type, the app can request foreground approximate/precise location permission and use the device's current coordinates to fill the latitude/longitude fields.
+- Location is requested only while the app is in use. No background-location permission is requested.
+- The app does not upload current coordinates to a developer backend. Coordinates are stored in local history only if you generate a location QR code.
+
 ## Local history
 Scan and creation history is stored in app-private storage. You can delete individual records or clear history. Android application backup is disabled for this app.
 
