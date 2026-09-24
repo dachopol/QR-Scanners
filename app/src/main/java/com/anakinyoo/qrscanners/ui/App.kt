@@ -1110,16 +1110,18 @@ fun ScanResultSheet(
                     }
                 }
                 QrType.GEO -> {
-                    val geo = remember(result.rawValue) { ScanActionResolver.parseGeo(result.rawValue) }
-                    Button(
-                        onClick = { ScanActionResolver.openMap(context, geo) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("action_open_map")
-                    ) {
-                        Icon(Icons.Default.LocationOn, contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.action_open_map))
+                    val geo = remember(result.rawValue) { ScanActionResolver.parseGeoOrNull(result.rawValue) }
+                    if (geo != null) {
+                        Button(
+                            onClick = { ScanActionResolver.openMap(context, geo) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("action_open_map")
+                        ) {
+                            Icon(Icons.Default.LocationOn, contentDescription = null)
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.action_open_map))
+                        }
                     }
                 }
                 QrType.TEXT -> {
@@ -1205,8 +1207,8 @@ fun GeneratorScreen(
     var smsNumber by remember { mutableStateOf("") }
     var smsMessage by remember { mutableStateOf("") }
 
-    var geoLat by remember { mutableStateOf("13.7563") }
-    var geoLng by remember { mutableStateOf("100.5018") }
+    var geoLat by remember { mutableStateOf("") }
+    var geoLng by remember { mutableStateOf("") }
 
     // Color options
     var selectedColorIndex by remember { mutableIntStateOf(0) }
@@ -1237,9 +1239,7 @@ fun GeneratorScreen(
             QrType.SMS -> QrPayloadBuilder.buildSms(
                 SmsData(number = smsNumber, message = smsMessage)
             )
-            QrType.GEO -> QrPayloadBuilder.buildGeo(
-                GeoData(latitude = geoLat.toDoubleOrNull() ?: 0.0, longitude = geoLng.toDoubleOrNull() ?: 0.0)
-            )
+            QrType.GEO -> QrPayloadBuilder.buildGeo(geoLat, geoLng)
         }
 
         if (payload.isNotBlank()) {

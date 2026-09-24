@@ -39,7 +39,7 @@ object ScanActionResolver {
             lower.startsWith("mailto:") -> QrType.EMAIL
             lower.startsWith("tel:") -> QrType.PHONE
             lower.startsWith("smsto:") || lower.startsWith("sms:") || lower.startsWith("mms:") -> QrType.SMS
-            lower.startsWith("geo:") -> QrType.GEO
+            parseGeoOrNull(trimmed) != null -> QrType.GEO
             URL_PATTERN.matcher(trimmed).matches() ||
                 (trimmed.contains(".") && !trimmed.contains(" ") && (lower.startsWith("www.") || lower.contains(".com") || lower.contains(".org") || lower.contains(".net") || lower.contains(".io") || lower.contains(".th"))) -> QrType.URL
             else -> QrType.TEXT
@@ -165,13 +165,29 @@ object ScanActionResolver {
         return SmsData(number = raw)
     }
 
-    fun parseGeo(raw: String): GeoData {
-        // geo:13.7563,100.5018?q=...
-        val coordPart = raw.substringAfter("geo:", "").substringBefore("?")
+    fun parseGeoOrNull(raw: String): GeoData? {
+        // Accept standard geo URI and plain "lat,lng" coordinates.
+        val trimmed = raw.trim()
+        val coordinateText = if (trimmed.startsWith("geo:", ignoreCase = true)) {
+            trimmed.substring(4)
+        } else {
+            trimmed
+        }
+        val coordPart = coordinateText.substringBefore("?").substringBefore(";").trim()
         val parts = coordPart.split(",")
-        val lat = parts.getOrNull(0)?.toDoubleOrNull() ?: 0.0
-        val lng = parts.getOrNull(1)?.toDoubleOrNull() ?: 0.0
+        if (parts.size < 2) return null
+
+        val lat = parts[0].trim().toDoubleOrNull() ?: return null
+        val lng = parts[1].trim().toDoubleOrNull() ?: return null
+        if (!lat.isFinite() || !lng.isFinite()) return null
+        if (lat !in -90.0..90.0 || lng !in -180.0..180.0) return null
+
         return GeoData(latitude = lat, longitude = lng)
+    }
+
+    fun parseGeo(raw: String): GeoData {
+        return parseGeoOrNull(raw)
+            ?: throw IllegalArgumentException("Invalid map coordinates")
     }
 
     fun copyToClipboard(context: Context, text: String) {
@@ -250,15 +266,42 @@ object ScanActionResolver {
     }
 
     fun openMap(context: Context, geo: GeoData) {
-        try {
-            val uri = Uri.parse("geo:${geo.latitude},${geo.longitude}?q=${geo.latitude},${geo.longitude}")
-            val intent = Intent(Intent.ACTION_VIEW, uri).apply {
+        val lat = geo.latitude
+        val lng = geo.longitude
+        if (!lat.isFinite() || !lng.isFinite() || lat !in -90.0..90.0 || lng !in -180.0..180.0) {
+            Toast.makeText(context, "Invalid map coordinates", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val query = "$lat,$lng"
+        val geoUri = Uri.parse("geo:$lat,$lng?q=${Uri.encode(query)}")
+        val webUri = Uri.parse(
+            "https://www.google.com/maps/search/?api=1&query=${Uri.encode(query)}"
+        )
+
+        val intents = listOf(
+            Intent(Intent.ACTION_VIEW, geoUri).apply {
+                setPackage("com.google.android.apps.maps")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            },
+            Intent(Intent.ACTION_VIEW, geoUri).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            },
+            Intent(Intent.ACTION_VIEW, webUri).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(context, "Cannot open map: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        )
+
+        for (intent in intents) {
+            try {
+                context.startActivity(intent)
+                return
+            } catch (_: Exception) {
+                // Try the next compatible map/browser handler.
+            }
         }
+
+        Toast.makeText(context, "No map or browser app available", Toast.LENGTH_SHORT).show()
     }
 
     fun searchWeb(context: Context, query: String) {

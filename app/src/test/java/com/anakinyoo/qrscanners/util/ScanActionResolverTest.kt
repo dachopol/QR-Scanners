@@ -72,6 +72,16 @@ class ScanActionResolverTest {
         val parsed = ScanActionResolver.parseGeo(geoRaw)
         assertEquals(13.7563, parsed.latitude, 0.0001)
         assertEquals(100.5018, parsed.longitude, 0.0001)
+
+        val plainCoordinates = "13.7563, 100.5018"
+        assertEquals(QrType.GEO, ScanActionResolver.resolveType(plainCoordinates))
+        val plainParsed = ScanActionResolver.parseGeo(plainCoordinates)
+        assertEquals(13.7563, plainParsed.latitude, 0.0001)
+        assertEquals(100.5018, plainParsed.longitude, 0.0001)
+
+        assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:91,100"))
+        assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:13,181"))
+        assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:not-a-location"))
     }
 
     @Test

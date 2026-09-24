@@ -103,6 +103,14 @@ object QrPayloadBuilder {
     }
 
     fun buildGeo(geo: GeoData): String {
+        if (!geo.latitude.isFinite() || !geo.longitude.isFinite()) return ""
+        if (geo.latitude !in -90.0..90.0 || geo.longitude !in -180.0..180.0) return ""
         return "geo:${geo.latitude},${geo.longitude}"
+    }
+
+    fun buildGeo(latitude: String, longitude: String): String {
+        val lat = latitude.trim().toDoubleOrNull() ?: return ""
+        val lng = longitude.trim().toDoubleOrNull() ?: return ""
+        return buildGeo(GeoData(latitude = lat, longitude = lng))
     }
 }

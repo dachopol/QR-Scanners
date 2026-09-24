@@ -72,5 +72,9 @@ class QrPayloadBuilderTest {
         val geo = GeoData(latitude = 13.7563, longitude = 100.5018)
         val payload = QrPayloadBuilder.buildGeo(geo)
         assertEquals("geo:13.7563,100.5018", payload)
+        assertEquals("geo:13.7563,100.5018", QrPayloadBuilder.buildGeo("13.7563", "100.5018"))
+        assertEquals("", QrPayloadBuilder.buildGeo("", "100.5018"))
+        assertEquals("", QrPayloadBuilder.buildGeo("91", "100"))
+        assertEquals("", QrPayloadBuilder.buildGeo("13", "181"))
     }
 }
