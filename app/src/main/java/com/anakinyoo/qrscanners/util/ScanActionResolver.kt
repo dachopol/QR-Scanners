@@ -193,7 +193,7 @@ object ScanActionResolver {
     }
 
     private fun parseCoordinatePair(value: String): GeoData? {
-        val match = Regex("""^\\s*([-+]?\\d+(?:\\.\\d+)?)\\s*,\\s*([-+]?\\d+(?:\\.\\d+)?)(?:\\s*\\([^)]*\\))?\\s*$""")
+        val match = Regex("""^\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)(?:\s*\([^)]*\))?\s*$""")
             .matchEntire(value.trim())
             ?: return null
         val lat = match.groupValues[1].toDoubleOrNull() ?: return null
@@ -221,12 +221,12 @@ object ScanActionResolver {
         }
 
         val pathAndFragment = listOfNotNull(uri.rawPath, uri.rawFragment).joinToString("/")
-        val atCoordinates = Regex("""@([-+]?\\d+(?:\\.\\d+)?),([-+]?\\d+(?:\\.\\d+)?)""")
+        val atCoordinates = Regex("""@([-+]?\d+(?:\.\d+)?),([-+]?\d+(?:\.\d+)?)""")
             .find(pathAndFragment)
         if (atCoordinates != null) {
             parseCoordinatePair("${atCoordinates.groupValues[1]},${atCoordinates.groupValues[2]}")?.let { return it }
         }
-        val placeCoordinates = Regex("""!3d([-+]?\\d+(?:\\.\\d+)?)!4d([-+]?\\d+(?:\\.\\d+)?)""")
+        val placeCoordinates = Regex("""!3d([-+]?\d+(?:\.\d+)?)!4d([-+]?\d+(?:\.\d+)?)""")
             .find(pathAndFragment)
         if (placeCoordinates != null) {
             parseCoordinatePair("${placeCoordinates.groupValues[1]},${placeCoordinates.groupValues[2]}")?.let { return it }
