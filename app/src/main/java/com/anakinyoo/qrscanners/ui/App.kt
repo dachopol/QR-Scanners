@@ -555,10 +555,24 @@ fun ScannerScreen(
                     isGenerated = false
                 )
             )
-            if (autoOpenUrlPref && result.type == QrType.URL) {
-                ScanActionResolver.openBrowser(context, result.rawValue)
+            when (result.type) {
+                QrType.GEO -> {
+                    val geo = ScanActionResolver.parseGeoOrNull(result.rawValue)
+                    if (geo != null) {
+                        // Location QR opens Google Maps immediately after a successful scan.
+                        ScanActionResolver.openMap(context, geo)
+                    } else {
+                        onResultDetected(result)
+                    }
+                }
+                QrType.URL -> {
+                    if (autoOpenUrlPref) {
+                        ScanActionResolver.openBrowser(context, result.rawValue)
+                    }
+                    onResultDetected(result)
+                }
+                else -> onResultDetected(result)
             }
-            onResultDetected(result)
         }
     }
 
@@ -624,7 +638,17 @@ fun ScannerScreen(
                             isGenerated = false
                         )
                     )
-                    onResultDetected(result)
+                    if (result.type == QrType.GEO) {
+                        val geo = ScanActionResolver.parseGeoOrNull(result.rawValue)
+                        if (geo != null) {
+                            // Gallery location QR follows the same direct-to-Google-Maps flow.
+                            ScanActionResolver.openMap(context, geo)
+                        } else {
+                            onResultDetected(result)
+                        }
+                    } else {
+                        onResultDetected(result)
+                    }
                 },
                 onNotFound = {
                     errorMessage = context.getString(R.string.no_code_found_in_image)
