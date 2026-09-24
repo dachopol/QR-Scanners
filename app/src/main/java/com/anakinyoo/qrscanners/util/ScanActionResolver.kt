@@ -166,23 +166,99 @@ object ScanActionResolver {
     }
 
     fun parseGeoOrNull(raw: String): GeoData? {
-        // Accept standard geo URI and plain "lat,lng" coordinates.
         val trimmed = raw.trim()
-        val coordinateText = if (trimmed.startsWith("geo:", ignoreCase = true)) {
-            trimmed.substring(4)
-        } else {
-            trimmed
-        }
-        val coordPart = coordinateText.substringBefore("?").substringBefore(";").trim()
-        val parts = coordPart.split(",")
-        if (parts.size < 2) return null
+        if (trimmed.startsWith("geo:", ignoreCase = true)) {
+            val uriBody = trimmed.substring(4)
+            val base = parseCoordinatePair(uriBody.substringBefore("?").substringBefore(";"))
+            val query = uriBody.substringAfter("?", "")
+            val queryCoordinates = query.split("&")
+                .asSequence()
+                .mapNotNull { parameter ->
+                    val value = parameter.substringAfter("=", "")
+                    decodeUrlComponent(value)
+                }
+                .mapNotNull(::parseCoordinatePair)
+                .firstOrNull()
 
-        val lat = parts[0].trim().toDoubleOrNull() ?: return null
-        val lng = parts[1].trim().toDoubleOrNull() ?: return null
+            // geo:0,0 is a placeholder used when the actual coordinates are in q=.
+            return if (base?.let { it.latitude == 0.0 && it.longitude == 0.0 } == true) {
+                queryCoordinates
+            } else {
+                base ?: queryCoordinates
+            }
+        }
+
+        parseCoordinatePair(trimmed)?.let { return it }
+        return parseGoogleMapsGeoOrNull(trimmed)
+    }
+
+    private fun parseCoordinatePair(value: String): GeoData? {
+        val match = Regex("""^\\s*([-+]?\\d+(?:\\.\\d+)?)\\s*,\\s*([-+]?\\d+(?:\\.\\d+)?)(?:\\s*\\([^)]*\\))?\\s*$""")
+            .matchEntire(value.trim())
+            ?: return null
+        val lat = match.groupValues[1].toDoubleOrNull() ?: return null
+        val lng = match.groupValues[2].toDoubleOrNull() ?: return null
         if (!lat.isFinite() || !lng.isFinite()) return null
         if (lat !in -90.0..90.0 || lng !in -180.0..180.0) return null
-
         return GeoData(latitude = lat, longitude = lng)
+    }
+
+    private fun parseGoogleMapsGeoOrNull(raw: String): GeoData? {
+        val uri = try {
+            java.net.URI(raw)
+        } catch (_: Exception) {
+            return null
+        }
+        if (!isGoogleMapsHost(uri.host) || !uri.path.orEmpty().startsWith("/maps", ignoreCase = true) &&
+            !uri.host.equals("maps.google.com", ignoreCase = true)
+        ) return null
+
+        val queryParameters = uri.rawQuery.orEmpty().split("&").map { parameter ->
+            decodeUrlComponent(parameter.substringAfter("=", ""))
+        }
+        for (value in queryParameters) {
+            parseCoordinatePair(value)?.let { return it }
+        }
+
+        val pathAndFragment = listOfNotNull(uri.rawPath, uri.rawFragment).joinToString("/")
+        val atCoordinates = Regex("""@([-+]?\\d+(?:\\.\\d+)?),([-+]?\\d+(?:\\.\\d+)?)""")
+            .find(pathAndFragment)
+        if (atCoordinates != null) {
+            parseCoordinatePair("${atCoordinates.groupValues[1]},${atCoordinates.groupValues[2]}")?.let { return it }
+        }
+        val placeCoordinates = Regex("""!3d([-+]?\\d+(?:\\.\\d+)?)!4d([-+]?\\d+(?:\\.\\d+)?)""")
+            .find(pathAndFragment)
+        if (placeCoordinates != null) {
+            parseCoordinatePair("${placeCoordinates.groupValues[1]},${placeCoordinates.groupValues[2]}")?.let { return it }
+        }
+        return null
+    }
+
+    fun isGoogleMapsLink(raw: String): Boolean {
+        val uri = try {
+            java.net.URI(raw.trim())
+        } catch (_: Exception) {
+            return false
+        }
+        val host = uri.host?.lowercase() ?: return false
+        return isGoogleMapsHost(host) &&
+            (uri.path.orEmpty().startsWith("/maps", ignoreCase = true) ||
+                host == "maps.app.goo.gl" || (host == "goo.gl" && uri.path.orEmpty().startsWith("/maps")))
+    }
+
+    private fun isGoogleMapsHost(host: String?): Boolean {
+        val normalized = host?.lowercase() ?: return false
+        return normalized == "maps.google.com" ||
+            normalized == "google.com" ||
+            normalized == "www.google.com" ||
+            normalized == "maps.app.goo.gl" ||
+            normalized == "goo.gl"
+    }
+
+    private fun decodeUrlComponent(value: String): String = try {
+        URLDecoder.decode(value, "UTF-8")
+    } catch (_: Exception) {
+        value
     }
 
     fun parseGeo(raw: String): GeoData {
@@ -262,6 +338,22 @@ object ScanActionResolver {
             context.startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(context, "Cannot add contact: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun openMapLink(context: Context, url: String) {
+        if (!isGoogleMapsLink(url)) {
+            openBrowser(context, url)
+            return
+        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            setPackage("com.google.android.apps.maps")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (_: Exception) {
+            openBrowser(context, url)
         }
     }
 
