@@ -566,7 +566,9 @@ fun ScannerScreen(
                     }
                 }
                 QrType.URL -> {
-                    if (autoOpenUrlPref) {
+                    if (ScanActionResolver.isGoogleMapsLink(result.rawValue)) {
+                        ScanActionResolver.openMapLink(context, result.rawValue)
+                    } else if (autoOpenUrlPref) {
                         ScanActionResolver.openBrowser(context, result.rawValue)
                     }
                     onResultDetected(result)
@@ -646,6 +648,11 @@ fun ScannerScreen(
                         } else {
                             onResultDetected(result)
                         }
+                    } else if (result.type == QrType.URL &&
+                        ScanActionResolver.isGoogleMapsLink(result.rawValue)
+                    ) {
+                        ScanActionResolver.openMapLink(context, result.rawValue)
+                        onResultDetected(result)
                     } else {
                         onResultDetected(result)
                     }
