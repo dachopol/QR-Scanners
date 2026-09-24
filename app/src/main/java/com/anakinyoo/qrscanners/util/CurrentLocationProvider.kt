@@ -12,6 +12,12 @@ import android.os.CancellationSignal
 import android.os.Looper
 import androidx.core.content.ContextCompat
 
+enum class LocationError {
+    PERMISSION_REQUIRED,
+    SERVICES_DISABLED,
+    UNAVAILABLE
+}
+
 object CurrentLocationProvider {
 
     fun hasPermission(context: Context): Boolean {
@@ -28,10 +34,10 @@ object CurrentLocationProvider {
     fun requestCurrentLocation(
         context: Context,
         onResult: (Location?) -> Unit,
-        onError: (String) -> Unit
+        onError: (LocationError) -> Unit
     ) {
         if (!hasPermission(context)) {
-            onError("Location permission is required")
+            onError(LocationError.PERMISSION_REQUIRED)
             return
         }
 
@@ -45,7 +51,7 @@ object CurrentLocationProvider {
         }
 
         if (provider == null) {
-            onError("Location services are disabled")
+            onError(LocationError.SERVICES_DISABLED)
             return
         }
 
@@ -73,16 +79,16 @@ object CurrentLocationProvider {
                         override fun onProviderEnabled(provider: String) = Unit
 
                         override fun onProviderDisabled(provider: String) {
-                            onError("Location services are disabled")
+                            onError(LocationError.SERVICES_DISABLED)
                         }
                     },
                     Looper.getMainLooper()
                 )
             }
-        } catch (e: SecurityException) {
-            onError("Location permission is required")
-        } catch (e: Exception) {
-            onError(e.localizedMessage ?: "Unable to get current location")
+        } catch (_: SecurityException) {
+            onError(LocationError.PERMISSION_REQUIRED)
+        } catch (_: Exception) {
+            onError(LocationError.UNAVAILABLE)
         }
     }
 }

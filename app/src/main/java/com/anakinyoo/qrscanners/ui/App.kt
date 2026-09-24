@@ -169,6 +169,7 @@ import com.anakinyoo.qrscanners.model.ScanResultData
 import com.anakinyoo.qrscanners.model.SmsData
 import com.anakinyoo.qrscanners.model.WifiData
 import com.anakinyoo.qrscanners.util.CurrentLocationProvider
+import com.anakinyoo.qrscanners.util.LocationError
 import com.anakinyoo.qrscanners.util.QrCodeGenerator
 import com.anakinyoo.qrscanners.util.QrPayloadBuilder
 import com.anakinyoo.qrscanners.util.ScanActionResolver
@@ -1235,11 +1236,16 @@ fun GeneratorScreen(
                     ).show()
                 }
             },
-            onError = { message ->
+            onError = { error ->
                 isLocating = false
+                val messageRes = when (error) {
+                    LocationError.PERMISSION_REQUIRED -> R.string.location_permission_denied
+                    LocationError.SERVICES_DISABLED -> R.string.location_services_disabled
+                    LocationError.UNAVAILABLE -> R.string.location_unavailable
+                }
                 android.widget.Toast.makeText(
                     context,
-                    message,
+                    context.getString(messageRes),
                     android.widget.Toast.LENGTH_SHORT
                 ).show()
             }
