@@ -8,6 +8,7 @@ Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jet
 - Flash, zoom, front/rear camera controls.
 - Result actions for URL, Wi-Fi, contact, phone, SMS, email, and geo content.
 - QR generation for Text, URL, Wi-Fi, Contact, Email, Phone, SMS, and Geo.
+- Location QR can auto-fill the current device location with foreground permission; manual coordinates remain available.
 - Local history, favorites, search, delete/clear, CSV export.
 - Dark / Light / System theme and Thai / English / System language.
 - Splash screen with app icon, QR Scanners, and by AnakinYoo.
@@ -24,4 +25,4 @@ Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jet
 Core QR/barcode content is processed on-device and history is stored in app-private storage. Google ML Kit may transmit documented diagnostics/usage telemetry; see `DATA_SAFETY.md` and `PRIVACY_POLICY.md`. Do not describe the release as “no data collected” until the final Play Console Data Safety review is complete.
 
 ## Release gate
-See `RELEASE_GATE.md`. Build success alone is not Production approval. Camera/Torch/Zoom/Wi-Fi behavior, signed AAB, 16 KB verification, Play Console forms, and required testing must have evidence before Production.
+See `RELEASE_GATE.md`. Build success alone is not Production approval. Automated build/lint/unit/AAB/16 KB gates pass on main. Camera/Torch/Zoom/current-location/Wi-Fi behavior, real release signing, Play Console forms, and required testing still need real evidence before Production.

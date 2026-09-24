@@ -6,14 +6,16 @@
 - QR generation for Text, URL, Wi-Fi, Contact, Email, Phone, SMS, and Geo.
 - Geo parser validates latitude -90..90 and longitude -180..180; invalid input is not converted to 0,0.
 - Map action tries Google Maps, then another map handler, then browser fallback.
+- Location QR can request optional foreground coarse/fine location and auto-fill current latitude/longitude.
+- No background-location permission is declared.
 - History/favorites/local persistence, theme, Thai/English/System language, responsive handset/tablet layout are implemented.
-- GitHub Actions baseline passed unit tests, lint, debug/release builds, AAB build, and 16 KB APK alignment before this cleanup.
+- GitHub Actions run `35971510323` passed unit tests, lint, debug/release builds, AAB build, and 16 KB APK alignment.
 
 ## TO VERIFY — physical Android device
 - Real camera scanning on supported devices.
 - Torch/flash hardware behavior.
 - Zoom and front/rear camera switching.
-- Current-location permission, automatic coordinate fill, and map handoff with real coordinates.
+- Current-location permission prompt, automatic coordinate fill, GPS/network provider behavior, and map handoff with real coordinates.
 - Wi-Fi connection request behavior on supported Android versions.
 
 ## TO VERIFY — release / Play Console

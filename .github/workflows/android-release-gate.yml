@@ -36,6 +36,14 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
+      - name: Source-of-truth hygiene
+        run: |
+          ! grep -R -n -E 'com\.aistudio|zipspeed|quickqr|qrprom' app/src app/build.gradle.kts build.gradle.kts gradle/libs.versions.toml
+          ! grep -n -E 'firebase|retrofit|okhttp|moshi|google-services|secrets-gradle|google-devtools-ksp' app/build.gradle.kts build.gradle.kts gradle/libs.versions.toml
+          ! grep -n 'mutableStateOf("13.7563")\|mutableStateOf("100.5018")' app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt
+          grep -q 'android:allowBackup="false"' app/src/main/AndroidManifest.xml
+          ! grep -q 'ACCESS_BACKGROUND_LOCATION' app/src/main/AndroidManifest.xml
+
       - name: Unit, lint and builds
         run: |
           gradle --no-daemon             :app:testDebugUnitTest             :app:lintDebug             :app:assembleDebug             :app:assembleRelease             :app:bundleRelease
