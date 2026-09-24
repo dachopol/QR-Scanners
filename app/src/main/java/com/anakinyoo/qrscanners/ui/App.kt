@@ -727,22 +727,49 @@ fun ScannerScreen(
         // Viewfinder overlay & animated scanning laser
         ViewfinderOverlay()
 
-        // Top Header & Hint
+        // Brand header and scan guidance over the live camera preview.
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp, start = 16.dp, end = 16.dp),
+                .padding(top = 20.dp, start = 16.dp, end = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Surface(
-                color = Color.Black.copy(alpha = 0.65f),
-                shape = RoundedCornerShape(20.dp)
+                color = Color(0xCC0B1120),
+                shape = RoundedCornerShape(22.dp),
+                border = BorderStroke(1.dp, Color(0xFF38BDF8).copy(alpha = 0.28f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.QrCodeScanner,
+                        contentDescription = null,
+                        tint = Color(0xFF38BDF8),
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            Spacer(Modifier.height(10.dp))
+            Surface(
+                color = Color(0xCC0B1120),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.12f))
             ) {
                 Text(
                     text = stringResource(R.string.point_camera_hint),
                     color = Color.White,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 9.dp)
                 )
             }
         }
@@ -752,7 +779,14 @@ fun ScannerScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(bottom = 28.dp, start = 20.dp, end = 20.dp),
+                .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                .background(Color(0xE60B1120), RoundedCornerShape(28.dp))
+                .border(
+                    width = 1.dp,
+                    color = Color(0xFF38BDF8).copy(alpha = 0.24f),
+                    shape = RoundedCornerShape(28.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Zoom Slider & Indicators
@@ -811,7 +845,7 @@ fun ScannerScreen(
                         cameraControl?.enableTorch(isFlashOn)
                     },
                     modifier = Modifier
-                        .background(Color.Black.copy(alpha = 0.5f), CircleShape)
+                        .background(Color(0xCC172338), CircleShape)
                         .size(52.dp)
                         .testTag("btn_flash_toggle")
                 ) {
@@ -828,14 +862,14 @@ fun ScannerScreen(
                         galleryPicker.launch(androidx.activity.result.PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     },
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary, CircleShape)
+                        .background(Color(0xFF38BDF8), CircleShape)
                         .size(60.dp)
                         .testTag("btn_scan_gallery")
                 ) {
                     Icon(
                         imageVector = Icons.Default.PhotoLibrary,
                         contentDescription = stringResource(R.string.gallery_pick),
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = Color(0xFF06202C),
                         modifier = Modifier.size(30.dp)
                     )
                 }
