@@ -1,28 +1,27 @@
 # QR Scanners
 
-A fast, lightweight, and privacy-focused QR and barcode scanner, creator, and history manager built with Kotlin and Jetpack Compose.
+Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jetpack Compose.
 
-## Key Features
-- **Real-Time Camera Scanner**: CameraX + ML Kit for instant scanning with viewfinder and animated laser indicator.
-- **Gallery Image Scanner**: Scan QR codes and barcodes directly from photos without uploading them anywhere.
-- **Camera Controls**: Instant flash toggle, linear zoom slider (1x - 5x) with zoom buttons, front/rear camera flipping.
-- **Smart Result Actions**:
-  - URLs: One-tap browser launch, web search, copying, and sharing.
-  - Wi-Fi: One-tap connect, copy network password.
-  - Contacts (vCard/MeCard): Save directly to contacts, phone dialing, email drafting.
-  - Phone & SMS: Direct dialing and SMS composition.
-  - Geo Locations: Open coordinates in Google Maps or navigation apps.
-- **Custom QR Generator**:
-  - Generate QR codes for Text, URLs, Wi-Fi, Contacts, Email, Phone, SMS, and Geo.
-  - Color palettes (Classic, Ocean Blue, Deep Purple, Emerald Green).
-  - Share generated QR code images via Android Sharesheet.
-- **Persistent History**:
-  - Local JSON storage for scanned and generated items.
-  - Filter by All, Scanned, Created, and Favorites.
-  - Search bar, item deletion, favorite toggling, and CSV export.
-- **Settings & Preferences**:
-  - Theme mode: System Default, Light, Dark.
-  - Language: System Default, English, Thai (ภาษาไทย).
-  - Vibrate on scan, beep sound on scan, auto-copy to clipboard, auto-open URLs.
-  - Default camera selection.
-- **Privacy-First**: 100% on-device processing. No data is collected or transmitted off the device.
+## Core features
+- CameraX + ML Kit real-time QR/barcode scanning.
+- Android Photo Picker gallery scan.
+- Flash, zoom, front/rear camera controls.
+- Result actions for URL, Wi-Fi, contact, phone, SMS, email, and geo content.
+- QR generation for Text, URL, Wi-Fi, Contact, Email, Phone, SMS, and Geo.
+- Local history, favorites, search, delete/clear, CSV export.
+- Dark / Light / System theme and Thai / English / System language.
+- Splash screen with app icon, QR Scanners, and by AnakinYoo.
+
+## Project identity
+- Package / Application ID: `com.anakinyoo.qrscanners`
+- targetSdk: 36
+- compileSdk: Android 16 QPR2 SDK 36.1
+- versionCode: 1
+- versionName: 1.0
+- Source of Truth: `main`
+
+## Privacy
+Core QR/barcode content is processed on-device and history is stored in app-private storage. Google ML Kit may transmit documented diagnostics/usage telemetry; see `DATA_SAFETY.md` and `PRIVACY_POLICY.md`. Do not describe the release as “no data collected” until the final Play Console Data Safety review is complete.
+
+## Release gate
+See `RELEASE_GATE.md`. Build success alone is not Production approval. Camera/Torch/Zoom/Wi-Fi behavior, signed AAB, 16 KB verification, Play Console forms, and required testing must have evidence before Production.

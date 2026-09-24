@@ -1,14 +1,25 @@
 # Privacy Policy for QR Scanners
 
-**Effective Date:** September 2026
+**Effective date:** September 2026
 
-## 1. Overview
-QR Scanners is committed to safeguarding user privacy. All scanning and QR generation processes run entirely on your local device.
+QR Scanners scans and creates QR codes and barcodes. Core scan content, generated content, settings, favorites, and history are handled in the app and stored in app-private storage unless you explicitly share or open content with another app.
 
-## 2. Information Handled
-- **Camera Access:** Used solely for local, real-time image analysis to detect QR codes and barcodes. No video or camera streams are recorded, uploaded, or shared.
-- **Photos / Media:** When you choose to scan an image from your gallery, the image is processed in memory on your device and never uploaded.
-- **History Data:** Your scan and creation history is stored locally in your device's private app storage. You can delete individual records or wipe the entire history at any time.
+## Camera and photos
+- Camera access is used for real-time scanning. The app does not intentionally record or upload camera video.
+- Gallery scanning uses Android Photo Picker. The selected image is processed for barcode detection without requesting broad photo-library access.
 
-## 3. Data Safety
-We do not collect, sell, or share personal data with third parties.
+## Local history
+Scan and creation history is stored in app-private storage. You can delete individual records or clear history. Android application backup is disabled for this app.
+
+## ML Kit diagnostics and analytics
+Barcode recognition uses Google ML Kit. Google states that ML Kit Android SDKs collect certain device/app information, identifiers, performance metrics, API configuration, feature input/output size, feature version, event types, and error codes for diagnostics and usage analytics. Google states this data is encrypted in transit and the listed ML Kit data is not transferred to third parties.
+
+The current app does not enable ML Kit barcode auto-zoom.
+
+ML Kit disclosure:
+https://developers.google.com/ml-kit/android-data-disclosure
+
+## Developer services
+The current source does not include a developer-operated backend, advertising SDK, billing SDK, Firebase AI, Firebase App Check, or custom analytics SDK.
+
+This policy must be reviewed again if dependencies or app behavior change before release.

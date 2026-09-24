@@ -1,6 +1,5 @@
 {
   "name": "QR Scanners",
-  "description": "High-performance QR & barcode scanner, creator, and history manager with privacy-first offline support.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "description": "QR and barcode scanner, generator, and local history manager.",
+  "requestFramePermissions": ["camera"]
 }
