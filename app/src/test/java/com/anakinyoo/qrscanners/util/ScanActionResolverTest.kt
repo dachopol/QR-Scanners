@@ -97,6 +97,7 @@ class ScanActionResolverTest {
             "https://www.google.com/maps/@13.7563,100.5018,15z"
         ))
         assertEquals(true, ScanActionResolver.isGoogleMapsLink("https://maps.app.goo.gl/abc123"))
+        assertEquals(true, ScanActionResolver.isGoogleMapsLink("https://maps.google.com/?q=Bangkok"))
         assertEquals(false, ScanActionResolver.isGoogleMapsLink("https://example.com/maps?q=13,100"))
 
         assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:91,100"))
