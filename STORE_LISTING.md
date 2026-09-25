@@ -61,7 +61,7 @@ QR Scanners ช่วยสแกน QR โค้ดและบาร์โค�
 ## Play preview assets — current verified requirements
 
 - **App icon:** 32-bit PNG with alpha, 512 x 512 px, max 1024 KB.
-- **Feature graphic:** required; JPEG or 24-bit PNG without alpha, 1024 x 500 px.
+- **Feature graphic:** PASS — `store-assets/feature_graphic_1024x500.jpg`; JPEG, 1024 x 500 px, no alpha.
 - **Screenshots:** minimum two screenshots across supported device types. For stronger merchandising eligibility, use at least four high-resolution phone screenshots where applicable.
 - Screenshots must depict the real shipping UI and must not show fake scan results, rankings, price claims, or features not present in the release.
 - If screenshot artwork contains added text, localize that added text for Thai and English.
