@@ -13,10 +13,19 @@
 - CI rejects hardcoded UI labels in Compose/Toast paths and rejects EN/TH string-key mismatch.
 - GitHub Actions for current main must pass unit tests, lint, debug/release builds, AAB build, and 16 KB APK alignment.
 
+## PASS — physical Android device
+Verified on realme RMX3241, Android 13 / API 33. See `REAL_DEVICE_EVIDENCE.md`.
+- Current build cold-launches without a fatal crash.
+- Camera permission flow reaches the Android system permission dialog and the scanner screen.
+- CameraX opens a real camera with Preview and ImageAnalysis active.
+- Torch hardware path works; camera metadata reports TORCH/FIRED.
+- Zoom hardware path works; camera zoom ratio changes after the in-app zoom control.
+- Front/rear switch closes camera id 0 and opens camera id 1.
+- Thai dark-theme Settings UI renders on a 1080x2400 device without observed overflow in the captured screen.
+
 ## TO VERIFY — physical Android device
-- Real camera scanning on supported devices.
-- Torch/flash hardware behavior.
-- Zoom and front/rear camera switching.
+- Decode a known QR/barcode from the live camera and verify the exact payload/result action.
+- Complete Photo Picker selection and verify the exact decoded payload; the previous attempt was interrupted by another foreground app.
 - Current-location permission prompt, automatic coordinate fill, GPS/network provider behavior, and map handoff with real coordinates.
 - Wi-Fi connection request behavior on supported Android versions, including open/WPA2/WPA3 and WEP fallback.
 

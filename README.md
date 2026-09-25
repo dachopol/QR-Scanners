@@ -25,4 +25,4 @@ Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jet
 Core QR/barcode content is processed on-device and history is stored in app-private storage. Google ML Kit may transmit documented diagnostics/usage telemetry; see `DATA_SAFETY.md` and `PRIVACY_POLICY.md`. Do not describe the release as “no data collected” until the final Play Console Data Safety review is complete.
 
 ## Release gate
-See `RELEASE_GATE.md`. Build success alone is not Production approval. Automated build/lint/unit/AAB/16 KB gates pass on main. Camera/Torch/Zoom/current-location/Wi-Fi behavior, real release signing, Play Console forms, and required testing still need real evidence before Production.
+See `RELEASE_GATE.md` and `REAL_DEVICE_EVIDENCE.md`. Automated build/lint/unit/AAB/16 KB gates pass on main. Real-device cold launch, CameraX, torch, zoom, and front/rear camera switching have been verified. Gallery decode completion, current-location/map handoff, Wi-Fi behavior, real release signing, Play Console forms, and required testing still need real evidence before Production.

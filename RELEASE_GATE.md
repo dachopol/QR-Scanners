@@ -20,11 +20,18 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Play Store app icon | GAP | Replace `store-assets/play_store_icon_512.jpg` with verified 512x512 32-bit PNG before Play upload |
 | In-app privacy policy | PASS | Full EN/TH policy text is accessible from Settings |
 | Privacy policy URL | TO VERIFY | Publish current policy at an active HTTPS URL and link it in Play; add the final URL to the release app if required by review |
-| Camera / Torch / Zoom | TO VERIFY | Physical Android device |
-| Current location / Map handoff | TO VERIFY | Physical Android device with Location enabled |
-| Wi-Fi connect action | TO VERIFY | Physical Android device/network |
+| App cold launch | PASS | Realme RMX3241 / Android 13: process remains alive, MainActivity is top-resumed, no fatal crash |
+| CameraX preview / analysis | PASS | Real device CameraX opened camera id 0 with Preview + ImageAnalysis active |
+| Torch / flash | PASS | Real device camera metadata reported `flash.mode=TORCH` and `flash.state=FIRED` |
+| Zoom | PASS | Real device `android.control.zoomRatio` changed from 1.0000 to 1.12676060 |
+| Front/rear camera switching | PASS | CameraX closed camera id 0 and opened camera id 1 on switch |
+| Gallery scan result | TO VERIFY | Photo Picker opened, but end-to-end selection test was interrupted by another foreground app |
+| Current location / Map handoff | TO VERIFY | Physical device test was interrupted before permission/result verification |
+| Wi-Fi connect action | TO VERIFY | Requires physical device/network verification |
 | Store screenshots / content rating / ads status | TO VERIFY | Play Console + real release UI |
 | Testing-track requirement | TO VERIFY | Confirm actual developer-account eligibility/status |
+
+See `REAL_DEVICE_EVIDENCE.md` for the real-device test record.
 
 Production is not ready until every applicable GAP/TO VERIFY item has real evidence.
 
