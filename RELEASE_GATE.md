@@ -25,8 +25,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Torch / flash | PASS | Real device camera metadata reported `flash.mode=TORCH` and `flash.state=FIRED` |
 | Zoom | PASS | Real device `android.control.zoomRatio` changed from 1.0000 to 1.12676060 |
 | Front/rear camera switching | PASS | CameraX closed camera id 0 and opened camera id 1 on switch |
-| Gallery scan result | TO VERIFY | Photo Picker opened, but end-to-end selection test was interrupted by another foreground app |
-| Current location / Map handoff | TO VERIFY | Physical device test was interrupted before permission/result verification |
+| Gallery scan result | TO VERIFY | Photo Picker/end-to-end selection remains interrupted by another foreground app |
+| Current-location auto-fill | PASS | Real device populated latitude/longitude from the location provider; precise coordinates intentionally not recorded |\n| Map handoff | TO VERIFY | Requires decoded Geo QR handoff verification on the physical device |
 | Wi-Fi connect action | TO VERIFY | Requires physical device/network verification |
 | Store screenshots / content rating / ads status | TO VERIFY | Play Console + real release UI |
 | Testing-track requirement | TO VERIFY | Confirm actual developer-account eligibility/status |
