@@ -144,4 +144,8 @@
     <string name="no_map_or_browser">ไม่พบแอปแผนที่หรือเบราว์เซอร์ที่ใช้งานได้</string>
     <string name="wifi_requesting">กำลังขอเชื่อมต่อ Wi-Fi %1$s…</string>
     <string name="wifi_password_copied_settings">คัดลอกรหัสผ่าน Wi-Fi แล้ว กรุณาเชื่อมต่อในหน้าการตั้งค่า Wi-Fi</string>
+    <string name="wifi_missing_ssid">ไม่พบชื่อเครือข่าย Wi-Fi</string>
+    <string name="wifi_wep_settings">Android รุ่นใหม่ไม่รองรับการเชื่อมต่อ WEP อัตโนมัติ คัดลอกรหัสผ่านแล้ว กรุณาเลือกเครือข่ายในหน้าการตั้งค่า Wi-Fi</string>
+    <string name="wifi_open_settings">เปิดการตั้งค่า Wi-Fi แล้วเลือกเครือข่าย %1$s</string>
+    <string name="wifi_request_unavailable">ไม่พบเครือข่าย Wi-Fi ที่ขอ หรือผู้ใช้ไม่ได้อนุมัติการเชื่อมต่อ</string>
 </resources>
