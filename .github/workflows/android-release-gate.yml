@@ -41,6 +41,21 @@ jobs:
           ! grep -R -n -E 'com\.aistudio|zipspeed|quickqr|qrprom' app/src app/build.gradle.kts build.gradle.kts gradle/libs.versions.toml
           ! grep -n -E 'firebase|retrofit|okhttp|moshi|google-services|secrets-gradle|google-devtools-ksp' app/build.gradle.kts build.gradle.kts gradle/libs.versions.toml
           ! grep -n 'mutableStateOf("13.7563")\|mutableStateOf("100.5018")' app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt
+          ! grep -R -n -E 'contentDescription[[:space:]]*=[[:space:]]*"|Toast\.makeText\([^,]+,[[:space:]]*"' app/src/main/java
+          ! grep -R -n -E 'Text\([[:space:]]*"' app/src/main/java/com/anakinyoo/qrscanners/ui
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          def keys(path):
+              text = Path(path).read_text(encoding="utf-8")
+              return set(re.findall(r'<string\s+name="([^"]+)"', text))
+          en = keys("app/src/main/res/values/strings.xml")
+          th = keys("app/src/main/res/values-th/strings.xml")
+          missing_th = sorted(en - th)
+          missing_en = sorted(th - en)
+          if missing_th or missing_en:
+              raise SystemExit(f"String resource mismatch: missing_th={missing_th}, missing_en={missing_en}")
+          PY
           grep -q 'android:allowBackup="false"' app/src/main/AndroidManifest.xml
           ! grep -q 'ACCESS_BACKGROUND_LOCATION' app/src/main/AndroidManifest.xml
 
