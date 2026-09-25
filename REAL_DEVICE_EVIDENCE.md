@@ -12,6 +12,7 @@ Physical display: 1080x2400, density 480
 - **Install / cold launch:** debug APK installed on the physical device. After launch, `com.anakinyoo.qrscanners/.MainActivity` remained top-resumed and the app process stayed alive without a fatal exception in the verification log.
 - **RC side-by-side install:** current-main debug uses `com.anakinyoo.qrscanners.rc` / `1.0-rc` and installed successfully without uninstalling or overwriting the existing `com.anakinyoo.qrscanners` package. Existing app-private data/history was preserved.
 - **Splash crash root cause fixed:** the earlier launcher-resource crash was reproduced, traced to a bitmap/vector mismatch, fixed, rebuilt and verified not to recur on the device.
+- **Launcher icon / OEM compatibility:** commit `776e80ff8695ea4d8dbed7b11ad1c1c1e05c134d` replaced the legacy anydpi bitmap XML fallback with density-specific PNG launcher assets and a safe adaptive foreground. The resulting RC passed CI, installed on the realme device, cold-launched without a fatal exception, and the Oplus launcher search rendered the branded QR Scanners icon instead of the default Android icon.
 - **Thai / dark UI:** Settings rendered in Thai on the 1080x2400 device without observed overflow in the captured screen.
 - **Camera permission flow:** the app reached the Android system camera-permission dialog and, after approval, displayed the scanner controls and camera preview container.
 - **CameraX:** camera id 0 opened with Preview + ImageAnalysis attached.
@@ -36,5 +37,5 @@ Physical display: 1080x2400, density 480
 
 - Test payloads/SSIDs in this file are synthetic fixtures and are not represented as real user data.
 - Functional QR/location/camera code did not materially change across the documented real-device continuation; later commits in that span are evidence/docs, launcher/store assets and debug-package isolation.
-- The original package was preserved after an `INSTALL_FAILED_UPDATE_INCOMPATIBLE` debug-signature mismatch. No uninstall was performed.
+- An earlier debug-signature mismatch (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`) blocked replacing the old test package. After explicit user approval, that obsolete test package was uninstalled; later RC validation uses the isolated `.rc` debug package.
 - Device/account-specific items remain TO VERIFY unless direct evidence is recorded here.
