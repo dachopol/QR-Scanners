@@ -126,6 +126,7 @@
 
     <string name="section_about">About &amp; Privacy</string>
     <string name="about_privacy">Privacy Policy</string>
+    <string name="privacy_policy_online">Open online policy</string>
     <string name="about_privacy_desc">QR and barcode content is processed on-device. Google ML Kit may send diagnostic and usage telemetry; this app does not upload camera feeds or scan history.</string>
     <string name="app_version_label">Version %1$s</string>
     <string name="author_by">by AnakinYoo</string>
