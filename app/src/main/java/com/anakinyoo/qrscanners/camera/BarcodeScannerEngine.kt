@@ -53,22 +53,7 @@ class BarcodeScannerEngine(
 
                                 val formatType = ScanFormat.fromMlKitFormat(barcode.format)
                                 val qrType = ScanActionResolver.resolveType(rawValue)
-                                val title = when (qrType) {
-                                    com.anakinyoo.qrscanners.model.QrType.URL -> rawValue
-                                    com.anakinyoo.qrscanners.model.QrType.WIFI -> {
-                                        val wifi = ScanActionResolver.parseWifi(rawValue)
-                                        "Wi-Fi: ${wifi.ssid}"
-                                    }
-                                    com.anakinyoo.qrscanners.model.QrType.CONTACT -> {
-                                        val c = ScanActionResolver.parseContact(rawValue)
-                                        if (c.name.isNotBlank()) c.name else "Contact Card"
-                                    }
-                                    com.anakinyoo.qrscanners.model.QrType.PHONE -> "Phone: ${ScanActionResolver.parsePhone(rawValue)}"
-                                    com.anakinyoo.qrscanners.model.QrType.EMAIL -> "Email: ${ScanActionResolver.parseEmail(rawValue).address}"
-                                    com.anakinyoo.qrscanners.model.QrType.SMS -> "SMS: ${ScanActionResolver.parseSms(rawValue).number}"
-                                    com.anakinyoo.qrscanners.model.QrType.GEO -> "Location"
-                                    com.anakinyoo.qrscanners.model.QrType.TEXT -> rawValue.take(50)
-                                }
+                                val title = buildDisplayTitle(rawValue, qrType)
 
                                 val result = ScanResultData(
                                     rawValue = rawValue,
@@ -110,19 +95,7 @@ class BarcodeScannerEngine(
                         val rawValue = barcode.rawValue!!
                         val formatType = ScanFormat.fromMlKitFormat(barcode.format)
                         val qrType = ScanActionResolver.resolveType(rawValue)
-                        val title = when (qrType) {
-                            com.anakinyoo.qrscanners.model.QrType.URL -> rawValue
-                            com.anakinyoo.qrscanners.model.QrType.WIFI -> "Wi-Fi: ${ScanActionResolver.parseWifi(rawValue).ssid}"
-                            com.anakinyoo.qrscanners.model.QrType.CONTACT -> {
-                                val c = ScanActionResolver.parseContact(rawValue)
-                                if (c.name.isNotBlank()) c.name else "Contact Card"
-                            }
-                            com.anakinyoo.qrscanners.model.QrType.PHONE -> "Phone: ${ScanActionResolver.parsePhone(rawValue)}"
-                            com.anakinyoo.qrscanners.model.QrType.EMAIL -> "Email: ${ScanActionResolver.parseEmail(rawValue).address}"
-                            com.anakinyoo.qrscanners.model.QrType.SMS -> "SMS: ${ScanActionResolver.parseSms(rawValue).number}"
-                            com.anakinyoo.qrscanners.model.QrType.GEO -> "Location"
-                            com.anakinyoo.qrscanners.model.QrType.TEXT -> rawValue.take(50)
-                        }
+                        val title = buildDisplayTitle(rawValue, qrType)
 
                         val result = ScanResultData(
                             rawValue = rawValue,
@@ -161,19 +134,7 @@ class BarcodeScannerEngine(
                         val rawValue = barcode.rawValue!!
                         val formatType = ScanFormat.fromMlKitFormat(barcode.format)
                         val qrType = ScanActionResolver.resolveType(rawValue)
-                        val title = when (qrType) {
-                            com.anakinyoo.qrscanners.model.QrType.URL -> rawValue
-                            com.anakinyoo.qrscanners.model.QrType.WIFI -> "Wi-Fi: ${ScanActionResolver.parseWifi(rawValue).ssid}"
-                            com.anakinyoo.qrscanners.model.QrType.CONTACT -> {
-                                val c = ScanActionResolver.parseContact(rawValue)
-                                if (c.name.isNotBlank()) c.name else "Contact Card"
-                            }
-                            com.anakinyoo.qrscanners.model.QrType.PHONE -> "Phone: ${ScanActionResolver.parsePhone(rawValue)}"
-                            com.anakinyoo.qrscanners.model.QrType.EMAIL -> "Email: ${ScanActionResolver.parseEmail(rawValue).address}"
-                            com.anakinyoo.qrscanners.model.QrType.SMS -> "SMS: ${ScanActionResolver.parseSms(rawValue).number}"
-                            com.anakinyoo.qrscanners.model.QrType.GEO -> "Location"
-                            com.anakinyoo.qrscanners.model.QrType.TEXT -> rawValue.take(50)
-                        }
+                        val title = buildDisplayTitle(rawValue, qrType)
 
                         val result = ScanResultData(
                             rawValue = rawValue,
@@ -195,4 +156,34 @@ class BarcodeScannerEngine(
             onError(e)
         }
     }
+    private fun buildDisplayTitle(
+        rawValue: String,
+        qrType: com.anakinyoo.qrscanners.model.QrType
+    ): String {
+        return when (qrType) {
+            com.anakinyoo.qrscanners.model.QrType.URL -> rawValue
+            com.anakinyoo.qrscanners.model.QrType.WIFI ->
+                ScanActionResolver.parseWifi(rawValue).ssid.ifBlank { rawValue.take(50) }
+            com.anakinyoo.qrscanners.model.QrType.CONTACT -> {
+                val contact = ScanActionResolver.parseContact(rawValue)
+                contact.name.ifBlank {
+                    contact.phone.ifBlank {
+                        contact.email.ifBlank { rawValue.take(50) }
+                    }
+                }
+            }
+            com.anakinyoo.qrscanners.model.QrType.PHONE ->
+                ScanActionResolver.parsePhone(rawValue)
+            com.anakinyoo.qrscanners.model.QrType.EMAIL ->
+                ScanActionResolver.parseEmail(rawValue).address.ifBlank { rawValue.take(50) }
+            com.anakinyoo.qrscanners.model.QrType.SMS ->
+                ScanActionResolver.parseSms(rawValue).number.ifBlank { rawValue.take(50) }
+            com.anakinyoo.qrscanners.model.QrType.GEO ->
+                ScanActionResolver.parseGeoOrNull(rawValue)
+                    ?.let { "${it.latitude}, ${it.longitude}" }
+                    ?: rawValue.take(50)
+            com.anakinyoo.qrscanners.model.QrType.TEXT -> rawValue.take(50)
+        }
+    }
+
 }
