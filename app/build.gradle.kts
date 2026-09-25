@@ -50,7 +50,10 @@ android {
         signingConfig = signingConfigs.getByName("release")
       }
     }
-    debug {}
+    debug {
+      applicationIdSuffix = ".rc"
+      versionNameSuffix = "-rc"
+    }
   }
 
   compileOptions {
