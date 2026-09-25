@@ -32,6 +32,7 @@
     <string name="action_share">Share</string>
     <string name="action_connect_wifi">Connect to Wi-Fi</string>
     <string name="action_dial">Dial Number</string>
+    <string name="action_dial_number">Dial Number (%1$s)</string>
     <string name="action_send_sms">Send SMS</string>
     <string name="action_send_email">Send Email</string>
     <string name="action_add_contact">Add to Contacts</string>
