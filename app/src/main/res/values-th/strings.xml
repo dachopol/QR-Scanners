@@ -128,4 +128,19 @@
     <string name="about_privacy_desc">เนื้อหา QR และบาร์โค้ดประมวลผลบนอุปกรณ์ Google ML Kit อาจส่งข้อมูลวินิจฉัยและการใช้งาน โดยแอปนี้ไม่อัปโหลดภาพจากกล้องหรือประวัติการสแกน</string>
     <string name="app_version_label">เวอร์ชัน %1$s</string>
     <string name="author_by">by AnakinYoo</string>
+    <string name="zoom_out">ซูมออก</string>
+    <string name="zoom_in">ซูมเข้า</string>
+    <string name="favorite">รายการโปรด</string>
+    <string name="generated_qr_content_description">QR โค้ดที่สร้าง</string>
+    <string name="clear_search">ล้างคำค้นหา</string>
+    <string name="action_copy_wifi_password">คัดลอกรหัสผ่าน Wi-Fi</string>
+    <string name="error_open_browser">ไม่สามารถเปิดเบราว์เซอร์ได้: %1$s</string>
+    <string name="error_make_call">ไม่สามารถเปิดหน้าจอโทรออกได้: %1$s</string>
+    <string name="error_send_sms">ไม่สามารถเปิดหน้าส่ง SMS ได้: %1$s</string>
+    <string name="error_send_email">ไม่สามารถเปิดหน้าส่งอีเมลได้: %1$s</string>
+    <string name="error_add_contact">ไม่สามารถเปิดหน้าบันทึกผู้ติดต่อได้: %1$s</string>
+    <string name="invalid_map_coordinates">พิกัดแผนที่ไม่ถูกต้อง</string>
+    <string name="no_map_or_browser">ไม่พบแอปแผนที่หรือเบราว์เซอร์ที่ใช้งานได้</string>
+    <string name="wifi_requesting">กำลังขอเชื่อมต่อ Wi-Fi %1$s…</string>
+    <string name="wifi_password_copied_settings">คัดลอกรหัสผ่าน Wi-Fi แล้ว กรุณาเชื่อมต่อในหน้าการตั้งค่า Wi-Fi</string>
 </resources>
