@@ -18,7 +18,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Release signing evidence | TO VERIFY | Requires real `KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_PASSWORD`, and `KEY_ALIAS` secrets |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | GAP | Replace `store-assets/play_store_icon_512.jpg` with verified 512x512 32-bit PNG before Play upload |
-| Privacy policy URL | TO VERIFY | Publish current policy at an active HTTPS URL and link it in Play + app |
+| In-app privacy policy | PASS | Full EN/TH policy text is accessible from Settings |
+| Privacy policy URL | TO VERIFY | Publish current policy at an active HTTPS URL and link it in Play; add the final URL to the release app if required by review |
 | Camera / Torch / Zoom | TO VERIFY | Physical Android device |
 | Current location / Map handoff | TO VERIFY | Physical Android device with Location enabled |
 | Wi-Fi connect action | TO VERIFY | Physical Android device/network |
