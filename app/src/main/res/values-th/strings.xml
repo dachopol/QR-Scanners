@@ -126,6 +126,7 @@
 
     <string name="section_about">เกี่ยวกับและความเป็นส่วนตัว</string>
     <string name="about_privacy">นโยบายความเป็นส่วนตัว</string>
+    <string name="privacy_policy_online">เปิดนโยบายออนไลน์</string>
     <string name="about_privacy_desc">เนื้อหา QR และบาร์โค้ดประมวลผลบนอุปกรณ์ Google ML Kit อาจส่งข้อมูลวินิจฉัยและการใช้งาน โดยแอปนี้ไม่อัปโหลดภาพจากกล้องหรือประวัติการสแกน</string>
     <string name="app_version_label">เวอร์ชัน %1$s</string>
     <string name="author_by">by AnakinYoo</string>
