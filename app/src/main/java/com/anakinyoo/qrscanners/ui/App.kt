@@ -2092,6 +2092,7 @@ fun SettingsScreen(
     val defaultCamera by preferences.defaultCamera.collectAsState()
 
     var showClearConfirm by remember { mutableStateOf(false) }
+    var showPrivacyPolicy by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -2289,7 +2290,10 @@ fun SettingsScreen(
 
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showPrivacyPolicy = true }
+                    .testTag("btn_privacy_policy")
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -2306,6 +2310,12 @@ fun SettingsScreen(
                         text = stringResource(R.string.about_privacy_desc),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.about_privacy_open),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(Modifier.height(12.dp))
                     Text(
@@ -2353,6 +2363,27 @@ fun SettingsScreen(
                 dismissButton = {
                     TextButton(onClick = { showClearConfirm = false }) {
                         Text(stringResource(R.string.btn_cancel))
+                    }
+                }
+            )
+        }
+
+        if (showPrivacyPolicy) {
+            AlertDialog(
+                onDismissRequest = { showPrivacyPolicy = false },
+                title = { Text(stringResource(R.string.about_privacy)) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.privacy_policy_full),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier
+                            .heightIn(max = 420.dp)
+                            .verticalScroll(rememberScrollState())
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = { showPrivacyPolicy = false }) {
+                        Text(stringResource(R.string.btn_close))
                     }
                 }
             )
