@@ -16,6 +16,7 @@
 - Play Store icon is the verified 512x512 PNG asset
 - Feature graphic prepared as `store-assets/feature_graphic_1024x500.jpg` (1024x500 JPEG, no alpha)
 - Real-device gate passed for cold launch, launcher icon, camera preview, torch, zoom, camera switching, gallery decode, location auto-fill, map handoff, WEP fallback, WPA2 request path, history and TH/EN switching
+- Six Thai release screenshots captured from release UI 1.0 and stored in `store-assets/screenshots/th/`
 
 ## GAP / TO VERIFY before upload
 - Publish privacy policy to a stable active HTTPS URL.
@@ -23,7 +24,6 @@
 - Configure real upload-key secrets and obtain a CI run with signature verification PASS.
 - Verify a known QR/barcode exact payload through the live camera on a physical device.
 - Complete a successful association against an authorized real open/WPA2/WPA3 test network.
-- Capture screenshots from the validated release UI.
 - Review final Data Safety answers against the final dependency tree.
 - Complete Content rating, Target audience, App access, Ads declaration, and other Play Console forms.
 - Confirm the testing-track/closed-testing requirement shown for the actual developer account.

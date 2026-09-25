@@ -62,18 +62,18 @@ QR Scanners ช่วยสแกน QR โค้ดและบาร์โค�
 
 - **App icon:** 32-bit PNG with alpha, 512 x 512 px, max 1024 KB.
 - **Feature graphic:** PASS — `store-assets/feature_graphic_1024x500.jpg`; JPEG, 1024 x 500 px, no alpha.
-- **Screenshots:** minimum two screenshots across supported device types. For stronger merchandising eligibility, use at least four high-resolution phone screenshots where applicable.
+- **Screenshots:** PASS — six verified Thai phone screenshots are stored in `store-assets/screenshots/th/` at 1080 x 2160 px.
 - Screenshots must depict the real shipping UI and must not show fake scan results, rankings, price claims, or features not present in the release.
 - If screenshot artwork contains added text, localize that added text for Thai and English.
 - Remove personal notifications/service-provider details from screenshots before submission.
 
-### Planned real-release screenshots
-1. Scanner — live camera frame and controls, with no fake result.
-2. Scan result — real supported QR/barcode result.
-3. Create QR — type selection/form.
-4. QR preview/share — generated code.
-5. History/favorites.
-6. Settings — theme/language/privacy.
+### Verified Thai release screenshots
+1. `01_scan.png` — live camera frame and controls, with no fake result.
+2. `02_create.png` — QR type selection and create form.
+3. `03_preview_share.png` — generated demo QR preview/share.
+4. `04_history.png` — local history with the generated demo record.
+5. `05_result.png` — result actions for the generated demo record.
+6. `06_settings.png` — theme/language/scan behavior settings.
 
 Official reference:
 https://support.google.com/googleplay/android-developer/answer/9866151

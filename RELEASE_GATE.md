@@ -34,7 +34,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
 | Privacy policy URL | TO VERIFY | Must be an active public non-geo-fenced URL and also match the app/developer identity |
 | Data Safety final answers | TO VERIFY | Recheck final release dependency tree and Play Console definitions immediately before submission |
-| Store screenshots | TO VERIFY | Need real release UI; Google Play requires at least two screenshots, with the current plan targeting six |
+| Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
 | Ads declaration | TO VERIFY | Current source has no ads SDK; declaration still must be completed in Play Console |
 | Content rating / target audience | TO VERIFY | Play Console |
 | Personal-account closed-test requirement | TO VERIFY | If the personal developer account was created after 13 Nov 2023: at least 12 opted-in testers continuously for 14 days before production-access application |
