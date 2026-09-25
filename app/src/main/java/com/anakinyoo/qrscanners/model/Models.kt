@@ -78,5 +78,7 @@ data class ScanResultData(
     val type: QrType,
     val title: String,
     val subtitle: String = "",
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val isFavorite: Boolean = false,
+    val isGenerated: Boolean = false
 )
