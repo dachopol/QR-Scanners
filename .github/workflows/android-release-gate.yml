@@ -74,5 +74,6 @@ jobs:
           path: |
             app/build/outputs/bundle/release/*.aab
             app/build/outputs/apk/release/*.apk
+            app/build/outputs/apk/debug/*.apk
             app/build/reports/lint-results-debug.html
             app/build/test-results/testDebugUnitTest/
