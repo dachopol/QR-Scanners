@@ -10,6 +10,8 @@
 - Backup disabled
 - ML Kit disclosure documented
 - Store listing draft prepared in EN/TH
+- Current source contains no advertising SDK; Play Ads declaration should remain "No" unless the release build changes
+- Current source has no login/account gate; app-access review does not need test credentials unless the release build changes
 - Optional signed-release pipeline prepared without committing secrets
 
 ## GAP / TO VERIFY before upload
