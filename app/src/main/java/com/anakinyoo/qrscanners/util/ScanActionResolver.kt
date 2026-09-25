@@ -59,20 +59,42 @@ object ScanActionResolver {
         } else {
             raw
         }
-        val tokens = content.split(";")
-        for (token in tokens) {
-            val part = token.trim()
-            if (part.startsWith("S:", ignoreCase = true)) {
-                ssid = part.substring(2)
-            } else if (part.startsWith("P:", ignoreCase = true)) {
-                password = part.substring(2)
-            } else if (part.startsWith("T:", ignoreCase = true)) {
-                type = part.substring(2)
-            } else if (part.startsWith("H:", ignoreCase = true)) {
-                hidden = part.substring(2).equals("true", ignoreCase = true)
+
+        for (part in splitEscapedWifiFields(content)) {
+            when {
+                part.startsWith("S:", ignoreCase = true) -> ssid = part.substring(2)
+                part.startsWith("P:", ignoreCase = true) -> password = part.substring(2)
+                part.startsWith("T:", ignoreCase = true) -> type = part.substring(2)
+                part.startsWith("H:", ignoreCase = true) ->
+                    hidden = part.substring(2).equals("true", ignoreCase = true)
             }
         }
         return WifiData(ssid = ssid, password = password, securityType = type, isHidden = hidden)
+    }
+
+    private fun splitEscapedWifiFields(content: String): List<String> {
+        val fields = mutableListOf<String>()
+        val current = StringBuilder()
+        var escaped = false
+
+        for (ch in content) {
+            when {
+                escaped -> {
+                    current.append(ch)
+                    escaped = false
+                }
+                ch == '\\' -> escaped = true
+                ch == ';' -> {
+                    fields.add(current.toString())
+                    current.setLength(0)
+                }
+                else -> current.append(ch)
+            }
+        }
+
+        if (escaped) current.append('\\')
+        if (current.isNotEmpty()) fields.add(current.toString())
+        return fields
     }
 
     fun parseContact(raw: String): ContactData {
