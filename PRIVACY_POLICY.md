@@ -35,9 +35,15 @@ https://developers.google.com/ml-kit/android-data-disclosure
 The current source does not include a developer-operated backend, advertising SDK, billing SDK, Firebase AI, Firebase App Check, or custom analytics SDK. QR Scanners does not provide user accounts.
 
 ## Privacy inquiries
-For privacy questions or requests, use the developer contact mechanism displayed on the Google Play listing for QR Scanners. The published privacy-policy web page must use the same developer identity or app name shown on Google Play.
+For privacy questions or requests, use the QR Scanners issue form:
+https://github.com/dachopol/QR-Scanners/issues
+
+Do not include passwords, QR payloads containing sensitive data, precise location, or other private information in a public issue.
 
 ## Policy availability
-Before release, this policy must be published at an active, publicly accessible, non-geofenced HTTPS URL that is not a PDF and is not editable by visitors. The URL must be entered in Play Console and made accessible from within the released app.
+Public privacy-policy URL:
+https://raw.githubusercontent.com/dachopol/QR-Scanners/main/PRIVACY_POLICY.md
+
+This HTTPS URL is publicly readable without app login, is not a PDF, and is intended to be the same policy URL linked from QR Scanners and entered in Play Console. Visitors cannot edit the policy through this raw document URL.
 
 This policy must be reviewed again if dependencies or app behavior change before release.
