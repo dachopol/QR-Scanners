@@ -383,12 +383,11 @@ fun SplashScreenView() {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.qr_scanners_logo_20260925),
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_monochrome),
                         contentDescription = stringResource(R.string.app_name),
-                        modifier = Modifier
-                            .size(92.dp)
-                            .clip(RoundedCornerShape(20.dp))
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(78.dp)
                     )
                 }
             }
