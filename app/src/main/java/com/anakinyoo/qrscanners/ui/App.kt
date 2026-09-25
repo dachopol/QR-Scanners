@@ -2084,6 +2084,7 @@ fun SettingsScreen(
     historyStore: HistoryStore,
     onLocaleChange: (String) -> Unit
 ) {
+    val context = LocalContext.current
     val themeMode by preferences.themeMode.collectAsState()
     val appLanguage by preferences.appLanguage.collectAsState()
     val vibrateOnScan by preferences.vibrateOnScan.collectAsState()
@@ -2385,6 +2386,18 @@ fun SettingsScreen(
                 confirmButton = {
                     TextButton(onClick = { showPrivacyPolicy = false }) {
                         Text(stringResource(R.string.btn_close))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            ScanActionResolver.openBrowser(
+                                context,
+                                "https://raw.githubusercontent.com/dachopol/QR-Scanners/main/PRIVACY_POLICY.md"
+                            )
+                        }
+                    ) {
+                        Text(stringResource(R.string.privacy_policy_online))
                     }
                 }
             )
