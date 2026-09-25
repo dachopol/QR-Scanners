@@ -104,8 +104,8 @@
     <string name="section_appearance">การแสดงผล</string>
     <string name="theme_mode">ธีมของแอป</string>
     <string name="theme_system">ตามระบบ</string>
-    <string name="theme_light">สว่าง (Light)</string>
-    <string name="theme_dark">มืด (Dark)</string>
+    <string name="theme_light">สว่าง</string>
+    <string name="theme_dark">มืด</string>
     <string name="app_language">ภาษาของแอป</string>
     <string name="lang_system">ตามระบบ</string>
     <string name="lang_en">English</string>
