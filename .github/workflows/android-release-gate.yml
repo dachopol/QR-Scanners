@@ -36,6 +36,24 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
+      - name: Prepare release signing when secrets are configured
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_PASSWORD" ] && [ -n "$KEY_ALIAS" ]; then
+            KEYSTORE_FILE="$RUNNER_TEMP/qr-scanners-upload.jks"
+            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE_FILE"
+            chmod 600 "$KEYSTORE_FILE"
+            test -s "$KEYSTORE_FILE"
+            echo "KEYSTORE_PATH=$KEYSTORE_FILE" >> "$GITHUB_ENV"
+            echo "RELEASE_SIGNING_CONFIGURED=true" >> "$GITHUB_ENV"
+          else
+            echo "RELEASE_SIGNING_CONFIGURED=false" >> "$GITHUB_ENV"
+          fi
+
       - name: Source-of-truth hygiene
         run: |
           ! grep -R -n -E 'com\.aistudio|zipspeed|quickqr|qrprom' app/src app/build.gradle.kts build.gradle.kts gradle/libs.versions.toml
@@ -60,8 +78,17 @@ jobs:
           ! grep -q 'ACCESS_BACKGROUND_LOCATION' app/src/main/AndroidManifest.xml
 
       - name: Unit, lint and builds
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
-          gradle --no-daemon             :app:testDebugUnitTest             :app:lintDebug             :app:assembleDebug             :app:assembleRelease             :app:bundleRelease
+          gradle --no-daemon \
+            :app:testDebugUnitTest \
+            :app:lintDebug \
+            :app:assembleDebug \
+            :app:assembleRelease \
+            :app:bundleRelease
 
       - name: Verify 16 KB APK alignment
         run: |
@@ -70,15 +97,17 @@ jobs:
           "$ANDROID_SDK_ROOT/build-tools/36.0.0/zipalign" -c -P 16 -v 4 "$APK"
 
       - name: Release signing status
-        env:
-          KEYSTORE_PATH: ${{ secrets.KEYSTORE_PATH }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          if [ -n "$KEYSTORE_PATH" ] && [ -n "$STORE_PASSWORD" ] && [ -n "$KEY_PASSWORD" ]; then
-            echo "Signing secrets configured. Verify signed artifact before upload."
+          if [ "$RELEASE_SIGNING_CONFIGURED" = "true" ]; then
+            APK="$(find app/build/outputs/apk/release -name '*.apk' | head -n 1)"
+            AAB="$(find app/build/outputs/bundle/release -name '*.aab' | head -n 1)"
+            test -n "$APK"
+            test -n "$AAB"
+            "$ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner" verify --verbose "$APK"
+            jarsigner -verify "$AAB"
+            echo "PASS: release APK and AAB are signed and signature verification succeeded."
           else
-            echo "TO VERIFY: release signing secrets are not configured in CI."
+            echo "TO VERIFY: release signing secrets are not configured in CI; release artifacts are unsigned."
           fi
 
       - name: Upload release evidence
