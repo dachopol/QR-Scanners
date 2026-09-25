@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.FileProvider
+import com.anakinyoo.qrscanners.R
 import com.anakinyoo.qrscanners.model.HistoryRecord
 import java.io.File
 import java.io.FileOutputStream
@@ -14,19 +16,22 @@ import java.util.Locale
 
 object ShareUtils {
 
-    fun shareText(context: Context, text: String, title: String = "Share Content") {
+    fun shareText(context: Context, text: String, title: String? = null) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, text)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        val chooser = Intent.createChooser(intent, title).apply {
+        val chooser = Intent.createChooser(
+            intent,
+            title ?: context.getString(R.string.share_content_title)
+        ).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(chooser)
     }
 
-    fun shareQrBitmap(context: Context, bitmap: Bitmap, title: String = "Share QR Code") {
+    fun shareQrBitmap(context: Context, bitmap: Bitmap, title: String? = null) {
         try {
             val cachePath = File(context.cacheDir, "images")
             cachePath.mkdirs()
@@ -47,14 +52,29 @@ object ShareUtils {
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            val chooser = Intent.createChooser(shareIntent, title).apply {
+            val chooser = Intent.createChooser(
+                shareIntent,
+                title ?: context.getString(R.string.share_qr_title)
+            ).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(chooser)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            shareText(context, "Error generating image to share: ${e.message}")
+        } catch (_: Exception) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.share_qr_error),
+                Toast.LENGTH_SHORT
+            ).show()
         }
+    }
+
+    internal fun escapeCsvCellForExport(value: String): String {
+        val safeValue = if (value.firstOrNull() in setOf('=', '+', '-', '@')) {
+            "'$value"
+        } else {
+            value
+        }
+        return safeValue.replace("\"", "\"\"")
     }
 
     fun exportHistoryCsv(context: Context, records: List<HistoryRecord>) {
@@ -62,11 +82,13 @@ object ShareUtils {
         val sb = StringBuilder()
         sb.append("ID,Type,Format,Title,Content,Timestamp,IsFavorite,IsGenerated\n")
         for (r in records) {
-            val escapedTitle = r.displayTitle.replace("\"", "\"\"")
-            val escapedContent = r.content.replace("\"", "\"\"")
+            val escapedTitle = escapeCsvCellForExport(r.displayTitle)
+            val escapedContent = escapeCsvCellForExport(r.content)
             val timeStr = dateFormat.format(Date(r.timestamp))
-            sb.append("\"${r.id}\",\"${r.qrType}\",\"${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",${r.isFavorite},${r.isGenerated}\n")
+            sb.append(
+                "\"${r.id}\",\"${r.qrType}\",\"${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",${r.isFavorite},${r.isGenerated}\n"
+            )
         }
-        shareText(context, sb.toString(), "Export History (CSV)")
+        shareText(context, sb.toString(), context.getString(R.string.export_history_csv_title))
     }
 }
