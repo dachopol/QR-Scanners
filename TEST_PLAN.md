@@ -26,7 +26,7 @@ Verified on realme RMX3241, Android 13 / API 33. See `REAL_DEVICE_EVIDENCE.md`.
 ## TO VERIFY — physical Android device
 - Decode a known QR/barcode from the live camera and verify the exact payload/result action.
 - Complete Photo Picker selection and verify the exact decoded payload; the previous attempt was interrupted by another foreground app.
-- Current-location permission prompt, automatic coordinate fill, GPS/network provider behavior, and map handoff with real coordinates.
+- Map handoff from a decoded Geo QR on the physical device.
 - Wi-Fi connection request behavior on supported Android versions, including open/WPA2/WPA3 and WEP fallback.
 
 ## TO VERIFY — release / Play Console
