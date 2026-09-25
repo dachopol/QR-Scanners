@@ -319,15 +319,16 @@ fun MainApp(
                 result = result,
                 onDismiss = { currentResult = null },
                 onToggleFavorite = {
-                    val rec = HistoryRecord(
-                        content = result.rawValue,
-                        displayTitle = result.title,
-                        qrType = result.type,
-                        barcodeFormat = result.format,
-                        isFavorite = true,
-                        isGenerated = false
+                    historyStore.toggleFavoriteForResult(
+                        HistoryRecord(
+                            content = result.rawValue,
+                            displayTitle = result.title,
+                            qrType = result.type,
+                            barcodeFormat = result.format,
+                            isFavorite = result.isFavorite,
+                            isGenerated = result.isGenerated
+                        )
                     )
-                    historyStore.addRecord(rec)
                 }
             )
         }
@@ -450,7 +451,9 @@ private fun TabContent(
                         type = record.qrType,
                         title = record.displayTitle,
                         subtitle = record.content,
-                        timestamp = record.timestamp
+                        timestamp = record.timestamp,
+                        isFavorite = record.isFavorite,
+                        isGenerated = record.isGenerated
                     )
                 )
             }
@@ -542,6 +545,10 @@ fun ScannerScreen(
 
     val scannerEngine = remember {
         BarcodeScannerEngine { result ->
+            val storedFavorite = historyStore.records.value
+                .firstOrNull { it.content == result.rawValue && !it.isGenerated }
+                ?.isFavorite ?: false
+            val resultWithState = result.copy(isFavorite = storedFavorite, isGenerated = false)
             playFeedback()
             if (autoCopyPref) {
                 ScanActionResolver.copyToClipboard(context, result.rawValue)
@@ -563,7 +570,7 @@ fun ScannerScreen(
                         // Location QR opens Google Maps immediately after a successful scan.
                         ScanActionResolver.openMap(context, geo)
                     } else {
-                        onResultDetected(result)
+                        onResultDetected(resultWithState)
                     }
                 }
                 QrType.URL -> {
@@ -572,9 +579,9 @@ fun ScannerScreen(
                     } else if (autoOpenUrlPref) {
                         ScanActionResolver.openBrowser(context, result.rawValue)
                     }
-                    onResultDetected(result)
+                    onResultDetected(resultWithState)
                 }
-                else -> onResultDetected(result)
+                else -> onResultDetected(resultWithState)
             }
         }
     }
@@ -628,6 +635,10 @@ fun ScannerScreen(
                 context = context,
                 uri = uri,
                 onSuccess = { result ->
+                    val storedFavorite = historyStore.records.value
+                        .firstOrNull { it.content == result.rawValue && !it.isGenerated }
+                        ?.isFavorite ?: false
+                    val resultWithState = result.copy(isFavorite = storedFavorite, isGenerated = false)
                     playFeedback()
                     if (autoCopyPref) {
                         ScanActionResolver.copyToClipboard(context, result.rawValue)
@@ -647,15 +658,15 @@ fun ScannerScreen(
                             // Gallery location QR follows the same direct-to-Google-Maps flow.
                             ScanActionResolver.openMap(context, geo)
                         } else {
-                            onResultDetected(result)
+                            onResultDetected(resultWithState)
                         }
                     } else if (result.type == QrType.URL &&
                         ScanActionResolver.isGoogleMapsLink(result.rawValue)
                     ) {
                         ScanActionResolver.openMapLink(context, result.rawValue)
-                        onResultDetected(result)
+                        onResultDetected(resultWithState)
                     } else {
-                        onResultDetected(result)
+                        onResultDetected(resultWithState)
                     }
                 },
                 onNotFound = {
@@ -1002,7 +1013,9 @@ fun ScanResultSheet(
 ) {
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var isFavorite by remember { mutableStateOf(false) }
+    var isFavorite by remember(result.rawValue, result.isGenerated) {
+        mutableStateOf(result.isFavorite)
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
