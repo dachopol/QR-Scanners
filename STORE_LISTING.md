@@ -56,12 +56,18 @@ QR Scanners ช่วยสแกน QR โค้ดและบาร์โค�
 - ภาษาไทย อังกฤษ และตามภาษาระบบ
 - เลย์เอาต์ปรับตามมือถือและหน้าจอ Android ขนาดใหญ่
 
-การเข้าถึงตำแหน่งเป็นตัวเลือก และจะขอเมื่อผู้ใช้เลือกดึงพิกัดปัจจุบันเพื่อสร้าง Location QR เท่านั้น ประวัติการสแกนเก็บไว้ในพื้นที่ส่วนตัวของแอป โปรดดูนโยบายความเป็นส่วนตัวสำหรับรายละเอียดเกี่ยวกับข้อมูลวินิจฉัยและการใช้งานของ Google ML Kit.
+การเข้าถึงตำแหน่งเป็นตัวเลือก และจะขอเมื่อผู้ใช้เลือกดึงพิกัดปัจจุบันเพื่อสร้าง Location QR เท่านั้น ประวัติการสแกนเก็บไว้ในพื้นที่ส่วนตัวของแอป โปรดดูนโยบายความเป็นส่วนตัวสำหรับรายละเอียดเกี่ยวกับข้อมูลวินิจฉัยและการใช้งานของ Google ML Kit
 
-## Screenshot plan — real release UI only
-Minimum publishing requirement must be rechecked in Play Console at upload time. Current Play guidance requires at least two screenshots across supported device types.
+## Play preview assets — current verified requirements
 
-Capture real release screens after physical-device validation:
+- **App icon:** 32-bit PNG with alpha, 512 x 512 px, max 1024 KB.
+- **Feature graphic:** required; JPEG or 24-bit PNG without alpha, 1024 x 500 px.
+- **Screenshots:** minimum two screenshots across supported device types. For stronger merchandising eligibility, use at least four high-resolution phone screenshots where applicable.
+- Screenshots must depict the real shipping UI and must not show fake scan results, rankings, price claims, or features not present in the release.
+- If screenshot artwork contains added text, localize that added text for Thai and English.
+- Remove personal notifications/service-provider details from screenshots before submission.
+
+### Planned real-release screenshots
 1. Scanner — live camera frame and controls, with no fake result.
 2. Scan result — real supported QR/barcode result.
 3. Create QR — type selection/form.
@@ -69,4 +75,5 @@ Capture real release screens after physical-device validation:
 5. History/favorites.
 6. Settings — theme/language/privacy.
 
-If screenshot artwork contains text, prepare separate Thai and English versions. Do not add rankings, price claims, fake metrics, or features not present in the release build.
+Official reference:
+https://support.google.com/googleplay/android-developer/answer/9866151

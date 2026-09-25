@@ -4,10 +4,10 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 
 | Gate | Status | Evidence / next action |
 |---|---|---|
-| Package identity | PASS | Release application ID remains `com.anakinyoo.qrscanners`; debug RC uses `.rc` suffix only |
-| Google Play target API | PASS | `targetSdk = 36`; reverify current Play policy immediately before submission |
+| Package identity | PASS | Release application ID is `com.anakinyoo.qrscanners`; debug RC uses `.rc` suffix only |
+| Google Play target API | PASS | `targetSdk = 36`; Google Play requires API 36+ for new apps and app updates from 31 Aug 2026 |
 | Photo Picker source flow | PASS | `ActivityResultContracts.PickVisualMedia`; no broad media permission |
-| Photo Picker end-to-end result | PASS | Real device selected an image and persisted exact decoded payload with `isGenerated=false` |
+| Photo Picker end-to-end result | PASS | Real device selected an image and persisted the exact decoded payload with `isGenerated=false` |
 | Old/unused app SDK cleanup | PASS | Firebase/Retrofit/OkHttp/Moshi/KSP/old namespaces removed from active app config |
 | ML Kit Data Safety disclosure | PASS | Privacy/Data Safety docs account for documented ML Kit diagnostics/usage telemetry |
 | Backup/privacy alignment | PASS | `android:allowBackup="false"` |
@@ -22,22 +22,29 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Front/rear camera switching | PASS | Real device closed camera id 0 and opened id 1 |
 | Live-camera exact payload decode | TO VERIFY | Requires presenting a known QR/barcode to the physical camera and comparing the exact result |
 | WEP fallback | PASS | Connect action opened Wi-Fi Settings; no false success claim |
-| WPA2 NetworkRequest path | PASS | Logcat recorded real `WifiNetworkSpecifier` request from the RC package |
+| WPA2 NetworkRequest path | PASS | Logcat recorded a real `WifiNetworkSpecifier` request from the RC package |
 | Successful Wi-Fi association | TO VERIFY | Requires an authorized real open/WPA2/WPA3 test network |
 | Release signing pipeline | PASS | CI supports upload-keystore secrets and verifies signed APK/AAB when configured |
-| Release signing evidence | TO VERIFY | Requires real `KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_PASSWORD`, and `KEY_ALIAS` secrets |
+| Signing lineage | PASS | Existing QuickQR Business key was proven to sign a different package and is explicitly rejected for automatic reuse; see `SIGNING_EVIDENCE.md` |
+| Release signing evidence | TO VERIFY | Need the Play-expected upload certificate or explicit approval to create a dedicated new upload key |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
-| Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current verified 512x512 RGBA asset |
+| Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
+| Feature graphic | GAP | Google Play requires a 1024x500 JPEG or 24-bit PNG; no verified final feature graphic is currently recorded |
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
-| Privacy policy URL | TO VERIFY | Publish current policy at an active HTTPS URL and use it in the Play listing/final release |
-| Store screenshots / content rating / ads status | TO VERIFY | Play Console + real release UI |
-| Testing-track requirement | TO VERIFY | Confirm actual developer-account eligibility/status |
+| Privacy policy URL | TO VERIFY | Must be an active public non-geo-fenced URL and also match the app/developer identity |
+| Data Safety final answers | TO VERIFY | Recheck final release dependency tree and Play Console definitions immediately before submission |
+| Store screenshots | TO VERIFY | Need real release UI; Google Play requires at least two screenshots, with the current plan targeting six |
+| Ads declaration | TO VERIFY | Current source has no ads SDK; declaration still must be completed in Play Console |
+| Content rating / target audience | TO VERIFY | Play Console |
+| Personal-account closed-test requirement | TO VERIFY | If the personal developer account was created after 13 Nov 2023: at least 12 opted-in testers continuously for 14 days before production-access application |
 
-See `REAL_DEVICE_EVIDENCE.md` for physical-device evidence.
+See `REAL_DEVICE_EVIDENCE.md` and `SIGNING_EVIDENCE.md`.
 
-Production is not ready until every applicable TO VERIFY item has real evidence.
+Production is not ready until every applicable GAP/TO VERIFY item has real evidence.
 
 Current policy references:
 - Target API: https://support.google.com/googleplay/android-developer/answer/11926878
-- Preview assets/icon: https://support.google.com/googleplay/android-developer/answer/9866151
+- Personal-account testing: https://support.google.com/googleplay/android-developer/answer/14151465
+- User Data / Privacy Policy: https://support.google.com/googleplay/android-developer/answer/10144311
+- Preview assets: https://support.google.com/googleplay/android-developer/answer/9866151
 - ML Kit disclosure: https://developers.google.com/ml-kit/android-data-disclosure
