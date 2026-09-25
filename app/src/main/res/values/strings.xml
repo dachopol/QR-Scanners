@@ -144,4 +144,8 @@
     <string name="no_map_or_browser">No map or browser app available</string>
     <string name="wifi_requesting">Requesting Wi-Fi connection to %1$s…</string>
     <string name="wifi_password_copied_settings">Wi-Fi password copied. Connect via Wi-Fi Settings.</string>
+    <string name="wifi_missing_ssid">Wi-Fi network name is missing</string>
+    <string name="wifi_wep_settings">WEP cannot be connected automatically on modern Android. Password copied; choose the network in Wi-Fi Settings.</string>
+    <string name="wifi_open_settings">Open Wi-Fi Settings and choose %1$s.</string>
+    <string name="wifi_request_unavailable">The requested Wi-Fi network is unavailable or was not approved.</string>
 </resources>
