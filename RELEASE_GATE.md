@@ -30,7 +30,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
 | Android launcher icon / OEM fallback | PASS | Density PNG legacy assets + adaptive foreground verified on realme/Oplus launcher; branded icon rendered after RC reinstall |
-| Feature graphic | GAP | Google Play requires a 1024x500 JPEG or 24-bit PNG; no verified final feature graphic is currently recorded |
+| Feature graphic | PASS | `store-assets/feature_graphic_1024x500.jpg` is a verified 1024x500 RGB JPEG with no alpha, matching current Google Play preview-asset requirements |
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
 | Privacy policy URL | TO VERIFY | Must be an active public non-geo-fenced URL and also match the app/developer identity |
 | Data Safety final answers | TO VERIFY | Recheck final release dependency tree and Play Console definitions immediately before submission |
