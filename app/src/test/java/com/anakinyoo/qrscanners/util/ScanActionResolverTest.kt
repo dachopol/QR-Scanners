@@ -28,6 +28,23 @@ class ScanActionResolverTest {
     }
 
     @Test
+    fun testParseWifiEscapedCharactersRoundTrip() {
+        val source = com.anakinyoo.qrscanners.model.WifiData(
+            ssid = "Office;Guest:5G",
+            password = "pa\\ss;word:123,ok",
+            securityType = "WPA",
+            isHidden = true
+        )
+        val payload = QrPayloadBuilder.buildWifi(source)
+        val parsed = ScanActionResolver.parseWifi(payload)
+
+        assertEquals(source.ssid, parsed.ssid)
+        assertEquals(source.password, parsed.password)
+        assertEquals("WPA", parsed.securityType)
+        assertTrue(parsed.isHidden)
+    }
+
+    @Test
     fun testResolveContactVCard() {
         val vcard = """
             BEGIN:VCARD
