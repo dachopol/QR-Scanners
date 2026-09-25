@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/qr_launcher_icon_1790218665405"
+        android:drawable="@drawable/qr_scanners_logo_20260925"
         android:gravity="center" />
 </layer-list>

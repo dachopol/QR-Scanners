@@ -383,7 +383,7 @@ fun SplashScreenView() {
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.qr_launcher_icon_1790218665405),
+                        painter = painterResource(id = R.drawable.qr_scanners_logo_20260925),
                         contentDescription = stringResource(R.string.app_name),
                         modifier = Modifier
                             .size(92.dp)
