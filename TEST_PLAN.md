@@ -31,7 +31,6 @@ Verified on realme RMX3241, Android 13 / API 33. See `REAL_DEVICE_EVIDENCE.md`.
 
 ## TO VERIFY — release / Play Console
 - Configure the real upload keystore secrets and verify a signed release APK/AAB in CI.
-- Replace the repository Store icon JPG with a verified 512x512 32-bit PNG asset before Play upload.
 - Host the privacy policy at an active HTTPS URL and link it from the Play listing and app.
 - Capture real-device screenshots that accurately show the released UI; prepare localized screenshots when screenshots contain text.
 - Recheck the final dependency tree and Data Safety answers.

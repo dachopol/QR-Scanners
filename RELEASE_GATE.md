@@ -17,7 +17,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Release signing pipeline | PASS | CI can decode an upload keystore only when all signing secrets exist and verifies signed APK/AAB |
 | Release signing evidence | TO VERIFY | Requires real `KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_PASSWORD`, and `KEY_ALIAS` secrets |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
-| Play Store app icon | GAP | Replace `store-assets/play_store_icon_512.jpg` with verified 512x512 32-bit PNG before Play upload |
+| Play Store app icon | PASS | `store-assets/play_store_icon_512.png`: verified 512x512 RGBA PNG using the current Navy/Cyan/Violet QR visual system |
 | In-app privacy policy | PASS | Full EN/TH policy text is accessible from Settings |
 | Privacy policy URL | TO VERIFY | Publish current policy at an active HTTPS URL and link it in Play; add the final URL to the release app if required by review |
 | App cold launch | PASS | Realme RMX3241 / Android 13: process remains alive, MainActivity is top-resumed, no fatal crash |
