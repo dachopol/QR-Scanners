@@ -74,6 +74,17 @@ jobs:
           if missing_th or missing_en:
               raise SystemExit(f"String resource mismatch: missing_th={missing_th}, missing_en={missing_en}")
           PY
+          test -f store-assets/play_store_icon_512.png
+          file store-assets/play_store_icon_512.png | grep -q 'PNG image data'
+          file store-assets/play_store_icon_512.png | grep -Eq '512 x 512|512x512'
+          test -f store-assets/feature_graphic_1024x500.jpg
+          file store-assets/feature_graphic_1024x500.jpg | grep -q 'JPEG image data'
+          file store-assets/feature_graphic_1024x500.jpg | grep -Eq '1024 x 500|1024x500'
+          test "$(find store-assets/screenshots/th -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 6
+          for f in store-assets/screenshots/th/*.png; do
+            file "$f" | grep -q 'PNG image data'
+            file "$f" | grep -Eq '1080 x 2160|1080x2160'
+          done
           grep -q 'android:allowBackup="false"' app/src/main/AndroidManifest.xml
           ! grep -q 'ACCESS_BACKGROUND_LOCATION' app/src/main/AndroidManifest.xml
 
