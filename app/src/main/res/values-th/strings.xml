@@ -148,4 +148,8 @@
     <string name="wifi_wep_settings">Android รุ่นใหม่ไม่รองรับการเชื่อมต่อ WEP อัตโนมัติ คัดลอกรหัสผ่านแล้ว กรุณาเลือกเครือข่ายในหน้าการตั้งค่า Wi-Fi</string>
     <string name="wifi_open_settings">เปิดการตั้งค่า Wi-Fi แล้วเลือกเครือข่าย %1$s</string>
     <string name="wifi_request_unavailable">ไม่พบเครือข่าย Wi-Fi ที่ขอ หรือผู้ใช้ไม่ได้อนุมัติการเชื่อมต่อ</string>
+    <string name="share_content_title">แชร์เนื้อหา</string>
+    <string name="share_qr_title">แชร์ QR โค้ด</string>
+    <string name="share_qr_error">ไม่สามารถเตรียมรูป QR สำหรับแชร์ได้</string>
+    <string name="export_history_csv_title">ส่งออกประวัติ (CSV)</string>
 </resources>
