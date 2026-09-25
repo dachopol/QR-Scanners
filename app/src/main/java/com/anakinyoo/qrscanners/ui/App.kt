@@ -1013,6 +1013,16 @@ fun ScanResultSheet(
 ) {
     val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val typeLabel = when (result.type) {
+        QrType.TEXT -> stringResource(R.string.type_text)
+        QrType.URL -> stringResource(R.string.type_url)
+        QrType.WIFI -> stringResource(R.string.type_wifi)
+        QrType.CONTACT -> stringResource(R.string.type_contact)
+        QrType.EMAIL -> stringResource(R.string.type_email)
+        QrType.PHONE -> stringResource(R.string.type_phone)
+        QrType.SMS -> stringResource(R.string.type_sms)
+        QrType.GEO -> stringResource(R.string.type_geo)
+    }
     var isFavorite by remember(result.rawValue, result.isGenerated) {
         mutableStateOf(result.isFavorite)
     }
@@ -1039,7 +1049,7 @@ fun ScanResultSheet(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = "${result.format} • ${result.type.name}",
+                        text = "${result.format} • $typeLabel",
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
