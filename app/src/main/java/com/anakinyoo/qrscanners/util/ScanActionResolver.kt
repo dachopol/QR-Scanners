@@ -268,11 +268,13 @@ object ScanActionResolver {
             ?: throw IllegalArgumentException("Invalid map coordinates")
     }
 
-    fun copyToClipboard(context: Context, text: String) {
+    fun copyToClipboard(context: Context, text: String, showToast: Boolean = true) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Scanned QR", text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+        if (showToast) {
+            Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun openBrowser(context: Context, url: String) {
@@ -410,17 +412,44 @@ object ScanActionResolver {
         }
     }
 
+    private fun openWifiSettingsFallback(context: Context, wifi: WifiData, messageRes: Int) {
+        if (wifi.password.isNotBlank()) {
+            copyToClipboard(context, wifi.password, showToast = false)
+        }
+        val intent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+        val message = if (messageRes == R.string.wifi_open_settings) {
+            context.getString(messageRes, wifi.ssid)
+        } else {
+            context.getString(messageRes)
+        }
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
     fun connectWifi(context: Context, wifi: WifiData) {
+        if (wifi.ssid.isBlank()) {
+            Toast.makeText(context, context.getString(R.string.wifi_missing_ssid), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val security = wifi.securityType.trim().uppercase()
+        if (security == "WEP") {
+            openWifiSettingsFallback(context, wifi, R.string.wifi_wep_settings)
+            return
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
                 val specifierBuilder = WifiNetworkSpecifier.Builder()
                     .setSsid(wifi.ssid)
 
                 if (wifi.password.isNotBlank()) {
-                    if (wifi.securityType.equals("WEP", ignoreCase = true)) {
-                        specifierBuilder.setWpa2Passphrase(wifi.password)
-                    } else {
-                        specifierBuilder.setWpa2Passphrase(wifi.password)
+                    when (security) {
+                        "WPA3", "SAE" -> specifierBuilder.setWpa3Passphrase(wifi.password)
+                        "NOPASS", "OPEN", "NONE" -> Unit
+                        else -> specifierBuilder.setWpa2Passphrase(wifi.password)
                     }
                 }
 
@@ -434,29 +463,41 @@ object ScanActionResolver {
                     .setNetworkSpecifier(specifierBuilder.build())
                     .build()
 
-                val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                connectivityManager.requestNetwork(networkRequest, object : ConnectivityManager.NetworkCallback() {
-                    override fun onAvailable(network: android.net.Network) {
-                        super.onAvailable(network)
+                val connectivityManager =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                connectivityManager.requestNetwork(
+                    networkRequest,
+                    object : ConnectivityManager.NetworkCallback() {
+                        override fun onUnavailable() {
+                            super.onUnavailable()
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.wifi_request_unavailable),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                })
-                Toast.makeText(context, context.getString(R.string.wifi_requesting, wifi.ssid), Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                // Fallback to opening Wi-Fi settings
-                copyToClipboard(context, wifi.password)
-                val intent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.wifi_requesting, wifi.ssid),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (_: Exception) {
+                val messageRes = if (wifi.password.isBlank()) {
+                    R.string.wifi_open_settings
+                } else {
+                    R.string.wifi_password_copied_settings
                 }
-                context.startActivity(intent)
-                Toast.makeText(context, context.getString(R.string.wifi_password_copied_settings), Toast.LENGTH_LONG).show()
+                openWifiSettingsFallback(context, wifi, messageRes)
             }
         } else {
-            copyToClipboard(context, wifi.password)
-            val intent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val messageRes = if (wifi.password.isBlank()) {
+                R.string.wifi_open_settings
+            } else {
+                R.string.wifi_password_copied_settings
             }
-            context.startActivity(intent)
-            Toast.makeText(context, context.getString(R.string.wifi_password_copied_settings), Toast.LENGTH_LONG).show()
+            openWifiSettingsFallback(context, wifi, messageRes)
         }
-    }
+    }}
 }
