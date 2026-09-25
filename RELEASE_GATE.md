@@ -29,6 +29,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Release signing evidence | TO VERIFY | Need the Play-expected upload certificate or explicit approval to create a dedicated new upload key |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
+| Android launcher icon / OEM fallback | PASS | Density PNG legacy assets + adaptive foreground verified on realme/Oplus launcher; branded icon rendered after RC reinstall |
 | Feature graphic | GAP | Google Play requires a 1024x500 JPEG or 24-bit PNG; no verified final feature graphic is currently recorded |
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
 | Privacy policy URL | TO VERIFY | Must be an active public non-geo-fenced URL and also match the app/developer identity |
