@@ -148,4 +148,8 @@
     <string name="wifi_wep_settings">WEP cannot be connected automatically on modern Android. Password copied; choose the network in Wi-Fi Settings.</string>
     <string name="wifi_open_settings">Open Wi-Fi Settings and choose %1$s.</string>
     <string name="wifi_request_unavailable">The requested Wi-Fi network is unavailable or was not approved.</string>
+    <string name="share_content_title">Share Content</string>
+    <string name="share_qr_title">Share QR Code</string>
+    <string name="share_qr_error">Unable to prepare the QR image for sharing.</string>
+    <string name="export_history_csv_title">Export History (CSV)</string>
 </resources>
