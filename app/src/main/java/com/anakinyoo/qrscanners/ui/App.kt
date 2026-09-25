@@ -147,7 +147,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -384,7 +385,7 @@ fun SplashScreenView() {
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_launcher_monochrome),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_monochrome),
                         contentDescription = stringResource(R.string.app_name),
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(78.dp)
