@@ -128,4 +128,19 @@
     <string name="about_privacy_desc">QR and barcode content is processed on-device. Google ML Kit may send diagnostic and usage telemetry; this app does not upload camera feeds or scan history.</string>
     <string name="app_version_label">Version %1$s</string>
     <string name="author_by">by AnakinYoo</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="favorite">Favorite</string>
+    <string name="generated_qr_content_description">Generated QR Code</string>
+    <string name="clear_search">Clear search</string>
+    <string name="action_copy_wifi_password">Copy Wi-Fi Password</string>
+    <string name="error_open_browser">Cannot open browser: %1$s</string>
+    <string name="error_make_call">Cannot make call: %1$s</string>
+    <string name="error_send_sms">Cannot send SMS: %1$s</string>
+    <string name="error_send_email">Cannot send email: %1$s</string>
+    <string name="error_add_contact">Cannot add contact: %1$s</string>
+    <string name="invalid_map_coordinates">Invalid map coordinates</string>
+    <string name="no_map_or_browser">No map or browser app available</string>
+    <string name="wifi_requesting">Requesting Wi-Fi connection to %1$s…</string>
+    <string name="wifi_password_copied_settings">Wi-Fi password copied. Connect via Wi-Fi Settings.</string>
 </resources>
