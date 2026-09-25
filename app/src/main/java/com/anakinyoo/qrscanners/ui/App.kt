@@ -1135,7 +1135,7 @@ fun ScanResultSheet(
                         ) {
                             Icon(Icons.Default.Phone, contentDescription = null)
                             Spacer(Modifier.width(8.dp))
-                            Text("${stringResource(R.string.action_dial)} (${contact.phone})")
+                            Text(stringResource(R.string.action_dial_number, contact.phone))
                         }
                     }
                 }
