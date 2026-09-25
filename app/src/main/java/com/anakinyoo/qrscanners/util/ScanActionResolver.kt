@@ -13,6 +13,7 @@ import android.os.Build
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.widget.Toast
+import com.anakinyoo.qrscanners.R
 import com.anakinyoo.qrscanners.model.ContactData
 import com.anakinyoo.qrscanners.model.EmailData
 import com.anakinyoo.qrscanners.model.GeoData
@@ -271,7 +272,7 @@ object ScanActionResolver {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Scanned QR", text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
     }
 
     fun openBrowser(context: Context, url: String) {
@@ -286,7 +287,7 @@ object ScanActionResolver {
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Cannot open browser: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_open_browser, e.localizedMessage ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -297,7 +298,7 @@ object ScanActionResolver {
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Cannot make call: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_make_call, e.localizedMessage ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -309,7 +310,7 @@ object ScanActionResolver {
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Cannot send SMS: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_send_sms, e.localizedMessage ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -322,7 +323,7 @@ object ScanActionResolver {
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Cannot send email: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_send_email, e.localizedMessage ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -338,7 +339,7 @@ object ScanActionResolver {
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "Cannot add contact: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.error_add_contact, e.localizedMessage ?: ""), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -362,7 +363,7 @@ object ScanActionResolver {
         val lat = geo.latitude
         val lng = geo.longitude
         if (!lat.isFinite() || !lng.isFinite() || lat !in -90.0..90.0 || lng !in -180.0..180.0) {
-            Toast.makeText(context, "Invalid map coordinates", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.invalid_map_coordinates), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -394,7 +395,7 @@ object ScanActionResolver {
             }
         }
 
-        Toast.makeText(context, "No map or browser app available", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.no_map_or_browser), Toast.LENGTH_SHORT).show()
     }
 
     fun searchWeb(context: Context, query: String) {
@@ -439,7 +440,7 @@ object ScanActionResolver {
                         super.onAvailable(network)
                     }
                 })
-                Toast.makeText(context, "Requesting Wi-Fi connection to ${wifi.ssid}…", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.wifi_requesting, wifi.ssid), Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 // Fallback to opening Wi-Fi settings
                 copyToClipboard(context, wifi.password)
@@ -447,7 +448,7 @@ object ScanActionResolver {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 context.startActivity(intent)
-                Toast.makeText(context, "Wi-Fi password copied. Connect via Wi-Fi Settings.", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, context.getString(R.string.wifi_password_copied_settings), Toast.LENGTH_LONG).show()
             }
         } else {
             copyToClipboard(context, wifi.password)
@@ -455,7 +456,7 @@ object ScanActionResolver {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
-            Toast.makeText(context, "Wi-Fi password copied. Connect via Wi-Fi Settings.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, context.getString(R.string.wifi_password_copied_settings), Toast.LENGTH_LONG).show()
         }
     }
 }
