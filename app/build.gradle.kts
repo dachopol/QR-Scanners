@@ -6,11 +6,12 @@ plugins {
 val releaseKeystorePath = System.getenv("KEYSTORE_PATH")
 val releaseStorePassword = System.getenv("STORE_PASSWORD")
 val releaseKeyPassword = System.getenv("KEY_PASSWORD")
-val releaseKeyAlias = System.getenv("KEY_ALIAS") ?: "upload"
+val releaseKeyAlias = System.getenv("KEY_ALIAS")
 val hasReleaseSigning =
   !releaseKeystorePath.isNullOrBlank() &&
   !releaseStorePassword.isNullOrBlank() &&
   !releaseKeyPassword.isNullOrBlank() &&
+  !releaseKeyAlias.isNullOrBlank() &&
   file(releaseKeystorePath).exists()
 
 android {
@@ -31,7 +32,7 @@ android {
       create("release") {
         storeFile = file(releaseKeystorePath!!)
         storePassword = releaseStorePassword
-        keyAlias = releaseKeyAlias
+        keyAlias = releaseKeyAlias!!
         keyPassword = releaseKeyPassword
       }
     }
