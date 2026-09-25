@@ -118,6 +118,25 @@ class HistoryStore(private val context: Context) {
         }
     }
 
+    fun toggleFavoriteForResult(record: HistoryRecord) {
+        scope.launch {
+            mutex.withLock {
+                val updated = _records.value.toMutableList()
+                val existingIndex = updated.indexOfFirst {
+                    it.content == record.content && it.isGenerated == record.isGenerated
+                }
+                if (existingIndex >= 0) {
+                    val existing = updated[existingIndex]
+                    updated[existingIndex] = existing.copy(isFavorite = !existing.isFavorite)
+                } else {
+                    updated.add(0, record.copy(isFavorite = true))
+                }
+                _records.value = updated
+                persist()
+            }
+        }
+    }
+
     fun deleteRecord(id: String) {
         scope.launch {
             mutex.withLock {
