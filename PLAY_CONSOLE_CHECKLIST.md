@@ -13,13 +13,16 @@
 - Current source contains no advertising SDK; Play Ads declaration should remain "No" unless the release build changes
 - Current source has no login/account gate; app-access review does not need test credentials unless the release build changes
 - Optional signed-release pipeline prepared without committing secrets
+- Play Store icon is the verified 512x512 PNG asset
+- Feature graphic prepared as `store-assets/feature_graphic_1024x500.jpg` (1024x500 JPEG, no alpha)
+- Real-device gate passed for cold launch, launcher icon, camera preview, torch, zoom, camera switching, gallery decode, location auto-fill, map handoff, WEP fallback, WPA2 request path, history and TH/EN switching
 
 ## GAP / TO VERIFY before upload
-- Replace Store icon JPG with 512x512 32-bit PNG (alpha, <=1024 KB).
 - Publish privacy policy to a stable active HTTPS URL.
 - Link the privacy policy from the app and Play listing.
 - Configure real upload-key secrets and obtain a CI run with signature verification PASS.
-- Test camera, torch, zoom, camera switching, gallery scan, location, map handoff, Wi-Fi actions, share, history, favorites, TH/EN on a physical Android device.
+- Verify a known QR/barcode exact payload through the live camera on a physical device.
+- Complete a successful association against an authorized real open/WPA2/WPA3 test network.
 - Capture screenshots from the validated release UI.
 - Review final Data Safety answers against the final dependency tree.
 - Complete Content rating, Target audience, App access, Ads declaration, and other Play Console forms.
