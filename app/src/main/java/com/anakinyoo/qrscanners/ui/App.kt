@@ -805,7 +805,7 @@ fun ScannerScreen(
                         cameraControl?.setLinearZoom((newZoom - 1f) / 4f)
                     }
                 ) {
-                    Icon(Icons.Default.ZoomOut, contentDescription = "Zoom out", tint = Color.White)
+                    Icon(Icons.Default.ZoomOut, contentDescription = stringResource(R.string.zoom_out), tint = Color.White)
                 }
 
                 Slider(
@@ -827,7 +827,7 @@ fun ScannerScreen(
                         cameraControl?.setLinearZoom((newZoom - 1f) / 4f)
                     }
                 ) {
-                    Icon(Icons.Default.ZoomIn, contentDescription = "Zoom in", tint = Color.White)
+                    Icon(Icons.Default.ZoomIn, contentDescription = stringResource(R.string.zoom_in), tint = Color.White)
                 }
             }
 
@@ -1042,7 +1042,7 @@ fun ScanResultSheet(
                 ) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = stringResource(R.string.favorite),
                         tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -1111,7 +1111,7 @@ fun ScanResultSheet(
                         ) {
                             Icon(Icons.Default.ContentCopy, contentDescription = null)
                             Spacer(Modifier.width(8.dp))
-                            Text("Copy Wi-Fi Password: ${wifi.password}")
+                            Text(stringResource(R.string.action_copy_wifi_password))
                         }
                     }
                 }
@@ -1481,7 +1481,7 @@ fun GeneratorScreen(
                         value = urlInput,
                         onValueChange = { urlInput = it },
                         label = { Text(stringResource(R.string.label_url)) },
-                        placeholder = { Text("https://example.com") },
+                        placeholder = { Text(stringResource(R.string.label_url)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("input_url")
@@ -1724,7 +1724,7 @@ fun GeneratorScreen(
                         ) {
                             Image(
                                 bitmap = bmp.asImageBitmap(),
-                                contentDescription = "Generated QR Code",
+                                contentDescription = stringResource(R.string.generated_qr_content_description),
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
@@ -1833,7 +1833,7 @@ fun HistoryScreen(
                 trailingIcon = {
                     if (searchQuery.isNotBlank()) {
                         IconButton(onClick = { searchQuery = "" }) {
-                            Icon(Icons.Default.Clear, contentDescription = "Clear search")
+                            Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.clear_search))
                         }
                     }
                 },
@@ -2003,7 +2003,7 @@ fun HistoryItemCard(
                             modifier = Modifier.padding(start = 6.dp)
                         ) {
                             Text(
-                                text = "Created",
+                                text = stringResource(R.string.filter_created),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -2032,7 +2032,7 @@ fun HistoryItemCard(
                 IconButton(onClick = onToggleFavorite, modifier = Modifier.size(36.dp)) {
                     Icon(
                         imageVector = if (record.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Favorite",
+                        contentDescription = stringResource(R.string.favorite),
                         tint = if (record.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(20.dp)
                     )
@@ -2040,7 +2040,7 @@ fun HistoryItemCard(
                 IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete",
+                        contentDescription = stringResource(R.string.btn_delete),
                         tint = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.size(20.dp)
                     )
