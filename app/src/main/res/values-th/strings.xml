@@ -32,6 +32,7 @@
     <string name="action_share">แชร์</string>
     <string name="action_connect_wifi">เชื่อมต่อ Wi-Fi</string>
     <string name="action_dial">โทรออก</string>
+    <string name="action_dial_number">โทรออก (%1$s)</string>
     <string name="action_send_sms">ส่งข้อความ SMS</string>
     <string name="action_send_email">ส่งอีเมล</string>
     <string name="action_add_contact">บันทึกลงสมุดโทรศัพท์</string>
