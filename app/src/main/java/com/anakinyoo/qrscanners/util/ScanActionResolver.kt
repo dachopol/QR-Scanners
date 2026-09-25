@@ -499,5 +499,5 @@ object ScanActionResolver {
             }
             openWifiSettingsFallback(context, wifi, messageRes)
         }
-    }}
+    }
 }
