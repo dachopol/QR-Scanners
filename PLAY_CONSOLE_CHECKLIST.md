@@ -20,19 +20,23 @@
 - Source-backed form-entry draft prepared in `PLAY_CONSOLE_ANSWERS.md`
 - Privacy policy is published at the public HTTPS raw GitHub URL, returned HTTP 200 without authentication, and is linked from the app
 
-## GAP / TO VERIFY before upload
+## Account / release status after first upload
 - Enter the verified privacy-policy URL in the Play Console store listing/app-content fields.
 - Play App Signing is active for the newly created `com.anakinyoo.qrscanners` Play Console app.
 - Dedicated QR Scanners upload key created outside repo after explicit approval; certificate fingerprint recorded in `SIGNING_EVIDENCE.md`.
 - GitHub Actions upload-key secrets configured without committing secret material.
 - Signed CI run `36222084823` passed signature verification for APK and AAB.
 - First signed AAB uploaded successfully to Internal testing as versionCode 1 / versionName 1.0.
+- Internal testing version 1.0 is published and Play Console shows it as available to internal testers.
+- Tester list `QR Scanners Internal` is selected with one verified tester account.
+- Play generated the internal-test opt-in URL for track `4700773371089449224`.
+- Real-device Play installation remains TO VERIFY until the connected phone authenticates the configured tester Google account locally.
 - Play upload-certificate SHA-1/SHA-256 exactly match the dedicated QR Scanners upload key.
 - Verify a known QR/barcode exact payload through the live camera on a physical device.
 - Complete a successful association against an authorized real open/WPA2/WPA3 test network.
 - Review final Data Safety answers against the final dependency tree.
 - Complete Content rating, Target audience, App access, Ads declaration, and other Play Console forms.
-- Confirm the testing-track/closed-testing requirement shown for the actual developer account.
+- Play Console for this developer account explicitly requires a closed test with at least 12 opted-in testers for at least 14 days before Production Access; that closed-test duration/count remains TO VERIFY.
 - Upload only the signed AAB from the same verified release commit.
 
 ## Current official references
