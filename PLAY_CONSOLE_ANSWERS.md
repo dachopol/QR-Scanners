@@ -15,12 +15,22 @@ Source of Truth: `main`. This file is a source-backed draft for Play Console ent
 Evidence:
 - No account/login implementation.
 - No developer backend.
-- No gated paid functionality in the current release source.
+- No gated paid functionality in the current test release source.
+- Planned production monetization is ads plus a one-time Ad-Free purchase; this is not yet implemented in the current source.
 
 ## Ads
-**Recommended answer from current source:** No — the current release source contains no advertising SDK.
+**Current test-build answer:** No — the current release source contains no advertising SDK.
 
-Recheck before submission if dependencies change.
+**Planned production monetization:** After the testing phase, the production build is intended to show ads and offer a one-time Ad-Free in-app purchase that permanently removes ads for that user.
+
+Before any ad-enabled build is submitted:
+- integrate the selected ads SDK and Google Play Billing implementation,
+- update the Play Console Ads declaration to **Yes**,
+- create and verify the Ad-Free in-app product,
+- update Data Safety / privacy disclosures for the exact SDKs in the shipping build,
+- verify entitlement restore/persistence and ad suppression on a real device.
+
+Do not declare ads or billing as implemented until the shipping source actually contains and verifies them.
 
 ## Data Safety
 Do **not** answer “No data collected.”
