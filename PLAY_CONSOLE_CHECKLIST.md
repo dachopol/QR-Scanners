@@ -17,6 +17,7 @@
 - Feature graphic prepared as `store-assets/feature_graphic_1024x500.jpg` (1024x500 JPEG, no alpha)
 - Real-device gate passed for cold launch, launcher icon, camera preview, torch, zoom, camera switching, gallery decode, location auto-fill, map handoff, WEP fallback, WPA2 request path, history and TH/EN switching
 - Six Thai release screenshots captured from release UI 1.0 and stored in `store-assets/screenshots/th/`
+- Source-backed form-entry draft prepared in `PLAY_CONSOLE_ANSWERS.md`
 - Privacy policy is published at the public HTTPS raw GitHub URL, returned HTTP 200 without authentication, and is linked from the app
 
 ## GAP / TO VERIFY before upload
