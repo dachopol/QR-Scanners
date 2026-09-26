@@ -34,7 +34,7 @@
 - Play upload-certificate SHA-1/SHA-256 exactly match the dedicated QR Scanners upload key.
 - Verify a known QR/barcode exact payload through the live camera on a physical device.
 - Complete a successful association against an authorized real open/WPA2/WPA3 test network.
-- Review final Data Safety answers against the final dependency tree.
+- Data Safety completed in Play Console for the current internal build: Diagnostics + Device/other IDs collected, not shared, encrypted in transit, required/automatic, Analytics purpose. Recheck only if shipping dependencies/data flows change.
 - Complete Content rating, Target audience, App access, Ads declaration, and other Play Console forms.
 - Play Console for this developer account explicitly requires a closed test with at least 12 opted-in testers for at least 14 days before Production Access; that closed-test duration/count remains TO VERIFY.
 - Upload only the signed AAB from the same verified release commit.
