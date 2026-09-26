@@ -27,6 +27,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Release signing pipeline | PASS | CI supports upload-keystore secrets and verifies signed APK/AAB when configured |
 | Signing lineage | PASS | Existing QuickQR Business key was proven to sign a different package and is explicitly rejected for automatic reuse; see `SIGNING_EVIDENCE.md` |
 | Release signing evidence | TO VERIFY | Need the Play-expected upload certificate or explicit approval to create a dedicated new upload key |
+| Ads SDK / Ad-Free billing implementation | GAP | Intentionally absent during testing. Before Production: integrate ads + Google Play Billing, create one-time Ad-Free product, verify entitlement restore and ad suppression on real device |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
 | Android launcher icon / OEM fallback | PASS | Density PNG legacy assets + adaptive foreground verified on realme/Oplus launcher; branded icon rendered after RC reinstall |
@@ -35,7 +36,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Privacy policy URL | PASS | Public HTTPS raw GitHub URL returned HTTP 200 without authentication, names QR Scanners and AnakinYoo, provides a privacy inquiry mechanism, is linked from the app, and is not a PDF |
 | Data Safety final answers | TO VERIFY | Recheck final release dependency tree and Play Console definitions immediately before submission |
 | Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
-| Ads declaration | TO VERIFY | Current source has no ads SDK; declaration still must be completed in Play Console |
+| Ads declaration | TO VERIFY | Test build has no ads SDK. Production plan is ads + one-time Ad-Free purchase; declaration must switch to Yes only when the ad-enabled release source is integrated and verified |
 | Content rating / target audience | TO VERIFY | Play Console |
 | Personal-account closed-test requirement | TO VERIFY | If the personal developer account was created after 13 Nov 2023: at least 12 opted-in testers continuously for 14 days before production-access application |
 
