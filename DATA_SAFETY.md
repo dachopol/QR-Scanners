@@ -1,4 +1,4 @@
-# Google Play Data Safety — release draft
+# Google Play Data Safety — verified Play Console declaration
 
 **App:** QR Scanners  
 **Package:** `com.anakinyoo.qrscanners`
@@ -20,5 +20,18 @@ Barcode auto-zoom is **not enabled** in this source, so the additional auto-zoom
 Official reference:
 https://developers.google.com/ml-kit/android-data-disclosure
 
-## Play Console status
-Do **not** declare “no data collected” without reviewing the final release dependency tree and the current Play Console definitions. Final Data Safety answers remain **TO VERIFY** immediately before release.
+## Play Console status — verified 2026-09-27
+The Data Safety declaration was completed and saved in Google Play Console against the current internal-test release.
+
+Final declared handling:
+- **Collects required user data:** Yes
+- **Shared with third parties:** No
+- **Encrypted in transit:** Yes
+- **Accounts:** The app does not allow users to create accounts and does not support sign-in with accounts created elsewhere.
+- **Collected data types:** Diagnostics; Device or other IDs
+- **Diagnostics:** collected, not shared, not processed ephemerally, required/automatic, purpose = Analytics
+- **Device or other IDs:** collected, not shared, not processed ephemerally, required/automatic, purpose = Analytics
+- Local-only scan payloads, Photo Picker images, camera frames, history, favorites, settings, and optional foreground location are not declared as collected because the current app does not transmit them off-device.
+- App Content summary shows no remaining action-required declarations after saving Data Safety.
+
+Re-verify this declaration before any production build that adds Ads SDK, Billing, analytics, backend, account, or other data-transmitting dependencies.
