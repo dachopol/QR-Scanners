@@ -55,3 +55,17 @@ Release signing now has a dedicated developer-controlled upload key. First signe
 3. Upload that first signed AAB to Play Console.
 4. Record the upload-certificate fingerprint shown by Play Console and verify it matches the fingerprint above.
 5. Never commit keystore files, passwords, base64 keystore material, or secret values to the repository.
+
+
+## First signed AAB / Play acceptance — 2026-09-26
+
+- GitHub Actions signing secrets configured: `KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_PASSWORD`, `KEY_ALIAS`.
+- Signed CI run: `36222084823`.
+- Release source commit: `cbbe5e462110bd0a273cb4eda1111e8d85c800fb`.
+- CI signing verification: PASS for release APK and AAB.
+- First signed AAB uploaded successfully to Google Play Console Internal testing release draft.
+- Bundle accepted as versionCode `1`, versionName `1.0`, min API 24+, target SDK 36.
+- Google Play upload-certificate SHA-1: `CA:D7:57:8B:8E:81:77:46:43:BA:BA:8B:E1:40:A8:65:56:04:76:F4`.
+- Google Play upload-certificate SHA-256: `E7:47:7E:26:10:51:E5:56:3A:6F:51:FF:FE:00:10:04:55:00:14:19:2F:BB:FE:04:93:11:74:F8:F9:1A:B6:40`.
+- Both Play fingerprints exactly match the dedicated local QR Scanners upload certificate.
+- Internal testing rollout was not started during this verification step.
