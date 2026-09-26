@@ -46,8 +46,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Privacy policy URL | PASS | Public HTTPS raw GitHub URL returned HTTP 200 without authentication, names QR Scanners and AnakinYoo, provides a privacy inquiry mechanism, is linked from the app, and is not a PDF |
 | Data Safety final answers | PASS | Play Console saved: Diagnostics + Device or other IDs collected, not shared, encrypted in transit, required/automatic, Analytics purpose; App Content shows no remaining action-required declaration |
 | Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
-| Ads declaration | TO VERIFY | Test build has no ads SDK. Production plan is ads + one-time Ad-Free purchase; declaration must switch to Yes only when the ad-enabled release source is integrated and verified |
-| Content rating / target audience | TO VERIFY | Play Console |
+| Ads declaration | PASS | Play Console completed declaration for current Internal build: app has no ads. Must be changed to Yes before any ad-enabled Production build |
+| Content rating / target audience | PASS | Play Console completed. Target ages: 13-15, 16-17, 18+. IARC ratings include PEGI 3 / Google Play 3+ / USK 0 and equivalent low-age ratings |
 | Personal-account closed-test requirement | PASS (requirement identified) | This developer account's Play Console explicitly requires at least 12 opted-in closed-test testers for at least 14 days before Production Access can be requested; completion of that 12-person/14-day test is still TO VERIFY |
 
 See `REAL_DEVICE_EVIDENCE.md` and `SIGNING_EVIDENCE.md`.
