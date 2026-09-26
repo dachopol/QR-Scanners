@@ -44,7 +44,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Feature graphic | PASS | `store-assets/feature_graphic_1024x500.jpg` is a verified 1024x500 RGB JPEG with no alpha, matching current Google Play preview-asset requirements |
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
 | Privacy policy URL | PASS | Public HTTPS raw GitHub URL returned HTTP 200 without authentication, names QR Scanners and AnakinYoo, provides a privacy inquiry mechanism, is linked from the app, and is not a PDF |
-| Data Safety final answers | TO VERIFY | Recheck final release dependency tree and Play Console definitions immediately before submission |
+| Data Safety final answers | PASS | Play Console saved: Diagnostics + Device or other IDs collected, not shared, encrypted in transit, required/automatic, Analytics purpose; App Content shows no remaining action-required declaration |
 | Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
 | Ads declaration | TO VERIFY | Test build has no ads SDK. Production plan is ads + one-time Ad-Free purchase; declaration must switch to Yes only when the ad-enabled release source is integrated and verified |
 | Content rating / target audience | TO VERIFY | Play Console |
