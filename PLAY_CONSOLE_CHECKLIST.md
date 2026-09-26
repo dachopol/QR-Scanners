@@ -23,7 +23,8 @@
 ## GAP / TO VERIFY before upload
 - Enter the verified privacy-policy URL in the Play Console store listing/app-content fields.
 - Play App Signing is active for the newly created `com.anakinyoo.qrscanners` Play Console app.
-- Create a dedicated upload key only after explicit approval, then configure its secrets and obtain a CI run with signature verification PASS.
+- Dedicated QR Scanners upload key created outside repo after explicit approval; certificate fingerprint recorded in `SIGNING_EVIDENCE.md`.
+- Configure the upload-key material as encrypted CI secrets and obtain a CI run with signature verification PASS.
 - Upload the first signed AAB and record the upload-certificate fingerprint shown by Play Console.
 - Verify a known QR/barcode exact payload through the live camera on a physical device.
 - Complete a successful association against an authorized real open/WPA2/WPA3 test network.
