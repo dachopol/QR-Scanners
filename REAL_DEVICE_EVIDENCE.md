@@ -24,14 +24,18 @@ Physical display: 1080x2400, density 480
 - **Geo decode + Map handoff:** a non-user test fixture `geo:1.234567,2.345678` decoded as `GEO`; history stored the exact payload and Android foreground changed to `com.google.android.apps.maps/com.google.android.maps.MapsActivity`.
 - **WEP fallback:** a WEP test QR decoded as Wi-Fi and the Connect action opened the device Wi-Fi Settings activity instead of claiming an automatic connection.
 - **WPA2 request path:** a nonexistent test SSID was used so the active network would not be disturbed. Android logcat recorded a real `ConnectivityService requestNetwork` with `WifiNetworkSpecifier`, the exact test SSID and `RequestorPkg: com.anakinyoo.qrscanners.rc`; Android opened the network-request resolver/dialog.
+- **Release signing:** dedicated QR Scanners upload key was used by GitHub Actions; signed APK/AAB verification passed and Play Console recorded matching SHA-1/SHA-256 upload-certificate fingerprints.
+- **Internal testing rollout:** Play Console published version 1.0 / versionCode 1 and reported it as available to internal testers.
+- **Internal tester selection:** the selected `QR Scanners Internal` list contains one verified tester account used for this workflow.
+- **Internal opt-in link:** Play Console generated the internal-test opt-in URL and it was opened on the connected realme device.
 
 ## TO VERIFY
 
 - Decode a known QR/barcode through the **live camera** and compare the exact payload/result action.
 - Complete a **successful Wi-Fi association** against an authorized real open/WPA2/WPA3 test network. WEP fallback and WPA2 request creation are already verified; network success itself is not.
-- **Release signing** with the actual upload keystore.
-- **Privacy policy HTTPS URL** used by the final Play listing/release.
-- **Play Console** listing, screenshots, content rating, ads declaration and testing-track/account requirements.
+- **Play Store install through Internal testing:** the connected realme reached Google authentication for the configured tester account; local account authentication/opt-in/install is not yet complete.
+- **Content rating / target audience / final Data Safety / Ads declaration** in Play Console.
+- **Closed testing for Production Access:** this account's Console requires at least 12 opted-in testers for at least 14 days; that requirement has not yet been completed.
 
 ## Notes
 
