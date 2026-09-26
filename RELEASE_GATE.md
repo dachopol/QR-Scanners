@@ -30,8 +30,12 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Dedicated upload key | PASS | QR Scanners upload key created outside repo; alias `qr-scanners-upload`, RSA 4096, SHA-256 `E7:47:7E:26:10:51:E5:56:3A:6F:51:FF:FE:00:10:04:55:00:14:19:2F:BB:FE:04:93:11:74:F8:F9:1A:B6:40` |
 | GitHub signing secrets | PASS | Actions secrets configured for keystore, store password, key password and alias without committing secret material |
 | Signed release CI | PASS | Workflow run `36222084823` signed and verified release APK/AAB from commit `cbbe5e462110bd0a273cb4eda1111e8d85c800fb` |
-| First AAB upload | PASS | Play Console accepted versionCode 1 / versionName 1.0 in Internal testing release draft |
+| First AAB upload | PASS | Play Console accepted versionCode 1 / versionName 1.0 and the Internal testing release was published |
 | Upload certificate match | PASS | Play SHA-1/SHA-256 exactly match dedicated QR Scanners upload key; see `SIGNING_EVIDENCE.md` |
+| Internal tester list | PASS | `QR Scanners Internal` is selected with one verified Google account belonging to the active tester workflow |
+| Internal testing rollout | PASS | Version 1.0 / versionCode 1 published and shown as available to internal testers in Play Console |
+| Play opt-in link | PASS | Play Console generated `https://play.google.com/apps/internaltest/4700773371089449224` |
+| Play Store install from tester device | TO VERIFY | Connected realme reached Google sign-in for the tester account; local authentication is still required before opt-in/install can be completed |
 | Release signing evidence | PASS | Dedicated upload key, signed CI artifact, first Play upload, and Play certificate fingerprint match all verified |
 | Ads SDK / Ad-Free billing implementation | GAP | Intentionally absent during testing. Before Production: integrate ads + Google Play Billing, create one-time Ad-Free product, verify entitlement restore and ad suppression on real device |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
@@ -44,7 +48,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
 | Ads declaration | TO VERIFY | Test build has no ads SDK. Production plan is ads + one-time Ad-Free purchase; declaration must switch to Yes only when the ad-enabled release source is integrated and verified |
 | Content rating / target audience | TO VERIFY | Play Console |
-| Personal-account closed-test requirement | TO VERIFY | If the personal developer account was created after 13 Nov 2023: at least 12 opted-in testers continuously for 14 days before production-access application |
+| Personal-account closed-test requirement | PASS (requirement identified) | This developer account's Play Console explicitly requires at least 12 opted-in closed-test testers for at least 14 days before Production Access can be requested; completion of that 12-person/14-day test is still TO VERIFY |
 
 See `REAL_DEVICE_EVIDENCE.md` and `SIGNING_EVIDENCE.md`.
 
