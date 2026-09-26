@@ -69,11 +69,11 @@ Barcode auto-zoom is not enabled in this source, so the additional auto-zoom ses
 - Background location: not requested.
 - Internet/network state: used by platform/SDK/system network flows documented in the app.
 
-## Content rating
-TO VERIFY in the actual Play Console questionnaire. Answer only from the shipping app behavior; do not infer or pre-fill age/content answers outside the current questionnaire.
+## Content rating — completed in Play Console
+IARC questionnaire is completed for the current app. Play Console shows low-age/general ratings across boards, including PEGI 3, Google Play 3+, and USK 0 equivalents.
 
-## Target audience
-TO VERIFY in Play Console. The source does not establish a children-directed product claim. Do not select child-directed categories by assumption.
+## Target audience — completed in Play Console
+Selected age groups: **13-15, 16-17, 18+**.
 
 ## Store assets ready
 - Play icon: `store-assets/play_store_icon_512.png`
@@ -83,8 +83,8 @@ TO VERIFY in Play Console. The source does not establish a children-directed pro
 ## Still not complete until account-side evidence exists
 - Real upload-key signing evidence.
 - Data Safety is submitted for the current internal-test build; re-verify if production dependencies/data flows change.
-- Ads declaration submitted.
-- Content rating completed.
-- Target audience completed.
+- Ads declaration is completed for the current Internal build as **No ads**; change to Yes before an ad-enabled Production build.
+- Content rating completed in Play Console.
+- Target audience completed in Play Console: 13-15, 16-17, 18+.
 - Testing-track / production-access requirements confirmed for the actual developer account.
 - Signed AAB uploaded from the same verified release commit.
