@@ -27,7 +27,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Release signing pipeline | PASS | CI supports upload-keystore secrets and verifies signed APK/AAB when configured |
 | Signing lineage | PASS | Existing QuickQR Business key was proven to sign a different package and is explicitly rejected for automatic reuse; see `SIGNING_EVIDENCE.md` |
 | Play App Signing enrollment | PASS | Play Console app created for `com.anakinyoo.qrscanners`; Play App Signing shows active with Google-managed app-signing key |
-| Release signing evidence | TO VERIFY | Upload-key certificate is not registered yet; create a dedicated upload key after explicit approval, sign the first AAB, upload it, then record the Play Console fingerprint |
+| Dedicated upload key | PASS | QR Scanners upload key created outside repo; alias `qr-scanners-upload`, RSA 4096, SHA-256 `E7:47:7E:26:10:51:E5:56:3A:6F:51:FF:FE:00:10:04:55:00:14:19:2F:BB:FE:04:93:11:74:F8:F9:1A:B6:40` |
+| Release signing evidence | TO VERIFY | Configure encrypted CI secrets, produce first signed AAB, upload to Play Console, and verify Play upload-certificate fingerprint matches the dedicated upload key |
 | Ads SDK / Ad-Free billing implementation | GAP | Intentionally absent during testing. Before Production: integrate ads + Google Play Billing, create one-time Ad-Free product, verify entitlement restore and ad suppression on real device |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
