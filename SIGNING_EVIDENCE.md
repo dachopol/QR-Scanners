@@ -28,10 +28,19 @@ The QuickQR Business key belongs to evidence for a **different package**. It mus
 
 No verified evidence currently shows that `com.anakinyoo.qrscanners` has already been uploaded to Google Play, that Play App Signing is enabled for this exact package, or which upload certificate Google Play expects.
 
-Release signing therefore remains **TO VERIFY**.
+Play Console evidence collected on 2026-09-26:
+- The new Play Console app **QR Scanners** was created for package `com.anakinyoo.qrscanners`.
+- **Play App Signing** shows **active**.
+- Google Play is managing the app-signing key for this new app.
+- The **upload-key certificate** section has no fingerprint yet; Play Console states that the certificate fingerprint will appear after the first App Bundle is uploaded.
+
+Release signing therefore remains **TO VERIFY** only for the developer-controlled upload key and the first signed AAB upload.
 
 ## Safe next step
 
-1. If `com.anakinyoo.qrscanners` already exists in Play Console, open **App integrity / App signing** and compare the expected upload certificate before using any local key.
-2. If this package is genuinely new and has never been registered/uploaded, create a dedicated upload key only after explicit approval, store it outside the repository, and configure CI through encrypted secrets.
-3. Never commit keystore files, passwords, base64 keystore material, or secret values to the repository.
+1. Create a dedicated upload key for `com.anakinyoo.qrscanners` only after explicit approval.
+2. Store the keystore and passwords outside the repository.
+3. Configure CI through encrypted secrets.
+4. Sign the release AAB with that upload key and upload the first bundle to Play Console.
+5. Confirm that Play Console shows the resulting upload-certificate fingerprint and preserve that fingerprint as release evidence.
+6. Never commit keystore files, passwords, base64 keystore material, or secret values to the repository.
