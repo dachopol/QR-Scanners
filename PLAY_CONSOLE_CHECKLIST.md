@@ -35,7 +35,7 @@
 - Verify a known QR/barcode exact payload through the live camera on a physical device.
 - Complete a successful association against an authorized real open/WPA2/WPA3 test network.
 - Data Safety completed in Play Console for the current internal build: Diagnostics + Device/other IDs collected, not shared, encrypted in transit, required/automatic, Analytics purpose. Recheck only if shipping dependencies/data flows change.
-- Complete Content rating, Target audience, App access, Ads declaration, and other Play Console forms.
+- App Content declarations completed in Play Console. Current Internal build Ads declaration = No ads; target audience = 13-15, 16-17, 18+; IARC content rating completed (including PEGI 3 / Google Play 3+ / USK 0 equivalents). Reopen Ads/Data Safety before Production when monetization SDKs are integrated.
 - Play Console for this developer account explicitly requires a closed test with at least 12 opted-in testers for at least 14 days before Production Access; that closed-test duration/count remains TO VERIFY.
 - Upload only the signed AAB from the same verified release commit.
 
