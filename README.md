@@ -26,3 +26,10 @@ Core QR/barcode content is processed on-device and history is stored in app-priv
 
 ## Release gate
 See `RELEASE_GATE.md` and `REAL_DEVICE_EVIDENCE.md`. Automated build/lint/unit/AAB/16 KB gates pass on main. Real-device cold launch, CameraX, torch, zoom, and front/rear camera switching have been verified. Gallery decode completion, current-location/map handoff, Wi-Fi behavior, real release signing, Play Console forms, and required testing still need real evidence before Production.
+
+
+## Monetization plan
+- Testing phase: no ads and no billing SDK.
+- Planned production release: ads enabled.
+- Planned Ad-Free option: one-time in-app purchase to permanently remove ads.
+- Play Console Ads/Data Safety/Billing declarations must be updated only when the corresponding production code is actually integrated and verified.
