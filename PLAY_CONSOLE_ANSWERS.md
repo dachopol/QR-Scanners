@@ -49,8 +49,15 @@ Barcode auto-zoom is not enabled in this source, so the additional auto-zoom ses
 - No background-location permission.
 - Android backup is disabled.
 
-### Final Data Safety entry
-TO VERIFY in Play Console immediately before release because the form’s exact data-type labels/definitions can change. Review the final release dependency tree and current Play Console wording before submitting.
+### Final Data Safety entry — completed in Play Console
+- Collects required user data: **Yes**
+- Data shared with third parties: **No**
+- Data encrypted in transit: **Yes**
+- App accounts: **No account creation and no external-account sign-in**
+- **Diagnostics:** collected; not shared; not ephemeral; required/automatic; purpose = Analytics
+- **Device or other IDs:** collected; not shared; not ephemeral; required/automatic; purpose = Analytics
+- Local-only scan/gallery/camera/history/favorites/settings/location data is not declared as collected by the app because it is not transmitted off-device by the current release source.
+- Reopen and update this form before Production if Ads SDK, Billing, backend, analytics, account, or other data flows are added.
 
 ## Account deletion
 **Not applicable from current source:** QR Scanners does not provide user accounts.
@@ -75,7 +82,7 @@ TO VERIFY in Play Console. The source does not establish a children-directed pro
 
 ## Still not complete until account-side evidence exists
 - Real upload-key signing evidence.
-- Data Safety form submitted against the final release dependency tree.
+- Data Safety is submitted for the current internal-test build; re-verify if production dependencies/data flows change.
 - Ads declaration submitted.
 - Content rating completed.
 - Target audience completed.
