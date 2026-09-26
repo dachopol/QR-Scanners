@@ -26,7 +26,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Successful Wi-Fi association | TO VERIFY | Requires an authorized real open/WPA2/WPA3 test network |
 | Release signing pipeline | PASS | CI supports upload-keystore secrets and verifies signed APK/AAB when configured |
 | Signing lineage | PASS | Existing QuickQR Business key was proven to sign a different package and is explicitly rejected for automatic reuse; see `SIGNING_EVIDENCE.md` |
-| Release signing evidence | TO VERIFY | Need the Play-expected upload certificate or explicit approval to create a dedicated new upload key |
+| Play App Signing enrollment | PASS | Play Console app created for `com.anakinyoo.qrscanners`; Play App Signing shows active with Google-managed app-signing key |
+| Release signing evidence | TO VERIFY | Upload-key certificate is not registered yet; create a dedicated upload key after explicit approval, sign the first AAB, upload it, then record the Play Console fingerprint |
 | Ads SDK / Ad-Free billing implementation | GAP | Intentionally absent during testing. Before Production: integrate ads + Google Play Billing, create one-time Ad-Free product, verify entitlement restore and ad suppression on real device |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
