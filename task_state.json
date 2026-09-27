@@ -8,8 +8,8 @@
   "status": "BLOCKED_EXTERNAL_AND_PHYSICAL",
   "last_verified": "2026-09-27",
   "latest_observed_ci": {
-    "run_id": 36290609985,
-    "head_sha": "5423b635791d26f27d92275878e3b32fd2f156a4",
+    "run_id": 36291390143,
+    "head_sha": "203439177efd149f24d84edc41239f1f739fbadb",
     "conclusion": "success",
     "passed_steps": [
       "source-of-truth hygiene",
@@ -30,7 +30,8 @@
     "Photo Picker exact-payload decode",
     "current-location auto-fill and map handoff",
     "WEP fallback and WPA2 WifiNetworkSpecifier request path",
-    "old app identifiers absent from active app/build config"
+    "old app identifiers absent from active app/build config",
+    "brand/logo consistency across Play Store icon, Android launcher/adaptive icon, feature graphic and splash; obsolete legacy logo assets removed"
   ],
   "remaining": [
     "live-camera exact QR/barcode payload verification on the physical device",
@@ -45,5 +46,12 @@
     "monetization": "BLOCKED: no real AdMob IDs or Play Billing product ID are available; fake/test production configuration is prohibited."
   },
   "next_action": "On the physical device, authenticate the configured Google Play tester account without exposing credentials; then install from the Internal-test flow on a clean/safe target. Present the known test QR to the physical camera and verify exact history payload. Use an authorized real Wi-Fi test network for successful association. Start/complete the required 12-person 14-day closed test. Obtain real AdMob and Play Billing configuration before production monetization work.",
-  "do_not_claim": "Production ready until all applicable remaining gates have real evidence."
+  "do_not_claim": "Production ready until all applicable remaining gates have real evidence.",
+  "latest_change": {
+    "area": "branding/logo consistency",
+    "status": "PASS",
+    "code_commit": "ba21277c15cbc343448f9ce3e181d333e9d35fa2",
+    "cleanup_head": "203439177efd149f24d84edc41239f1f739fbadb",
+    "verification_run_id": 36291390143
+  }
 }

@@ -11,9 +11,9 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Old/unused app SDK cleanup | PASS | Firebase/Retrofit/OkHttp/Moshi/KSP/old namespaces removed from active app config |
 | ML Kit Data Safety disclosure | PASS | Privacy/Data Safety docs account for documented ML Kit diagnostics/usage telemetry |
 | Backup/privacy alignment | PASS | `android:allowBackup="false"` |
-| Debug + unit + lint build | PASS | GitHub Actions Android Release Gate passed on the current app source; observed run `36290609985` completed successfully |
-| Release AAB build | PASS | Release AAB produced successfully by the current-source CI gate; run `36290609985` passed |
-| 16 KB APK alignment | PASS | `zipalign -c -P 16` passed in CI run `36290609985` |
+| Debug + unit + lint build | PASS | GitHub Actions Android Release Gate passed on the current app source; observed run `36291390143` completed successfully |
+| Release AAB build | PASS | Release AAB produced successfully by the current-source CI gate; run `36291390143` passed |
+| 16 KB APK alignment | PASS | `zipalign -c -P 16` passed in CI run `36291390143` |
 | Current-location source flow | PASS | Foreground coarse/fine location only; automatic Lat/Lng fill verified on real device |
 | Map handoff | PASS | Decoded Geo test fixture opened Google Maps on the physical device |
 | CameraX preview / analysis | PASS | Real device opened camera id 0 with Preview + ImageAnalysis |
@@ -41,6 +41,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
 | Android launcher icon / OEM fallback | PASS | Density PNG legacy assets + adaptive foreground verified on realme/Oplus launcher; branded icon rendered after RC reinstall |
+| Brand / logo consistency | PASS | Play Store 512 icon, Android launcher/adaptive foreground, feature graphic, and in-app splash now use the same full-color cyan/purple QR brand mark. Android monochrome artwork is retained only for system themed icons. Obsolete launcher wrapper/JPG logo assets were removed; Android Release Gate run `36291390143` passed after cleanup. |
 | Feature graphic | PASS | `store-assets/feature_graphic_1024x500.jpg` is a verified 1024x500 RGB JPEG with no alpha, matching current Google Play preview-asset requirements |
 | In-app privacy policy | PASS | EN/TH policy text is accessible from Settings |
 | Privacy policy URL | PASS | Public HTTPS raw GitHub URL returned HTTP 200 without authentication, names QR Scanners and AnakinYoo, provides a privacy inquiry mechanism, is linked from the app, and is not a PDF |
