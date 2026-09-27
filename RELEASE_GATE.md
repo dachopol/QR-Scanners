@@ -20,7 +20,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Torch / flash | PASS | Real device metadata reported TORCH/FIRED |
 | Zoom | PASS | Real device camera zoom ratio changed after in-app control |
 | Front/rear camera switching | PASS | Real device closed camera id 0 and opened id 1 |
-| Live-camera exact payload decode | TO VERIFY | On 2026-09-27 test payload `QRSCANNERS_LIVE_20260927` was displayed while the RC scanner was active, but the exact payload was not present in RC history; physical camera line-of-sight still requires a confirmed scan |
+| Live-camera exact payload decode | PASS | On 2026-09-27 the realme RC scanner decoded known fixture `QRSCANNERS_LIVE_20260927_V2` through the live camera. The result UI displayed the exact payload and RC `files/history_records.json` persisted the same `content`, `qrType=TEXT`, `barcodeFormat=QR Code`, `isGenerated=false`. |
 | WEP fallback | PASS | Connect action opened Wi-Fi Settings; no false success claim |
 | WPA2 NetworkRequest path | PASS | Logcat recorded a real `WifiNetworkSpecifier` request from the RC package |
 | Successful Wi-Fi association | TO VERIFY | Requires an authorized real open/WPA2/WPA3 test network |

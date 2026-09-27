@@ -20,6 +20,7 @@ Physical display: 1220x2712
 - **Thai / dark UI:** Settings rendered in Thai on the 1080x2400 device without observed overflow in the captured screen.
 - **Camera permission flow:** the app reached the Android system camera-permission dialog and, after approval, displayed the scanner controls and camera preview container.
 - **CameraX:** camera id 0 opened with Preview + ImageAnalysis attached.
+- **Live-camera exact payload decode:** on 2026-09-27 the realme RC scanner decoded known fixture `QRSCANNERS_LIVE_20260927_V2` through the physical camera. The result UI showed the exact payload. Debug-package storage then persisted the same record in `files/history_records.json` with `content=QRSCANNERS_LIVE_20260927_V2`, `qrType=TEXT`, `barcodeFormat=QR Code`, and `isGenerated=false`.
 - **Torch:** camera metadata reported `android.flash.mode [TORCH]` and `android.flash.state [FIRED]`.
 - **Zoom:** camera metadata changed from `android.control.zoomRatio [1.00000000]` to `[1.12676060]` after the in-app zoom control.
 - **Front/rear switch:** CameraX detached/closed camera id 0 and opened camera id 1 with Preview + ImageAnalysis.
@@ -38,7 +39,6 @@ Physical display: 1220x2712
 
 ## TO VERIFY
 
-- Decode a known QR/barcode through the **live camera** and compare the exact payload/result action.
 - Complete a **successful Wi-Fi association** against an authorized real open/WPA2/WPA3 test network. WEP fallback and WPA2 request creation are already verified; network success itself is not.
 - **Closed testing for Production Access:** this account's Console requires at least 12 opted-in testers for at least 14 days; that requirement has not yet been completed.
 
