@@ -1,0 +1,31 @@
+{
+  "project": "QR Scanners",
+  "source_of_truth": {
+    "repository": "dachopol/QR-Scanners",
+    "branch": "main"
+  },
+  "current_task_id": "QR-PLAY-PRODUCTION-GATE",
+  "status": "BLOCKED_EXTERNAL",
+  "last_verified": "2026-09-27",
+  "verified": [
+    "targetSdk 36 and package com.anakinyoo.qrscanners",
+    "signed release APK/AAB pipeline and Play App Signing evidence",
+    "16 KB alignment gate",
+    "Data Safety declaration",
+    "Ads declaration for current no-ads internal build",
+    "content rating and target audience",
+    "CameraX preview, torch, zoom, front/rear switching",
+    "Photo Picker exact-payload decode",
+    "current-location auto-fill and map handoff",
+    "WEP fallback and WPA2 WifiNetworkSpecifier request path"
+  ],
+  "remaining": [
+    "live-camera exact QR/barcode payload verification on physical device",
+    "successful Wi-Fi association on an authorized real open/WPA2/WPA3 network",
+    "Play Store installation through Internal testing using an authenticated tester account",
+    "closed test with at least 12 opted-in testers for at least 14 days before Production Access",
+    "ads plus one-time Ad-Free billing only if production monetization is enabled, followed by Data Safety/Ads/Billing re-verification"
+  ],
+  "next_action": "Complete tester-account authentication and Play install without deleting app data unless a safe backup/rollback path exists; then capture live-camera decode and authorized Wi-Fi association evidence.",
+  "do_not_claim": "Production ready until all applicable remaining gates have real evidence."
+}
