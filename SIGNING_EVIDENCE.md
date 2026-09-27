@@ -26,15 +26,7 @@ A local signing set named **QuickQR Business** was found and inspected read-only
 
 The QuickQR Business key belongs to evidence for a **different package**. It must not be reused for `com.anakinyoo.qrscanners` by assumption.
 
-No verified evidence currently shows that `com.anakinyoo.qrscanners` has already been uploaded to Google Play, that Play App Signing is enabled for this exact package, or which upload certificate Google Play expects.
-
-Play Console evidence collected on 2026-09-26:
-- The new Play Console app **QR Scanners** was created for package `com.anakinyoo.qrscanners`.
-- **Play App Signing** shows **active**.
-- Google Play is managing the app-signing key for this new app.
-- The **upload-key certificate** section has no fingerprint yet; Play Console states that the certificate fingerprint will appear after the first App Bundle is uploaded.
-
-Release signing now has a dedicated developer-controlled upload key. First signed-AAB acceptance by Play Console remains **TO VERIFY**.
+Play Console evidence collected on 2026-09-26 confirms that the **QR Scanners** app exists for package `com.anakinyoo.qrscanners`, **Play App Signing** is active, and Google Play manages the app-signing key. The first signed AAB was subsequently accepted by Play Console, and the upload-certificate SHA-1/SHA-256 shown by Play exactly match the dedicated QR Scanners upload certificate recorded below.
 
 ## Dedicated QR Scanners upload key — created 2026-09-26
 
@@ -48,13 +40,11 @@ Release signing now has a dedicated developer-controlled upload key. First signe
 - Password material is stored with Windows DPAPI for the current Windows user; plaintext was not written to repo or emitted to chat.
 - Repository scan confirmed no `.jks`, `.keystore`, `.p12`, `.pfx`, or upload-password file is committed.
 
-## Safe next step
+## Signing status
 
-1. Configure CI with encrypted signing secrets derived from this dedicated upload key.
-2. Produce a signed AAB from the same verified release commit.
-3. Upload that first signed AAB to Play Console.
-4. Record the upload-certificate fingerprint shown by Play Console and verify it matches the fingerprint above.
-5. Never commit keystore files, passwords, base64 keystore material, or secret values to the repository.
+- CI signing secrets are configured and signature verification has passed for the recorded release APK/AAB.
+- The first signed AAB was accepted by Play Console and the upload-certificate fingerprints match the dedicated QR Scanners upload key.
+- Continue to keep keystore files, passwords, base64 keystore material, and secret values outside the repository.
 
 
 ## First signed AAB / Play acceptance — 2026-09-26
@@ -68,4 +58,4 @@ Release signing now has a dedicated developer-controlled upload key. First signe
 - Google Play upload-certificate SHA-1: `CA:D7:57:8B:8E:81:77:46:43:BA:BA:8B:E1:40:A8:65:56:04:76:F4`.
 - Google Play upload-certificate SHA-256: `E7:47:7E:26:10:51:E5:56:3A:6F:51:FF:FE:00:10:04:55:00:14:19:2F:BB:FE:04:93:11:74:F8:F9:1A:B6:40`.
 - Both Play fingerprints exactly match the dedicated local QR Scanners upload certificate.
-- Internal testing rollout was not started during this verification step.
+- Internal testing rollout was subsequently published and is recorded in `RELEASE_GATE.md` / `PLAY_CONSOLE_CHECKLIST.md`.
