@@ -8,8 +8,8 @@
   "status": "BLOCKED_EXTERNAL_AND_PHYSICAL",
   "last_verified": "2026-09-27",
   "latest_observed_ci": {
-    "run_id": 36293397421,
-    "head_sha": "68da0a55295e7f3aef7328a6ac0544f78b9da1fa",
+    "run_id": 36293557631,
+    "head_sha": "0aa83fe75f1a03243acd1a7fa1b6b89abfb64dc0",
     "conclusion": "success",
     "passed_steps": [
       "source-of-truth hygiene",
@@ -32,29 +32,30 @@
     "WEP fallback and WPA2 WifiNetworkSpecifier request path",
     "old app identifiers absent from active app/build config",
     "brand/logo consistency across Play Store icon, Android launcher/adaptive icon, feature graphic and splash; obsolete legacy logo assets removed",
-    "Play Console accepted and saved the repaired 512x512 Play Store icon for app 4973757644072737097; GitHub main contains the byte-matching valid PNG"
+    "Play Console accepted and saved the repaired 512x512 Play Store icon for app 4973757644072737097; GitHub main contains the byte-matching valid PNG",
+    "clean Xiaomi 23078PND5G Play install: version 1.0 (1), installerPackageName=com.android.vending, MainActivity launched"
   ],
   "remaining": [
     "live-camera exact QR/barcode payload verification on the physical device",
     "successful Wi-Fi association on an authorized real open/WPA2/WPA3 network",
-    "Play Store installation through Internal testing using an authenticated tester account and installer-source verification",
     "closed test with at least 12 opted-in testers for at least 14 days before Production Access",
     "production monetization: real AdMob app/ad-unit IDs plus a real one-time permanent Ad-Free Play Billing product, followed by entitlement/ad-suppression testing and Data Safety/Ads/Billing re-verification"
   ],
   "latest_attempts": {
     "live_camera": "UNVERIFIED: QRSCANNERS_LIVE_20260927 was displayed while RC scanner was active, but the exact payload was not found in RC history.",
-    "play_install": "UNVERIFIED: installed release reports installerPackageName=pc; Google Play authentication is unresolved and Oplus/HeyTap may intercept market links.",
+    "play_install": "PASS: clean Xiaomi 23078PND5G had no QR Scanners package before test; Google Play installed version 1.0 (1), installerPackageName=com.android.vending, and MainActivity launched. Realme sideload remains untouched.",
     "monetization": "BLOCKED: no real AdMob IDs or Play Billing product ID are available; fake/test production configuration is prohibited."
   },
-  "next_action": "On the physical device, authenticate the configured Google Play tester account without exposing credentials; then install from the Internal-test flow on a clean/safe target. Present the known test QR to the physical camera and verify exact history payload. Use an authorized real Wi-Fi test network for successful association. Start/complete the required 12-person 14-day closed test. Obtain real AdMob and Play Billing configuration before production monetization work.",
+  "next_action": "Present the known test QR to a physical camera and verify the exact live-camera history payload. Use an authorized real Wi-Fi test network for successful in-app association. Start/complete the required 12-person 14-day closed test. Obtain real AdMob and Play Billing configuration before production monetization work.",
   "do_not_claim": "Production ready until all applicable remaining gates have real evidence.",
   "latest_change": {
-    "area": "play-store-icon validity and console save",
+    "area": "Play Internal delivery verification",
     "status": "PASS",
-    "root_cause": "previous PNG contained a malformed image data stream; System.Drawing decoded it but Pillow and Play Console rejected it",
-    "fix_commit": "68da0a55295e7f3aef7328a6ac0544f78b9da1fa",
-    "verification_run_id": 36293397421,
-    "play_console_app_id": "4973757644072737097",
-    "play_console_saved": "2026-09-27"
+    "device": "Xiaomi 23078PND5G / Android 16",
+    "package": "com.anakinyoo.qrscanners",
+    "version": "1.0 (1)",
+    "installer": "com.android.vending",
+    "runtime": "MainActivity launched",
+    "note": "Play-generated base APK on this device reports minSdk 32; source/main remains minSdk 24 and package/version/targetSdk match."
   }
 }

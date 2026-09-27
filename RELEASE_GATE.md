@@ -35,7 +35,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Internal tester list | PASS | `QR Scanners Internal` is selected with one verified Google account belonging to the active tester workflow |
 | Internal testing rollout | PASS | Version 1.0 / versionCode 1 published and shown as available to internal testers in Play Console |
 | Play opt-in link | PASS | Play Console generated `https://play.google.com/apps/internaltest/4700773371089449224` |
-| Play Store install from tester device | TO VERIFY | Current realme release reports `installerPackageName=pc`, not Google Play. Google Play tester authentication is still unresolved, and some `market://` intents are intercepted by the Oplus/HeyTap market |
+| Play Store install from tester device | PASS | Clean Xiaomi `23078PND5G` (Android 16) had no QR Scanners package before the test. Google Play displayed the unreviewed test build and installed `com.anakinyoo.qrscanners` version 1.0 / versionCode 1; `dumpsys package` reports `installerPackageName=com.android.vending`, and `.MainActivity` launched successfully. The existing realme sideload was left untouched. |
 | Release signing evidence | PASS | Dedicated upload key, signed CI artifact, first Play upload, and Play certificate fingerprint match all verified |
 | Ads SDK / Ad-Free billing implementation | GAP | Testing intentionally has no ads/billing. Production plan requires ads + one-time permanent Ad-Free, but no real AdMob app/ad-unit IDs or Play Billing product ID have been provided. Do not use fake/test production IDs; integrate and verify only after real configuration exists |
 | Store listing copy | PASS | See `STORE_LISTING.md` |

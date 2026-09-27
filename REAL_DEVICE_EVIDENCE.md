@@ -1,11 +1,15 @@
 # QR Scanners — Real Device Evidence
 
-Test window: 2026-09-25 to 2026-09-26  
+Test window: 2026-09-25 to 2026-09-27  
 Primary functional source commit: `6d4e5ab910b8d44d879abf770d4eaf251fb352d3`  
 RC isolation commit: `9e87df4eeb69edf0aa0275d52a5f8e32e2dd9362`  
-Device: realme RMX3241  
+Primary functional device: realme RMX3241  
 Android: 13 / API 33  
-Physical display: 1080x2400, density 480
+Physical display: 1080x2400, density 480  
+
+Secondary Play-delivery device: Xiaomi 23078PND5G  
+Android: 16  
+Physical display: 1220x2712
 
 ## PASS
 
@@ -28,13 +32,13 @@ Physical display: 1080x2400, density 480
 - **Internal testing rollout:** Play Console published version 1.0 / versionCode 1 and reported it as available to internal testers.
 - **Internal tester selection:** the selected `QR Scanners Internal` list contains one verified tester account used for this workflow.
 - **Internal opt-in link:** Play Console generated the internal-test opt-in URL and it was opened on the connected realme device.
+- **Play Store install on clean tester device:** Xiaomi `23078PND5G` did not have `com.anakinyoo.qrscanners` installed before the test. Google Play displayed `com.anakinyoo.qrscanners (unreviewed)` with the Install action. The test build installed as version 1.0 / versionCode 1; `dumpsys package` reported `installerPackageName=com.android.vending`; launching the package resumed `com.anakinyoo.qrscanners/.MainActivity` and the release UI/privacy dialog rendered. The existing realme sideload remained unchanged.
 - **Play Console declarations:** Data Safety, Ads declaration, target audience, and content rating were completed and recorded in the release documentation on 2026-09-27.
 
 ## TO VERIFY
 
 - Decode a known QR/barcode through the **live camera** and compare the exact payload/result action.
 - Complete a **successful Wi-Fi association** against an authorized real open/WPA2/WPA3 test network. WEP fallback and WPA2 request creation are already verified; network success itself is not.
-- **Play Store install through Internal testing:** the connected realme reached Google authentication for the configured tester account; local account authentication/opt-in/install is not yet complete. The currently installed release package reports `installerPackageName=pc`, so it is not Play-install evidence.
 - **Closed testing for Production Access:** this account's Console requires at least 12 opted-in testers for at least 14 days; that requirement has not yet been completed.
 
 ## Notes
@@ -42,4 +46,5 @@ Physical display: 1080x2400, density 480
 - Test payloads/SSIDs in this file are synthetic fixtures and are not represented as real user data.
 - Functional QR/location/camera code did not materially change across the documented real-device continuation; later commits in that span are evidence/docs, launcher/store assets and debug-package isolation.
 - An earlier debug-signature mismatch (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`) blocked replacing the old test package. After explicit user approval, that obsolete test package was uninstalled; later RC validation uses the isolated `.rc` debug package.
+- The Play-delivered Xiaomi base APK reports `minSdkVersion=32` while `main` and all recorded `app/build.gradle.kts` history specify `minSdk=24`. Package, version and targetSdk match (`com.anakinyoo.qrscanners`, 1.0(1), target 36). This device-targeted APK observation is recorded separately from source configuration and is not treated as a source change.
 - Device/account-specific items remain TO VERIFY unless direct evidence is recorded here.
