@@ -11,20 +11,20 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Old/unused app SDK cleanup | PASS | Firebase/Retrofit/OkHttp/Moshi/KSP/old namespaces removed from active app config |
 | ML Kit Data Safety disclosure | PASS | Privacy/Data Safety docs account for documented ML Kit diagnostics/usage telemetry |
 | Backup/privacy alignment | PASS | `android:allowBackup="false"` |
-| Debug + unit + lint build | PASS | Current-main GitHub Actions gate |
-| Release AAB build | PASS | Release AAB produced by CI |
-| 16 KB APK alignment | PASS | `zipalign -c -P 16` in CI |
+| Debug + unit + lint build | PASS | GitHub Actions Android Release Gate passed on the current app source; observed run `36290609985` completed successfully |
+| Release AAB build | PASS | Release AAB produced successfully by the current-source CI gate; run `36290609985` passed |
+| 16 KB APK alignment | PASS | `zipalign -c -P 16` passed in CI run `36290609985` |
 | Current-location source flow | PASS | Foreground coarse/fine location only; automatic Lat/Lng fill verified on real device |
 | Map handoff | PASS | Decoded Geo test fixture opened Google Maps on the physical device |
 | CameraX preview / analysis | PASS | Real device opened camera id 0 with Preview + ImageAnalysis |
 | Torch / flash | PASS | Real device metadata reported TORCH/FIRED |
 | Zoom | PASS | Real device camera zoom ratio changed after in-app control |
 | Front/rear camera switching | PASS | Real device closed camera id 0 and opened id 1 |
-| Live-camera exact payload decode | TO VERIFY | Requires presenting a known QR/barcode to the physical camera and comparing the exact result |
+| Live-camera exact payload decode | TO VERIFY | On 2026-09-27 test payload `QRSCANNERS_LIVE_20260927` was displayed while the RC scanner was active, but the exact payload was not present in RC history; physical camera line-of-sight still requires a confirmed scan |
 | WEP fallback | PASS | Connect action opened Wi-Fi Settings; no false success claim |
 | WPA2 NetworkRequest path | PASS | Logcat recorded a real `WifiNetworkSpecifier` request from the RC package |
 | Successful Wi-Fi association | TO VERIFY | Requires an authorized real open/WPA2/WPA3 test network |
-| Release signing pipeline | PASS | CI supports upload-keystore secrets and verifies signed APK/AAB when configured |
+| Release signing pipeline | PASS | CI upload-keystore secrets are configured; release signing verification passed again in run `36290609985` |
 | Signing lineage | PASS | Existing QuickQR Business key was proven to sign a different package and is explicitly rejected for automatic reuse; see `SIGNING_EVIDENCE.md` |
 | Play App Signing enrollment | PASS | Play Console app created for `com.anakinyoo.qrscanners`; Play App Signing shows active with Google-managed app-signing key |
 | Dedicated upload key | PASS | QR Scanners upload key created outside repo; alias `qr-scanners-upload`, RSA 4096, SHA-256 `E7:47:7E:26:10:51:E5:56:3A:6F:51:FF:FE:00:10:04:55:00:14:19:2F:BB:FE:04:93:11:74:F8:F9:1A:B6:40` |
@@ -35,9 +35,9 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Internal tester list | PASS | `QR Scanners Internal` is selected with one verified Google account belonging to the active tester workflow |
 | Internal testing rollout | PASS | Version 1.0 / versionCode 1 published and shown as available to internal testers in Play Console |
 | Play opt-in link | PASS | Play Console generated `https://play.google.com/apps/internaltest/4700773371089449224` |
-| Play Store install from tester device | TO VERIFY | Connected realme reached Google sign-in for the tester account; local authentication is still required before opt-in/install can be completed |
+| Play Store install from tester device | TO VERIFY | Current realme release reports `installerPackageName=pc`, not Google Play. Google Play tester authentication is still unresolved, and some `market://` intents are intercepted by the Oplus/HeyTap market |
 | Release signing evidence | PASS | Dedicated upload key, signed CI artifact, first Play upload, and Play certificate fingerprint match all verified |
-| Ads SDK / Ad-Free billing implementation | GAP | Intentionally absent during testing. Before Production: integrate ads + Google Play Billing, create one-time Ad-Free product, verify entitlement restore and ad suppression on real device |
+| Ads SDK / Ad-Free billing implementation | GAP | Testing intentionally has no ads/billing. Production plan requires ads + one-time permanent Ad-Free, but no real AdMob app/ad-unit IDs or Play Billing product ID have been provided. Do not use fake/test production IDs; integrate and verify only after real configuration exists |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is the current 512x512 RGBA asset |
 | Android launcher icon / OEM fallback | PASS | Density PNG legacy assets + adaptive foreground verified on realme/Oplus launcher; branded icon rendered after RC reinstall |
