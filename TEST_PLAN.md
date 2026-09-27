@@ -33,11 +33,16 @@ Verified on realme RMX3241, Android 13 / API 33. See `REAL_DEVICE_EVIDENCE.md`.
 - Decode a known QR/barcode through the live camera and verify the exact payload/result action.
 - Complete a successful connection against an authorized real open/WPA2/WPA3 test network.
 
-## TO VERIFY — release / Play Console
-- Configure the real upload keystore secrets and verify a signed release APK/AAB in CI.
-- Host the privacy policy at an active HTTPS URL and link it from the Play listing/final release.
-- Capture real-device screenshots that accurately show the released UI; prepare localized screenshots when screenshots contain text.
-- Recheck the final dependency tree and Data Safety answers.
-- Complete store listing, content rating, target audience, ads declaration and testing-track requirements for the actual developer account.
+## PASS — release / Play Console
+- Dedicated upload-keystore secrets are configured in CI and the recorded release APK/AAB passed signature verification.
+- Play App Signing is active and the first signed AAB was accepted; upload-certificate fingerprints match the dedicated QR Scanners upload key.
+- Privacy policy is published at the recorded public HTTPS URL and linked from the app / Play Console workflow.
+- Six real-device release screenshots and required store assets are recorded in the repository.
+- Data Safety, current no-ads declaration, target audience, content rating, and Internal testing rollout are recorded as completed for the current Internal build.
+
+## TO VERIFY — remaining release / Production
+- Complete Play Store installation through the Internal-test flow on an authenticated tester device and verify the installer source.
+- Complete the developer account requirement of at least 12 opted-in closed-test testers for at least 14 days before Production Access.
+- If monetization is enabled for Production, integrate real ads + one-time Ad-Free billing with real account/product configuration, test entitlement restore/ad suppression, and re-verify Data Safety / Ads / Billing declarations.
 
 No device-specific or account-specific item may be marked PASS without real evidence.
