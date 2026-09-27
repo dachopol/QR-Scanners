@@ -35,7 +35,7 @@
 - Real-device Play delivery is PASS on Xiaomi `23078PND5G`: versionCode 1 installed from Google Play on a clean device, then current-main versionCode 2 updated through the Play client; `installerPackageName=com.android.vending` and `.MainActivity` launch were verified.
 - Play upload-certificate SHA-1/SHA-256 exactly match the dedicated QR Scanners upload key.
 - Live-camera exact-payload verification PASS: realme RC camera decoded `QRSCANNERS_LIVE_20260927_V2`; UI and persisted RC history matched the exact payload, `TEXT`, `QR Code`, `isGenerated=false`.
-- Complete a successful association against an authorized real open/WPA2/WPA3 test network.
+- Successful WPA2 association PASS on realme RC using an authorized temporary Windows Mobile hotspot: the app's `WifiNetworkSpecifier` request was approved through Android/Oplus `NetworkRequestDialogActivity`; `Supplicant=COMPLETED` and a `CONNECTED`/`VALIDATED` RC-owned Wi-Fi network were verified, followed by complete rollback to the prior saved Wi-Fi.
 - Data Safety completed in Play Console for the current internal build: Diagnostics + Device/other IDs collected, not shared, encrypted in transit, required/automatic, Analytics purpose. Recheck only if shipping dependencies/data flows change.
 - App Content declarations completed in Play Console. Current Internal build Ads declaration = No ads; target audience = 13-15, 16-17, 18+; IARC content rating completed (including PEGI 3 / Google Play 3+ / USK 0 equivalents). Reopen Ads/Data Safety before Production when monetization SDKs are integrated.
 - Play Console for this developer account explicitly requires a closed test with at least 12 opted-in testers for at least 14 days before Production Access; that closed-test duration/count remains TO VERIFY.

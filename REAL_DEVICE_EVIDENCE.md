@@ -29,6 +29,7 @@ Physical display: 1220x2712
 - **Geo decode + Map handoff:** a non-user test fixture `geo:1.234567,2.345678` decoded as `GEO`; history stored the exact payload and Android foreground changed to `com.google.android.apps.maps/com.google.android.maps.MapsActivity`.
 - **WEP fallback:** a WEP test QR decoded as Wi-Fi and the Connect action opened the device Wi-Fi Settings activity instead of claiming an automatic connection.
 - **WPA2 request path:** a nonexistent test SSID was used so the active network would not be disturbed. Android logcat recorded a real `ConnectivityService requestNetwork` with `WifiNetworkSpecifier`, the exact test SSID and `RequestorPkg: com.anakinyoo.qrscanners.rc`; Android opened the network-request resolver/dialog.
+- **Successful WPA2 Wi-Fi association:** an authorized temporary Windows Mobile hotspot was enabled only for the test. The hotspot was visible in realme scan results. The RC app decoded its Wi-Fi QR, registered a real `WifiNetworkSpecifier` request, and Android/Oplus `NetworkRequestDialogActivity` displayed the matching access point. After selecting it, `cmd wifi status` reported WPA2, `Supplicant state: COMPLETED`, an IP address in the hotspot subnet, and `Requesting package name: com.anakinyoo.qrscanners.rc`; `dumpsys connectivity` reported the Wi-Fi network `CONNECTED` and `VALIDATED` with the RC-owned request active. Rollback was verified: Windows Mobile hotspot returned to Off, Power saving returned to On, the RC request was released, and the realme automatically reconnected to its previously saved Wi-Fi. Credential-bearing temporary QR/screenshots and the RC test-history record were removed after evidence was captured.
 - **Release signing:** dedicated QR Scanners upload key was used by GitHub Actions; signed APK/AAB verification passed and Play Console recorded matching SHA-1/SHA-256 upload-certificate fingerprints.
 - **Internal testing rollout:** Historical first rollout was version 1.0 / versionCode 1. On 2026-09-27, current-main source commit `c2ed27f85a1109d12bb04dd06443344f7ca88726` / versionCode 2 passed signed CI, was accepted by Play Console as `2 (1.0)` with min API 24+ / target SDK 36, and was published to Internal testing.
 - **Internal tester selection:** the selected `QR Scanners Internal` list contains one verified tester account used for this workflow.
@@ -39,7 +40,6 @@ Physical display: 1220x2712
 
 ## TO VERIFY
 
-- Complete a **successful Wi-Fi association** against an authorized real open/WPA2/WPA3 test network. WEP fallback and WPA2 request creation are already verified; network success itself is not.
 - **Closed testing for Production Access:** this account's Console requires at least 12 opted-in testers for at least 14 days; that requirement has not yet been completed.
 
 ## Notes

@@ -7,7 +7,8 @@ Current task: `QR-PLAY-PRODUCTION-GATE`
 ## Verified
 - App identity: `com.anakinyoo.qrscanners`, version 1.0 / versionCode 2, targetSdk 36.
 - Latest observed Android Release Gate run `36294091474` completed successfully for current-main versionCode 2 source at `c2ed27f85a1109d12bb04dd06443344f7ca88726`; source hygiene, unit/lint/builds, AAB/APK, 16 KB alignment, signing verification, and release-evidence upload all passed.
-- Release AAB/signing, 16 KB alignment, Data Safety, current no-ads declaration, content rating, target audience, store assets, CameraX/torch/zoom/camera switching, live-camera exact-payload decode, Photo Picker decode, location/map handoff, WEP fallback, and WPA2 request path have recorded evidence.
+- Release AAB/signing, 16 KB alignment, Data Safety, current no-ads declaration, content rating, target audience, store assets, CameraX/torch/zoom/camera switching, live-camera exact-payload decode, Photo Picker decode, location/map handoff, WEP fallback, WPA2 request path, and successful real WPA2 association have recorded evidence.
+- Successful Wi-Fi association gate is PASS: RC decoded an authorized temporary Windows Mobile hotspot WPA2 QR, Android/Oplus displayed the matching access point in `NetworkRequestDialogActivity`, and selection produced `Supplicant=COMPLETED` plus a `CONNECTED`/`VALIDATED` Wi-Fi network owned by `com.anakinyoo.qrscanners.rc`. Rollback restored Windows hotspot Off / Power saving On, released the RC request, and the realme automatically returned to its saved Wi-Fi. Temporary credential-bearing QR/screenshots/history were cleaned.
 - Live-camera exact-payload gate is PASS: realme RC camera decoded `QRSCANNERS_LIVE_20260927_V2`; the result UI matched exactly and RC `files/history_records.json` persisted the same payload as `TEXT` / `QR Code` with `isGenerated=false`.
 - Brand/logo consistency is verified: Play Store icon, launcher/adaptive icon, feature graphic and splash use the same full-color QR mark; monochrome remains only for Android themed icons; obsolete legacy logo files were removed. The original Play icon PNG had a malformed data stream despite being readable by System.Drawing; it was re-encoded in commit `68da0a55295e7f3aef7328a6ac0544f78b9da1fa`, Pillow verification passed, GitHub matched the clean local bytes, and Play Console app `4973757644072737097` accepted and saved the clean 512x512 icon.
 - Connected physical devices: realme RMX3241 (Android 13) and Xiaomi 23078PND5G (Android 16). The realme keeps the existing sideloaded release plus `.rc` package; the Xiaomi served as the clean Google Play delivery target.
@@ -19,9 +20,8 @@ Current task: `QR-PLAY-PRODUCTION-GATE`
 - Play tester-client listing still renders a generic Android placeholder while the app is `(unreviewed)`; Play Console listing icon asset itself is PASS. Client rendering remains TO VERIFY after review.
 
 ## Remaining blockers / verification
-1. Successful association with an authorized real open/WPA2/WPA3 Wi-Fi network.
-2. Complete the developer account's required closed test: at least 12 opted-in testers for at least 14 days before Production Access.
-3. Production monetization is still blocked: the plan is real ads + one-time permanent Ad-Free, but no real AdMob app/ad-unit IDs or Play Billing product ID have been provided. After real configuration exists, integrate it, verify purchase/restore and ad suppression on a real device, then re-check Data Safety, Ads and Billing declarations.
+1. Complete the developer account's required closed test: at least 12 opted-in testers for at least 14 days before Production Access.
+2. Production monetization is still blocked: the plan is real ads + one-time permanent Ad-Free, but no real AdMob app/ad-unit IDs or Play Billing product ID have been provided. After real configuration exists, integrate it, verify purchase/restore and ad suppression on a real device, then re-check Data Safety, Ads and Billing declarations.
 
 ## Safety / rollback
 - Do not uninstall the current release package merely to force a Play install unless app data is safely backed up or the user explicitly accepts data loss. The current sideloaded build and Play-distributed build may have different signing certificates due to Play App Signing.
