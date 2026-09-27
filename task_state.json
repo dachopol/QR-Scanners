@@ -8,8 +8,8 @@
   "status": "BLOCKED_EXTERNAL_AND_PHYSICAL",
   "last_verified": "2026-09-27",
   "latest_observed_ci": {
-    "run_id": 36291390143,
-    "head_sha": "203439177efd149f24d84edc41239f1f739fbadb",
+    "run_id": 36293397421,
+    "head_sha": "68da0a55295e7f3aef7328a6ac0544f78b9da1fa",
     "conclusion": "success",
     "passed_steps": [
       "source-of-truth hygiene",
@@ -31,7 +31,8 @@
     "current-location auto-fill and map handoff",
     "WEP fallback and WPA2 WifiNetworkSpecifier request path",
     "old app identifiers absent from active app/build config",
-    "brand/logo consistency across Play Store icon, Android launcher/adaptive icon, feature graphic and splash; obsolete legacy logo assets removed"
+    "brand/logo consistency across Play Store icon, Android launcher/adaptive icon, feature graphic and splash; obsolete legacy logo assets removed",
+    "Play Console accepted and saved the repaired 512x512 Play Store icon for app 4973757644072737097; GitHub main contains the byte-matching valid PNG"
   ],
   "remaining": [
     "live-camera exact QR/barcode payload verification on the physical device",
@@ -48,10 +49,12 @@
   "next_action": "On the physical device, authenticate the configured Google Play tester account without exposing credentials; then install from the Internal-test flow on a clean/safe target. Present the known test QR to the physical camera and verify exact history payload. Use an authorized real Wi-Fi test network for successful association. Start/complete the required 12-person 14-day closed test. Obtain real AdMob and Play Billing configuration before production monetization work.",
   "do_not_claim": "Production ready until all applicable remaining gates have real evidence.",
   "latest_change": {
-    "area": "branding/logo consistency",
+    "area": "play-store-icon validity and console save",
     "status": "PASS",
-    "code_commit": "ba21277c15cbc343448f9ce3e181d333e9d35fa2",
-    "cleanup_head": "203439177efd149f24d84edc41239f1f739fbadb",
-    "verification_run_id": 36291390143
+    "root_cause": "previous PNG contained a malformed image data stream; System.Drawing decoded it but Pillow and Play Console rejected it",
+    "fix_commit": "68da0a55295e7f3aef7328a6ac0544f78b9da1fa",
+    "verification_run_id": 36293397421,
+    "play_console_app_id": "4973757644072737097",
+    "play_console_saved": "2026-09-27"
   }
 }
