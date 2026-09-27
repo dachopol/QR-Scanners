@@ -28,13 +28,13 @@ Physical display: 1080x2400, density 480
 - **Internal testing rollout:** Play Console published version 1.0 / versionCode 1 and reported it as available to internal testers.
 - **Internal tester selection:** the selected `QR Scanners Internal` list contains one verified tester account used for this workflow.
 - **Internal opt-in link:** Play Console generated the internal-test opt-in URL and it was opened on the connected realme device.
+- **Play Console declarations:** Data Safety, Ads declaration, target audience, and content rating were completed and recorded in the release documentation on 2026-09-27.
 
 ## TO VERIFY
 
 - Decode a known QR/barcode through the **live camera** and compare the exact payload/result action.
 - Complete a **successful Wi-Fi association** against an authorized real open/WPA2/WPA3 test network. WEP fallback and WPA2 request creation are already verified; network success itself is not.
-- **Play Store install through Internal testing:** the connected realme reached Google authentication for the configured tester account; local account authentication/opt-in/install is not yet complete.
-- **Content rating / target audience / final Data Safety / Ads declaration** in Play Console.
+- **Play Store install through Internal testing:** the connected realme reached Google authentication for the configured tester account; local account authentication/opt-in/install is not yet complete. The currently installed release package reports `installerPackageName=pc`, so it is not Play-install evidence.
 - **Closed testing for Production Access:** this account's Console requires at least 12 opted-in testers for at least 14 days; that requirement has not yet been completed.
 
 ## Notes
