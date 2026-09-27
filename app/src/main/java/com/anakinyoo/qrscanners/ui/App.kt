@@ -149,6 +149,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -372,27 +373,14 @@ fun SplashScreenView() {
                 }
                 .padding(24.dp)
         ) {
-            // App Icon Container
-            Card(
-                shape = RoundedCornerShape(28.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            // Keep the splash brand mark identical to the launcher / Play Store artwork.
+            Image(
+                painter = painterResource(R.drawable.ic_launcher_foreground_asset),
+                contentDescription = stringResource(R.string.app_name),
                 modifier = Modifier
                     .size(108.dp)
                     .testTag("splash_app_icon")
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_monochrome),
-                        contentDescription = stringResource(R.string.app_name),
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(78.dp)
-                    )
-                }
-            }
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 
