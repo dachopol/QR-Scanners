@@ -5,8 +5,20 @@
     "branch": "main"
   },
   "current_task_id": "QR-PLAY-PRODUCTION-GATE",
-  "status": "BLOCKED_EXTERNAL",
+  "status": "BLOCKED_EXTERNAL_AND_PHYSICAL",
   "last_verified": "2026-09-27",
+  "latest_observed_ci": {
+    "run_id": 36290609985,
+    "head_sha": "5423b635791d26f27d92275878e3b32fd2f156a4",
+    "conclusion": "success",
+    "passed_steps": [
+      "source-of-truth hygiene",
+      "unit/lint/builds",
+      "16 KB alignment",
+      "release signing verification",
+      "release evidence artifact upload"
+    ]
+  },
   "verified": [
     "targetSdk 36 and package com.anakinyoo.qrscanners",
     "signed release APK/AAB pipeline and Play App Signing evidence",
@@ -17,15 +29,21 @@
     "CameraX preview, torch, zoom, front/rear switching",
     "Photo Picker exact-payload decode",
     "current-location auto-fill and map handoff",
-    "WEP fallback and WPA2 WifiNetworkSpecifier request path"
+    "WEP fallback and WPA2 WifiNetworkSpecifier request path",
+    "old app identifiers absent from active app/build config"
   ],
   "remaining": [
-    "live-camera exact QR/barcode payload verification on physical device",
+    "live-camera exact QR/barcode payload verification on the physical device",
     "successful Wi-Fi association on an authorized real open/WPA2/WPA3 network",
-    "Play Store installation through Internal testing using an authenticated tester account",
+    "Play Store installation through Internal testing using an authenticated tester account and installer-source verification",
     "closed test with at least 12 opted-in testers for at least 14 days before Production Access",
-    "ads plus one-time Ad-Free billing only if production monetization is enabled, followed by Data Safety/Ads/Billing re-verification"
+    "production monetization: real AdMob app/ad-unit IDs plus a real one-time permanent Ad-Free Play Billing product, followed by entitlement/ad-suppression testing and Data Safety/Ads/Billing re-verification"
   ],
-  "next_action": "Complete tester-account authentication and Play install without deleting app data unless a safe backup/rollback path exists; then capture live-camera decode and authorized Wi-Fi association evidence.",
+  "latest_attempts": {
+    "live_camera": "UNVERIFIED: QRSCANNERS_LIVE_20260927 was displayed while RC scanner was active, but the exact payload was not found in RC history.",
+    "play_install": "UNVERIFIED: installed release reports installerPackageName=pc; Google Play authentication is unresolved and Oplus/HeyTap may intercept market links.",
+    "monetization": "BLOCKED: no real AdMob IDs or Play Billing product ID are available; fake/test production configuration is prohibited."
+  },
+  "next_action": "On the physical device, authenticate the configured Google Play tester account without exposing credentials; then install from the Internal-test flow on a clean/safe target. Present the known test QR to the physical camera and verify exact history payload. Use an authorized real Wi-Fi test network for successful association. Start/complete the required 12-person 14-day closed test. Obtain real AdMob and Play Billing configuration before production monetization work.",
   "do_not_claim": "Production ready until all applicable remaining gates have real evidence."
 }
