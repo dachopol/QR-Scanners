@@ -22,10 +22,10 @@ Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jet
 - Source of Truth: `main`
 
 ## Privacy
-Core QR/barcode content is processed on-device and history is stored in app-private storage. Google ML Kit may transmit documented diagnostics/usage telemetry; see `DATA_SAFETY.md` and `PRIVACY_POLICY.md`. Do not describe the release as “no data collected” until the final Play Console Data Safety review is complete.
+Core QR/barcode content is processed on-device and history is stored in app-private storage. Google ML Kit may transmit documented diagnostics/usage telemetry; see `DATA_SAFETY.md` and `PRIVACY_POLICY.md`. The current Internal-test Data Safety declaration is complete for the present dependency set; re-verify it if ads, billing, analytics, backend, account, or other data-transmitting SDKs are added.
 
 ## Release gate
-See `RELEASE_GATE.md` and `REAL_DEVICE_EVIDENCE.md`. Automated build/lint/unit/AAB/16 KB gates pass on main. Real-device cold launch, CameraX, torch, zoom, and front/rear camera switching have been verified. Gallery decode completion, current-location/map handoff, Wi-Fi behavior, real release signing, Play Console forms, and required testing still need real evidence before Production.
+See `RELEASE_GATE.md`, `REAL_DEVICE_EVIDENCE.md`, and `CHECKPOINT.md`. Automated build/lint/unit/AAB/16 KB and signed-release gates are recorded as PASS for the current app source. Real-device camera controls, Photo Picker exact-payload decode, current-location/map handoff, WEP fallback, WPA2 request creation, Play App Signing, first AAB acceptance, Data Safety, Ads declaration, target audience, content rating, store assets, and Internal testing rollout have recorded evidence. Production remains blocked only by the applicable unresolved gates listed in `RELEASE_GATE.md`, including live-camera exact-payload verification, successful authorized Wi-Fi association, Play Store installation evidence, the required closed-test duration/count, and monetization work if ads/Ad-Free billing are enabled.
 
 
 ## Monetization plan
