@@ -513,6 +513,7 @@ object ScanActionResolver {
             return
         }
 
+        val appContext = context.applicationContext
         val security = wifi.securityType.trim().uppercase()
         if (security == "WEP") {
             openWifiSettingsFallback(context, wifi, R.string.wifi_wep_settings)
@@ -543,7 +544,7 @@ object ScanActionResolver {
                     .build()
 
                 val connectivityManager =
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
                 releaseWifiRequest()
                 val callback = object : ConnectivityManager.NetworkCallback() {
@@ -559,10 +560,10 @@ object ScanActionResolver {
                     override fun onUnavailable() {
                         super.onUnavailable()
                         clearWifiRequestIfCurrent(this)
-                        context.mainExecutor.execute {
+                        appContext.mainExecutor.execute {
                             Toast.makeText(
-                                context,
-                                context.getString(R.string.wifi_request_unavailable),
+                                appContext,
+                                appContext.getString(R.string.wifi_request_unavailable),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -579,8 +580,8 @@ object ScanActionResolver {
                     throw e
                 }
                 Toast.makeText(
-                    context,
-                    context.getString(R.string.wifi_requesting, wifi.ssid),
+                    appContext,
+                    appContext.getString(R.string.wifi_requesting, wifi.ssid),
                     Toast.LENGTH_SHORT
                 ).show()
             } catch (_: Exception) {
