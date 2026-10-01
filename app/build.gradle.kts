@@ -72,6 +72,14 @@ android {
     includeInApk = false
     includeInBundle = true
   }
+
+  // QR Scanners has an in-app language picker. Keep all packaged locales
+  // available so TH/EN switching also works offline after Play installation.
+  bundle {
+    language {
+      enableSplit = false
+    }
+  }
 }
 
 dependencies {
