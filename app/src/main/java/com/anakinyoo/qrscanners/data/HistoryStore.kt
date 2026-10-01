@@ -17,9 +17,9 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
 
-class HistoryStore(private val context: Context) {
+class HistoryStore(context: Context) {
 
-    private val file = File(context.filesDir, "history_records.json")
+    private val file = File(context.applicationContext.filesDir, "history_records.json")
     private val atomicFile = AtomicFile(file)
     private val mutex = Mutex()
     private val scope = CoroutineScope(Dispatchers.IO)
