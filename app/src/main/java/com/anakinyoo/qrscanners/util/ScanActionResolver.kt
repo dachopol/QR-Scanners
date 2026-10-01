@@ -46,10 +46,13 @@ object ScanActionResolver {
         }
     }
 
-    fun releaseWifiRequest() {
+    private fun releaseWifiRequestInternal(expected: ConnectivityManager.NetworkCallback?) {
         val manager: ConnectivityManager?
         val callback: ConnectivityManager.NetworkCallback?
         synchronized(wifiRequestLock) {
+            if (expected != null && activeWifiCallback !== expected) {
+                return
+            }
             manager = activeWifiConnectivityManager
             callback = activeWifiCallback
             activeWifiConnectivityManager = null
@@ -62,6 +65,10 @@ object ScanActionResolver {
                 // Android may already have released a timed-out request.
             }
         }
+    }
+
+    fun releaseWifiRequest() {
+        releaseWifiRequestInternal(expected = null)
     }
 
 
@@ -546,7 +553,7 @@ object ScanActionResolver {
 
                     override fun onLost(network: Network) {
                         super.onLost(network)
-                        releaseWifiRequest()
+                        releaseWifiRequestInternal(this)
                     }
 
                     override fun onUnavailable() {
