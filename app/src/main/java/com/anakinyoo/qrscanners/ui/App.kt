@@ -131,6 +131,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -485,6 +486,11 @@ fun ScannerScreen(
     val autoCopyPref by preferences.autoCopy.collectAsState()
     val autoOpenUrlPref by preferences.autoOpenUrl.collectAsState()
 
+    val latestVibratePref by rememberUpdatedState(vibratePref)
+    val latestSoundPref by rememberUpdatedState(soundPref)
+    val latestAutoCopyPref by rememberUpdatedState(autoCopyPref)
+    val latestAutoOpenUrlPref by rememberUpdatedState(autoOpenUrlPref)
+
     var isFrontCamera by remember { mutableStateOf(defaultCamPref == "front") }
     var isFlashOn by remember { mutableStateOf(false) }
     var zoomRatio by remember { mutableFloatStateOf(1f) }
@@ -508,8 +514,12 @@ fun ScannerScreen(
         }
     }
 
+    val toneGenerator = remember {
+        runCatching { ToneGenerator(AudioManager.STREAM_NOTIFICATION, 80) }.getOrNull()
+    }
+
     fun playFeedback() {
-        if (vibratePref) {
+        if (latestVibratePref) {
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
@@ -524,10 +534,9 @@ fun ScannerScreen(
                 }
             } catch (_: Exception) {}
         }
-        if (soundPref) {
+        if (latestSoundPref) {
             try {
-                val toneGen = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 80)
-                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP, 120)
+                toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 120)
             } catch (_: Exception) {}
         }
     }
@@ -539,7 +548,7 @@ fun ScannerScreen(
                 ?.isFavorite ?: false
             val resultWithState = result.copy(isFavorite = storedFavorite, isGenerated = false)
             playFeedback()
-            if (autoCopyPref) {
+            if (latestAutoCopyPref) {
                 ScanActionResolver.copyToClipboard(context, result.rawValue)
             }
             // Add to history
@@ -565,13 +574,22 @@ fun ScannerScreen(
                 QrType.URL -> {
                     if (ScanActionResolver.isGoogleMapsLink(result.rawValue)) {
                         ScanActionResolver.openMapLink(context, result.rawValue)
-                    } else if (autoOpenUrlPref) {
+                    } else if (latestAutoOpenUrlPref) {
                         ScanActionResolver.openBrowser(context, result.rawValue)
                     }
                     onResultDetected(resultWithState)
                 }
                 else -> onResultDetected(resultWithState)
             }
+        }
+    }
+
+    DisposableEffect(scannerEngine, toneGenerator) {
+        onDispose {
+            scannerEngine.close()
+            try {
+                toneGenerator?.release()
+            } catch (_: Exception) {}
         }
     }
 
@@ -629,7 +647,7 @@ fun ScannerScreen(
                         ?.isFavorite ?: false
                     val resultWithState = result.copy(isFavorite = storedFavorite, isGenerated = false)
                     playFeedback()
-                    if (autoCopyPref) {
+                    if (latestAutoCopyPref) {
                         ScanActionResolver.copyToClipboard(context, result.rawValue)
                     }
                     historyStore.addRecord(
@@ -1118,7 +1136,7 @@ fun ScanResultSheet(
                     if (wifi.password.isNotBlank()) {
                         Spacer(Modifier.height(8.dp))
                         OutlinedButton(
-                            onClick = { ScanActionResolver.copyToClipboard(context, wifi.password) },
+                            onClick = { ScanActionResolver.copyToClipboard(context, wifi.password, isSensitive = true) },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Icon(Icons.Default.ContentCopy, contentDescription = null)
