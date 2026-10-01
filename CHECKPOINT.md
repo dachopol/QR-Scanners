@@ -5,7 +5,7 @@ Source of Truth: `dachopol/QR-Scanners` / `main`
 Current task: `QR-PLAY-PRODUCTION-GATE`
 
 ## Verified
-- App identity: `com.anakinyoo.qrscanners`, version 1.0 / versionCode 2, targetSdk 36.
+- App identity: `com.anakinyoo.qrscanners`, version 1.0 / versionCode 3, targetSdk 36.
 - Latest observed Android Release Gate run `36294091474` completed successfully for current-main versionCode 2 source at `c2ed27f85a1109d12bb04dd06443344f7ca88726`; source hygiene, unit/lint/builds, AAB/APK, 16 KB alignment, signing verification, and release-evidence upload all passed.
 - Release AAB/signing, 16 KB alignment, Data Safety, current no-ads declaration, content rating, target audience, store assets, CameraX/torch/zoom/camera switching, live-camera exact-payload decode, Photo Picker decode, location/map handoff, WEP fallback, WPA2 request path, and successful real WPA2 association have recorded evidence.
 - Successful Wi-Fi association gate is PASS: RC decoded an authorized temporary Windows Mobile hotspot WPA2 QR, Android/Oplus displayed the matching access point in `NetworkRequestDialogActivity`, and selection produced `Supplicant=COMPLETED` plus a `CONNECTED`/`VALIDATED` Wi-Fi network owned by `com.anakinyoo.qrscanners.rc`. Rollback restored Windows hotspot Off / Power saving On, released the RC request, and the realme automatically returned to its saved Wi-Fi. Temporary credential-bearing QR/screenshots/history were cleaned.

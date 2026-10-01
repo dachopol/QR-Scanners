@@ -17,7 +17,7 @@ Android QR & barcode scanner + generator by AnakinYoo, built with Kotlin and Jet
 - Package / Application ID: `com.anakinyoo.qrscanners`
 - targetSdk: 36
 - compileSdk: Android 16 QPR2 SDK 36.1
-- versionCode: 2
+- versionCode: 3
 - versionName: 1.0
 - Source of Truth: `main`
 
