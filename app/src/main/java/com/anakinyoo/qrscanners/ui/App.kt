@@ -258,6 +258,7 @@ fun MainApp(
                         historyStore = historyStore,
                         preferences = preferences,
                         onLocaleChange = onLocaleChange,
+                        isResultOpen = currentResult != null,
                         onResultFound = { currentResult = it }
                     )
                 }
@@ -311,6 +312,7 @@ fun MainApp(
                         historyStore = historyStore,
                         preferences = preferences,
                         onLocaleChange = onLocaleChange,
+                        isResultOpen = currentResult != null,
                         onResultFound = { currentResult = it }
                     )
                 }
@@ -420,12 +422,14 @@ private fun TabContent(
     historyStore: HistoryStore,
     preferences: AppPreferences,
     onLocaleChange: (String) -> Unit,
+    isResultOpen: Boolean,
     onResultFound: (ScanResultData) -> Unit
 ) {
     when (tab) {
         AppTab.SCAN -> ScannerScreen(
             historyStore = historyStore,
             preferences = preferences,
+            isPaused = isResultOpen,
             onResultDetected = onResultFound
         )
         AppTab.CREATE -> GeneratorScreen(
@@ -463,6 +467,7 @@ private fun TabContent(
 fun ScannerScreen(
     historyStore: HistoryStore,
     preferences: AppPreferences,
+    isPaused: Boolean,
     onResultDetected: (ScanResultData) -> Unit
 ) {
     val context = LocalContext.current
@@ -582,6 +587,10 @@ fun ScannerScreen(
                 else -> onResultDetected(resultWithState)
             }
         }
+    }
+
+    LaunchedEffect(scannerEngine, isPaused) {
+        scannerEngine.isPaused = isPaused
     }
 
     DisposableEffect(scannerEngine, toneGenerator) {
