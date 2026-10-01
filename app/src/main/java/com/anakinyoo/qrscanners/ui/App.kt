@@ -1939,9 +1939,7 @@ fun HistoryScreen(
                             dateStr = dateFormat.format(Date(record.timestamp)),
                             onSelect = { onSelectRecord(record) },
                             onToggleFavorite = { historyStore.toggleFavorite(record.id) },
-                            onDelete = { historyStore.deleteRecord(record.id) },
-                            onShare = { ShareUtils.shareText(context, record.content) },
-                            onCopy = { ScanActionResolver.copyToClipboard(context, record.content) }
+                            onDelete = { historyStore.deleteRecord(record.id) }
                         )
                     }
                 }
@@ -1980,9 +1978,7 @@ fun HistoryItemCard(
     dateStr: String,
     onSelect: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDelete: () -> Unit,
-    onShare: () -> Unit,
-    onCopy: () -> Unit
+    onDelete: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -2052,7 +2048,11 @@ fun HistoryItemCard(
                 }
                 Spacer(Modifier.height(2.dp))
                 Text(
-                    text = record.content,
+                    text = if (record.qrType == QrType.WIFI) {
+                        stringResource(R.string.wifi_history_preview_hidden)
+                    } else {
+                        record.content
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
