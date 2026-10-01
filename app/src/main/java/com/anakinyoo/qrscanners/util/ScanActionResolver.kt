@@ -1,15 +1,18 @@
 package com.anakinyoo.qrscanners.util
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.Uri
 import android.net.wifi.WifiNetworkSpecifier
 import android.os.Build
+import android.os.PersistableBundle
 import android.provider.ContactsContract
 import android.provider.Settings
 import android.widget.Toast
@@ -29,6 +32,38 @@ object ScanActionResolver {
         "^(https?|ftp)://[a-zA-Z0-9+&@#/%?=~_|!:,.;]*[a-zA-Z0-9+&@#/%=~_|]",
         Pattern.CASE_INSENSITIVE
     )
+
+    private val wifiRequestLock = Any()
+    private var activeWifiConnectivityManager: ConnectivityManager? = null
+    private var activeWifiCallback: ConnectivityManager.NetworkCallback? = null
+
+    private fun clearWifiRequestIfCurrent(callback: ConnectivityManager.NetworkCallback) {
+        synchronized(wifiRequestLock) {
+            if (activeWifiCallback === callback) {
+                activeWifiCallback = null
+                activeWifiConnectivityManager = null
+            }
+        }
+    }
+
+    fun releaseWifiRequest() {
+        val manager: ConnectivityManager?
+        val callback: ConnectivityManager.NetworkCallback?
+        synchronized(wifiRequestLock) {
+            manager = activeWifiConnectivityManager
+            callback = activeWifiCallback
+            activeWifiConnectivityManager = null
+            activeWifiCallback = null
+        }
+        if (manager != null && callback != null) {
+            try {
+                manager.unregisterNetworkCallback(callback)
+            } catch (_: IllegalArgumentException) {
+                // Android may already have released a timed-out request.
+            }
+        }
+    }
+
 
     fun resolveType(raw: String): QrType {
         val trimmed = raw.trim()
@@ -290,11 +325,26 @@ object ScanActionResolver {
             ?: throw IllegalArgumentException("Invalid map coordinates")
     }
 
-    fun copyToClipboard(context: Context, text: String, showToast: Boolean = true) {
+    fun copyToClipboard(
+        context: Context,
+        text: String,
+        showToast: Boolean = true,
+        isSensitive: Boolean = false
+    ) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Scanned QR", text)
+        if (isSensitive) {
+            clip.description.extras = PersistableBundle().apply {
+                val sensitiveKey = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    ClipDescription.EXTRA_IS_SENSITIVE
+                } else {
+                    "android.content.extra.IS_SENSITIVE"
+                }
+                putBoolean(sensitiveKey, true)
+            }
+        }
         clipboard.setPrimaryClip(clip)
-        if (showToast) {
+        if (showToast && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
         }
     }
@@ -436,7 +486,7 @@ object ScanActionResolver {
 
     private fun openWifiSettingsFallback(context: Context, wifi: WifiData, messageRes: Int) {
         if (wifi.password.isNotBlank()) {
-            copyToClipboard(context, wifi.password, showToast = false)
+            copyToClipboard(context, wifi.password, showToast = false, isSensitive = true)
         }
         val intent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -487,11 +537,22 @@ object ScanActionResolver {
 
                 val connectivityManager =
                     context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                connectivityManager.requestNetwork(
-                    networkRequest,
-                    object : ConnectivityManager.NetworkCallback() {
-                        override fun onUnavailable() {
-                            super.onUnavailable()
+
+                releaseWifiRequest()
+                val callback = object : ConnectivityManager.NetworkCallback() {
+                    override fun onAvailable(network: Network) {
+                        super.onAvailable(network)
+                    }
+
+                    override fun onLost(network: Network) {
+                        super.onLost(network)
+                        releaseWifiRequest()
+                    }
+
+                    override fun onUnavailable() {
+                        super.onUnavailable()
+                        clearWifiRequestIfCurrent(this)
+                        context.mainExecutor.execute {
                             Toast.makeText(
                                 context,
                                 context.getString(R.string.wifi_request_unavailable),
@@ -499,7 +560,17 @@ object ScanActionResolver {
                             ).show()
                         }
                     }
-                )
+                }
+                synchronized(wifiRequestLock) {
+                    activeWifiConnectivityManager = connectivityManager
+                    activeWifiCallback = callback
+                }
+                try {
+                    connectivityManager.requestNetwork(networkRequest, callback, 60_000)
+                } catch (e: Exception) {
+                    clearWifiRequestIfCurrent(callback)
+                    throw e
+                }
                 Toast.makeText(
                     context,
                     context.getString(R.string.wifi_requesting, wifi.ssid),
