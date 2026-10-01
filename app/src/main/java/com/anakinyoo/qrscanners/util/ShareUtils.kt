@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.anakinyoo.qrscanners.R
 import com.anakinyoo.qrscanners.model.HistoryRecord
+import com.anakinyoo.qrscanners.model.QrType
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -68,6 +69,15 @@ object ShareUtils {
         }
     }
 
+    internal fun historyContentForExport(record: HistoryRecord): String {
+        if (record.qrType != QrType.WIFI) return record.content
+
+        val wifi = ScanActionResolver.parseWifi(record.content)
+            ?: return "[Wi-Fi credential redacted]"
+
+        return "SSID=${wifi.ssid};Security=${wifi.securityType};Password=[REDACTED];Hidden=${wifi.isHidden}"
+    }
+
     internal fun escapeCsvCellForExport(value: String): String {
         val safeValue = if (value.firstOrNull() in setOf('=', '+', '-', '@')) {
             "'$value"
@@ -83,7 +93,7 @@ object ShareUtils {
         sb.append("ID,Type,Format,Title,Content,Timestamp,IsFavorite,IsGenerated\n")
         for (r in records) {
             val escapedTitle = escapeCsvCellForExport(r.displayTitle)
-            val escapedContent = escapeCsvCellForExport(r.content)
+            val escapedContent = escapeCsvCellForExport(historyContentForExport(r))
             val timeStr = dateFormat.format(Date(r.timestamp))
             sb.append(
                 "\"${r.id}\",\"${r.qrType}\",\"${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",${r.isFavorite},${r.isGenerated}\n"
