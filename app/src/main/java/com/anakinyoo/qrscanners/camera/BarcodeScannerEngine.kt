@@ -156,6 +156,10 @@ class BarcodeScannerEngine(
             onError(e)
         }
     }
+    fun close() {
+        scanner.close()
+    }
+
     private fun buildDisplayTitle(
         rawValue: String,
         qrType: com.anakinyoo.qrscanners.model.QrType
