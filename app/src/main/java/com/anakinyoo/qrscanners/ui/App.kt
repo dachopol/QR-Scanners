@@ -2059,7 +2059,7 @@ fun HistoryItemCard(
 
             // Quick actions: Favorite, Share, Delete
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onToggleFavorite, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onToggleFavorite, modifier = Modifier.size(48.dp)) {
                     Icon(
                         imageVector = if (record.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = stringResource(R.string.favorite),
@@ -2067,7 +2067,7 @@ fun HistoryItemCard(
                         modifier = Modifier.size(20.dp)
                     )
                 }
-                IconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = stringResource(R.string.btn_delete),
