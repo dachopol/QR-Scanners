@@ -54,7 +54,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Store screenshots | PASS | Six Thai phone screenshots from release UI 1.0 on the verified realme device are stored in `store-assets/screenshots/th/`; each is 1080x2160 RGB PNG with system status/navigation bars removed |
 | Ads declaration | PASS | Play Console completed declaration for current Internal build: app has no ads. Must be changed to Yes before any ad-enabled Production build |
 | Content rating / target audience | PASS | Play Console completed. Target ages: 13-15, 16-17, 18+. IARC ratings include PEGI 3 / Google Play 3+ / USK 0 and equivalent low-age ratings |
-| Personal-account closed-test requirement | PASS (requirement identified) | This developer account's Play Console explicitly requires at least 12 opted-in closed-test testers for at least 14 days before Production Access can be requested; completion of that 12-person/14-day test is still TO VERIFY |
+| Personal-account closed-test requirement | TO VERIFY | Play Console requires at least 12 opted-in closed-test testers continuously for at least 14 days before Production Access can be requested; completion of this gate is not yet verified |
 
 See `REAL_DEVICE_EVIDENCE.md` and `SIGNING_EVIDENCE.md`.
 
