@@ -1042,6 +1042,37 @@ fun ScanResultSheet(
     var isFavorite by remember(result.rawValue, result.isGenerated) {
         mutableStateOf(result.isFavorite)
     }
+    var pendingWifiConnection by remember { mutableStateOf<WifiData?>(null) }
+    val nearbyWifiPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        val pendingWifi = pendingWifiConnection
+        pendingWifiConnection = null
+        if (granted && pendingWifi != null) {
+            ScanActionResolver.connectWifi(context, pendingWifi)
+        } else if (!granted) {
+            android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.wifi_nearby_permission_denied),
+                android.widget.Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    fun requestWifiConnection(wifi: WifiData) {
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.NEARBY_WIFI_DEVICES
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            pendingWifiConnection = wifi
+            nearbyWifiPermissionLauncher.launch(Manifest.permission.NEARBY_WIFI_DEVICES)
+        } else {
+            ScanActionResolver.connectWifi(context, wifi)
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -1133,7 +1164,7 @@ fun ScanResultSheet(
                 QrType.WIFI -> {
                     val wifi = remember(result.rawValue) { ScanActionResolver.parseWifi(result.rawValue) }
                     Button(
-                        onClick = { ScanActionResolver.connectWifi(context, wifi) },
+                        onClick = { requestWifiConnection(wifi) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .testTag("action_connect_wifi")
