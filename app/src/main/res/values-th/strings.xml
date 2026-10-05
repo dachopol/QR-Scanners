@@ -121,6 +121,7 @@
     <string name="favorite">รายการโปรด</string>
     <string name="generated_qr_content_description">QR โค้ดที่สร้าง</string>
     <string name="clear_search">ล้างคำค้นหา</string>
+    <string name="wifi_history_preview_hidden">ซ่อนข้อมูลรับรอง Wi-Fi</string>
     <string name="action_copy_wifi_password">คัดลอกรหัสผ่าน Wi-Fi</string>
     <string name="error_open_browser">ไม่สามารถเปิดเบราว์เซอร์ได้: %1$s</string>
     <string name="error_make_call">ไม่สามารถเปิดหน้าจอโทรออกได้: %1$s</string>
