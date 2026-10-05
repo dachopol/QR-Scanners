@@ -121,6 +121,7 @@
     <string name="favorite">Favorite</string>
     <string name="generated_qr_content_description">Generated QR Code</string>
     <string name="clear_search">Clear search</string>
+    <string name="wifi_history_preview_hidden">Wi-Fi credentials hidden</string>
     <string name="action_copy_wifi_password">Copy Wi-Fi Password</string>
     <string name="error_open_browser">Cannot open browser: %1$s</string>
     <string name="error_make_call">Cannot make call: %1$s</string>
