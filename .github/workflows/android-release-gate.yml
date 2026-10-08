@@ -3,6 +3,14 @@ name: Android Release Gate
 on:
   push:
     branches: [main]
+    paths:
+      - ".github/workflows/android-release-gate.yml"
+      - "app/**"
+      - "build.gradle.kts"
+      - "settings.gradle.kts"
+      - "gradle/**"
+      - "gradle.properties"
+      - "store-assets/**"
   workflow_dispatch:
 
 permissions:
