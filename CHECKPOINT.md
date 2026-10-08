@@ -1,6 +1,6 @@
 # QR Scanners — Checkpoint
 
-Date: 2026-10-05  
+Date: 2026-10-09  
 Source of Truth: `dachopol/QR-Scanners` / `main`  
 Current task: `QR-PLAY-PRODUCTION-GATE`
 
@@ -32,3 +32,18 @@ Current task: `QR-PLAY-PRODUCTION-GATE`
 
 ## Definition of Done
 Production may be marked ready only after every applicable item above has real evidence and the Release Gate contains no unresolved GAP / TO VERIFY items.
+
+
+## 12-step governance update
+- `PROJECT.governance.json` now tracks all 12 standard project stages from repository evidence.
+- Steps 1–8 are documented as PASS from the current baseline/source evidence.
+- Step 9 (QA) is BLOCKED only by the current physical execution path: `DESKTOP-IL7PNGM` was online and pingable, but Desktop Commander usage was exhausted before ADB could be executed.
+- Step 10 (fix/verify) is AWAITING VERIFICATION: Android 13+ Nearby Wi-Fi permission source fix is merged and CI passed; physical regression remains.
+- Step 11 (release) remains BLOCKED by closed testing and any applicable real production monetization configuration.
+- Step 12 (maintenance) remains active through checkpoint, task state, issues and release gate.
+
+## Pre-Ship 20 update
+- See `PRE_SHIP_20.md`.
+- Static/source result: 11 PASS/source-PASS, 3 N/A, 6 TO VERIFY/blocked.
+- Light-theme contrast issue was found and fixed in source at `6e71c0fb28294534b2baf67e1acec7bad251a065`; CI/visual verification is required before marking that gate PASS.
+- Production Ready remains **NO**.
