@@ -1436,7 +1436,6 @@ fun GeneratorScreen(
         }
 
         if (payload.isNotBlank()) {
-            currentPayload = payload
             val palette = colorPalettes[selectedColorIndex]
             val bmp = QrCodeGenerator.generateQrBitmap(
                 content = payload,
@@ -1444,6 +1443,16 @@ fun GeneratorScreen(
                 foregroundColor = palette.first,
                 backgroundColor = palette.second
             )
+            if (bmp == null) {
+                generatedBitmap = null
+                android.widget.Toast.makeText(
+                    context,
+                    context.getString(R.string.qr_generation_error),
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+            currentPayload = payload
             generatedBitmap = bmp
             // Save to history
             val displayTitle = when (selectedType) {

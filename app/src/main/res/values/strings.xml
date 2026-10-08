@@ -64,6 +64,7 @@
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_services_disabled">Turn on Location services to use current coordinates</string>
     <string name="invalid_qr_input">Enter the required information before generating the QR code.</string>
+    <string name="qr_generation_error">Unable to generate the QR code. Please try again.</string>
     <string name="btn_generate">Generate QR Code</string>
     <string name="btn_share_qr">Share QR Image</string>
     <string name="qr_preview">QR Code Preview</string>

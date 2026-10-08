@@ -64,6 +64,7 @@
     <string name="location_permission_denied">ไม่ได้รับอนุญาตให้เข้าถึงตำแหน่ง</string>
     <string name="location_services_disabled">กรุณาเปิดบริการตำแหน่งเพื่อใช้พิกัดปัจจุบัน</string>
     <string name="invalid_qr_input">กรอกข้อมูลที่จำเป็นก่อนสร้าง QR โค้ด</string>
+    <string name="qr_generation_error">ไม่สามารถสร้าง QR โค้ดได้ กรุณาลองอีกครั้ง</string>
     <string name="btn_generate">สร้าง QR โค้ด</string>
     <string name="btn_share_qr">แชร์รูป QR</string>
     <string name="qr_preview">ตัวอย่าง QR โค้ด</string>
