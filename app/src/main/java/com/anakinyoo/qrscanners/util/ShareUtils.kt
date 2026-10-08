@@ -87,7 +87,7 @@ object ShareUtils {
         return safeValue.replace("\"", "\"\"")
     }
 
-    fun exportHistoryCsv(context: Context, records: List<HistoryRecord>) {
+    internal fun historyCsvForExport(records: List<HistoryRecord>): String {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val sb = StringBuilder()
         sb.append("ID,Type,Format,Title,Content,Timestamp,IsFavorite,IsGenerated\n")
@@ -96,9 +96,44 @@ object ShareUtils {
             val escapedContent = escapeCsvCellForExport(historyContentForExport(r))
             val timeStr = dateFormat.format(Date(r.timestamp))
             sb.append(
-                "\"${r.id}\",\"${r.qrType}\",\"${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",${r.isFavorite},${r.isGenerated}\n"
+                "\"\${r.id}\",\"\${r.qrType}\",\"\${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",\${r.isFavorite},\${r.isGenerated}\n"
             )
         }
-        shareText(context, sb.toString(), context.getString(R.string.export_history_csv_title))
+        return sb.toString()
+    }
+
+    fun exportHistoryCsv(context: Context, records: List<HistoryRecord>) {
+        try {
+            val exportDir = File(context.cacheDir, "exports")
+            exportDir.mkdirs()
+            val file = File(exportDir, "qr_scanners_history_\${System.currentTimeMillis()}.csv")
+            file.writeText(historyCsvForExport(records), Charsets.UTF_8)
+
+            val contentUri = FileProvider.getUriForFile(
+                context,
+                "\${context.packageName}.fileprovider",
+                file
+            )
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/csv"
+                putExtra(Intent.EXTRA_STREAM, contentUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            val chooser = Intent.createChooser(
+                shareIntent,
+                context.getString(R.string.export_history_csv_title)
+            ).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(chooser)
+        } catch (_: Exception) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.export_history_error),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
