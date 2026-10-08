@@ -9,10 +9,20 @@ import org.junit.Test
 class ScanActionResolverTest {
 
     @Test
+    fun testNormalizeWebUrlPreservesSupportedSchemes() {
+        assertEquals("https://example.com", ScanActionResolver.normalizeWebUrl("example.com"))
+        assertEquals("https://example.com", ScanActionResolver.normalizeWebUrl("https://example.com"))
+        assertEquals("http://example.com", ScanActionResolver.normalizeWebUrl("http://example.com"))
+        assertEquals("ftp://example.com/file.zip", ScanActionResolver.normalizeWebUrl("ftp://example.com/file.zip"))
+        assertEquals("", ScanActionResolver.normalizeWebUrl("   "))
+    }
+
+    @Test
     fun testResolveUrl() {
         assertEquals(QrType.URL, ScanActionResolver.resolveType("https://google.com"))
         assertEquals(QrType.URL, ScanActionResolver.resolveType("http://example.org/test?id=123"))
         assertEquals(QrType.URL, ScanActionResolver.resolveType("www.github.com"))
+        assertEquals(QrType.URL, ScanActionResolver.resolveType("ftp://example.com/file.zip"))
     }
 
     @Test

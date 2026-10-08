@@ -356,13 +356,24 @@ object ScanActionResolver {
         }
     }
 
+    internal fun normalizeWebUrl(url: String): String {
+        val trimmed = url.trim()
+        if (trimmed.isBlank()) return ""
+        return if (
+            trimmed.startsWith("http://", ignoreCase = true) ||
+            trimmed.startsWith("https://", ignoreCase = true) ||
+            trimmed.startsWith("ftp://", ignoreCase = true)
+        ) {
+            trimmed
+        } else {
+            "https://$trimmed"
+        }
+    }
+
     fun openBrowser(context: Context, url: String) {
         try {
-            val formattedUrl = if (!url.startsWith("http://", ignoreCase = true) && !url.startsWith("https://", ignoreCase = true)) {
-                "https://$url"
-            } else {
-                url
-            }
+            val formattedUrl = normalizeWebUrl(url)
+            require(formattedUrl.isNotBlank()) { "URL is blank" }
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(formattedUrl)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
