@@ -4,30 +4,33 @@
   "project": "QR Scanners",
   "repository": "dachopol/QR-Scanners",
   "branch": "main",
-  "source_revision": "36feff194ea57cd0fcf365c9ca2883d6d02c2f57",
+  "source_revision": "401ae19aa6311d283ec74673c32c3db208aca972",
   "updated_at": "2026-10-09",
   "current": {
-    "key": "fix_verify",
-    "index": 10,
-    "name": "แก้ไขและยืนยันผล",
-    "status": "IN_PROGRESS",
+    "key": "qa",
+    "index": 9,
+    "name": "ทดสอบ QA",
+    "status": "BLOCKED",
     "evidence_refs": [
-      "https://github.com/dachopol/QR-Scanners/issues/1",
-      "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+      "REAL_DEVICE_EVIDENCE.md",
+      "RELEASE_GATE.md",
+      "CHECKPOINT.md",
+      "https://github.com/dachopol/QR-Scanners/issues/1"
     ],
-    "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+    "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
   },
   "steps": [
     {
       "key": "problem",
       "index": 1,
       "name": "วิเคราะห์ปัญหา",
-      "status": "AWAITING_VERIFICATION",
+      "status": "PASS",
       "evidence_refs": [
+        "PROBLEM_DEFINITION.md",
         "README.md",
         "CHECKPOINT.md"
       ],
-      "reason": "Core QR/barcode scan/generate use case is implemented and documented, but a dedicated approved Problem/Target User/Success Criteria record is not present."
+      "reason": "Problem, target user, core use cases, scope and measurable success criteria are now documented from the current implemented/release baseline."
     },
     {
       "key": "research",
@@ -45,24 +48,25 @@
       "key": "prd",
       "index": 3,
       "name": "กำหนดความต้องการ",
-      "status": "AWAITING_VERIFICATION",
+      "status": "PASS",
       "evidence_refs": [
+        "PRD.md",
         "README.md",
         "TEST_PLAN.md",
         "PLAY_CONSOLE_CHECKLIST.md"
       ],
-      "reason": "Functional and release requirements exist across repository documents, but no single approved PRD/traceability document is present."
+      "reason": "Current functional, non-functional, privacy and release requirements are consolidated in PRD.md and trace to source/release evidence."
     },
     {
       "key": "user_flow",
       "index": 4,
       "name": "ออกแบบ User Flow",
-      "status": "AWAITING_VERIFICATION",
+      "status": "PASS",
       "evidence_refs": [
-        "README.md",
+        "USER_FLOW.md",
         "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt"
       ],
-      "reason": "Implemented navigation and core flows are visible in source, but a dedicated user-flow artifact has not been verified."
+      "reason": "Current Scan/Create/History/Settings and release/QA flows are documented and trace to the implemented Compose source."
     },
     {
       "key": "ui_ux",
@@ -118,24 +122,25 @@
       "key": "qa",
       "index": 9,
       "name": "ทดสอบ QA",
-      "status": "AWAITING_VERIFICATION",
+      "status": "BLOCKED",
       "evidence_refs": [
         "REAL_DEVICE_EVIDENCE.md",
         "RELEASE_GATE.md",
-        "CHECKPOINT.md"
+        "CHECKPOINT.md",
+        "https://github.com/dachopol/QR-Scanners/issues/1"
       ],
-      "reason": "Extensive real-device v2 evidence exists and v3 CI passes, but current v3 physical regression remains unverified."
+      "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
     },
     {
       "key": "fix_verify",
       "index": 10,
       "name": "แก้ไขและยืนยันผล",
-      "status": "IN_PROGRESS",
+      "status": "AWAITING_VERIFICATION",
       "evidence_refs": [
         "https://github.com/dachopol/QR-Scanners/issues/1",
         "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
       ],
-      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and its CI run passed. Physical Android 13+ permission/connection regression is still required before closing the issue."
     },
     {
       "key": "release",
@@ -165,29 +170,32 @@
   ],
   "phase_tracking": {
     "source": "PROJECT.governance.json",
-    "source_revision": "36feff194ea57cd0fcf365c9ca2883d6d02c2f57",
+    "source_revision": "401ae19aa6311d283ec74673c32c3db208aca972",
     "current": {
-      "key": "fix_verify",
-      "index": 10,
-      "name": "แก้ไขและยืนยันผล",
-      "status": "IN_PROGRESS",
+      "key": "qa",
+      "index": 9,
+      "name": "ทดสอบ QA",
+      "status": "BLOCKED",
       "evidence_refs": [
-        "https://github.com/dachopol/QR-Scanners/issues/1",
-        "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+        "REAL_DEVICE_EVIDENCE.md",
+        "RELEASE_GATE.md",
+        "CHECKPOINT.md",
+        "https://github.com/dachopol/QR-Scanners/issues/1"
       ],
-      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+      "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
     },
     "steps": [
       {
         "key": "problem",
         "index": 1,
         "name": "วิเคราะห์ปัญหา",
-        "status": "AWAITING_VERIFICATION",
+        "status": "PASS",
         "evidence_refs": [
+          "PROBLEM_DEFINITION.md",
           "README.md",
           "CHECKPOINT.md"
         ],
-        "reason": "Core QR/barcode scan/generate use case is implemented and documented, but a dedicated approved Problem/Target User/Success Criteria record is not present."
+        "reason": "Problem, target user, core use cases, scope and measurable success criteria are now documented from the current implemented/release baseline."
       },
       {
         "key": "research",
@@ -205,24 +213,25 @@
         "key": "prd",
         "index": 3,
         "name": "กำหนดความต้องการ",
-        "status": "AWAITING_VERIFICATION",
+        "status": "PASS",
         "evidence_refs": [
+          "PRD.md",
           "README.md",
           "TEST_PLAN.md",
           "PLAY_CONSOLE_CHECKLIST.md"
         ],
-        "reason": "Functional and release requirements exist across repository documents, but no single approved PRD/traceability document is present."
+        "reason": "Current functional, non-functional, privacy and release requirements are consolidated in PRD.md and trace to source/release evidence."
       },
       {
         "key": "user_flow",
         "index": 4,
         "name": "ออกแบบ User Flow",
-        "status": "AWAITING_VERIFICATION",
+        "status": "PASS",
         "evidence_refs": [
-          "README.md",
+          "USER_FLOW.md",
           "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt"
         ],
-        "reason": "Implemented navigation and core flows are visible in source, but a dedicated user-flow artifact has not been verified."
+        "reason": "Current Scan/Create/History/Settings and release/QA flows are documented and trace to the implemented Compose source."
       },
       {
         "key": "ui_ux",
@@ -278,24 +287,25 @@
         "key": "qa",
         "index": 9,
         "name": "ทดสอบ QA",
-        "status": "AWAITING_VERIFICATION",
+        "status": "BLOCKED",
         "evidence_refs": [
           "REAL_DEVICE_EVIDENCE.md",
           "RELEASE_GATE.md",
-          "CHECKPOINT.md"
+          "CHECKPOINT.md",
+          "https://github.com/dachopol/QR-Scanners/issues/1"
         ],
-        "reason": "Extensive real-device v2 evidence exists and v3 CI passes, but current v3 physical regression remains unverified."
+        "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
       },
       {
         "key": "fix_verify",
         "index": 10,
         "name": "แก้ไขและยืนยันผล",
-        "status": "IN_PROGRESS",
+        "status": "AWAITING_VERIFICATION",
         "evidence_refs": [
           "https://github.com/dachopol/QR-Scanners/issues/1",
           "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
         ],
-        "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+        "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and its CI run passed. Physical Android 13+ permission/connection regression is still required before closing the issue."
       },
       {
         "key": "release",
