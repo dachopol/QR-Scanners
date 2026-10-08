@@ -96,7 +96,7 @@ object ShareUtils {
             val escapedContent = escapeCsvCellForExport(historyContentForExport(r))
             val timeStr = dateFormat.format(Date(r.timestamp))
             sb.append(
-                "\"\${r.id}\",\"\${r.qrType}\",\"\${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",\${r.isFavorite},\${r.isGenerated}\n"
+                "\"${r.id}\",\"${r.qrType}\",\"${r.barcodeFormat}\",\"$escapedTitle\",\"$escapedContent\",\"$timeStr\",${r.isFavorite},${r.isGenerated}\n"
             )
         }
         return sb.toString()
@@ -106,12 +106,12 @@ object ShareUtils {
         try {
             val exportDir = File(context.cacheDir, "exports")
             exportDir.mkdirs()
-            val file = File(exportDir, "qr_scanners_history_\${System.currentTimeMillis()}.csv")
+            val file = File(exportDir, "qr_scanners_history_${System.currentTimeMillis()}.csv")
             file.writeText(historyCsvForExport(records), Charsets.UTF_8)
 
             val contentUri = FileProvider.getUriForFile(
                 context,
-                "\${context.packageName}.fileprovider",
+                "${context.packageName}.fileprovider",
                 file
             )
 
