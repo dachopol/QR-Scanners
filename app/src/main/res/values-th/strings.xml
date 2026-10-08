@@ -19,6 +19,7 @@
     <string name="switch_camera">สลับกล้อง</string>
     <string name="no_code_found_in_image">ไม่พบ QR หรือบาร์โค้ดในภาพที่เลือก</string>
     <string name="image_scan_error">ไม่สามารถวิเคราะห์รูปภาพได้</string>
+    <string name="camera_start_error">ไม่สามารถเปิดกล้องได้ คุณยังสามารถสแกนจากรูปภาพในแกลเลอรีได้</string>
 
     <!-- Result Screen / Dialog -->
     <string name="action_open_browser">เปิดในเบราว์เซอร์</string>

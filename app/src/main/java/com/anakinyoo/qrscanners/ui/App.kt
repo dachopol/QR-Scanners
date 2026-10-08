@@ -633,6 +633,7 @@ fun ScannerScreen(
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            errorMessage = context.getString(R.string.camera_start_error)
         }
     }
 
