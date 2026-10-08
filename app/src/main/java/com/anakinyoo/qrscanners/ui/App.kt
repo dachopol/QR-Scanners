@@ -567,20 +567,13 @@ fun ScannerScreen(
                 )
             )
             when (result.type) {
-                QrType.GEO -> {
-                    val geo = ScanActionResolver.parseGeoOrNull(result.rawValue)
-                    if (geo != null) {
-                        // Location QR opens Google Maps immediately after a successful scan.
-                        ScanActionResolver.openMap(context, geo)
-                    } else {
-                        onResultDetected(resultWithState)
-                    }
-                }
                 QrType.URL -> {
-                    if (ScanActionResolver.isGoogleMapsLink(result.rawValue)) {
-                        ScanActionResolver.openMapLink(context, result.rawValue)
-                    } else if (latestAutoOpenUrlPref) {
-                        ScanActionResolver.openBrowser(context, result.rawValue)
+                    if (latestAutoOpenUrlPref) {
+                        if (ScanActionResolver.isGoogleMapsLink(result.rawValue)) {
+                            ScanActionResolver.openMapLink(context, result.rawValue)
+                        } else {
+                            ScanActionResolver.openBrowser(context, result.rawValue)
+                        }
                     }
                     onResultDetected(resultWithState)
                 }
@@ -668,22 +661,14 @@ fun ScannerScreen(
                             isGenerated = false
                         )
                     )
-                    if (result.type == QrType.GEO) {
-                        val geo = ScanActionResolver.parseGeoOrNull(result.rawValue)
-                        if (geo != null) {
-                            // Gallery location QR follows the same direct-to-Google-Maps flow.
-                            ScanActionResolver.openMap(context, geo)
+                    if (result.type == QrType.URL && latestAutoOpenUrlPref) {
+                        if (ScanActionResolver.isGoogleMapsLink(result.rawValue)) {
+                            ScanActionResolver.openMapLink(context, result.rawValue)
                         } else {
-                            onResultDetected(resultWithState)
+                            ScanActionResolver.openBrowser(context, result.rawValue)
                         }
-                    } else if (result.type == QrType.URL &&
-                        ScanActionResolver.isGoogleMapsLink(result.rawValue)
-                    ) {
-                        ScanActionResolver.openMapLink(context, result.rawValue)
-                        onResultDetected(resultWithState)
-                    } else {
-                        onResultDetected(resultWithState)
                     }
+                    onResultDetected(resultWithState)
                 },
                 onNotFound = {
                     errorMessage = context.getString(R.string.no_code_found_in_image)

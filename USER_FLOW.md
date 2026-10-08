@@ -22,6 +22,8 @@ Scan tab
 → If camera permission granted: CameraX preview + analysis
 → If camera permission denied/not granted: permission UI remains available and Photo Picker can still be used
 → QR/barcode detected
+→ URL opens externally only when Auto Open Web Links is enabled
+→ Geo/location content never auto-launches an external app
 → Live analyzer pauses
 → Result sheet opens
 → User may perform action / copy / share / favorite
@@ -50,7 +52,7 @@ Decoded type
 → Phone → Dialer
 → SMS → Messaging
 → Email → Email client
-→ Geo → Map/browser
+→ Geo → Result sheet → user explicitly taps Open Map
 → Text → copy/share/search actions as available
 
 No external handoff is reported as successful unless the app/system actually performs that flow.
