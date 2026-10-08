@@ -16,7 +16,8 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | 16 KB APK alignment | PASS | `zipalign -c -P 16` passed for current v3 source in CI run `37276458481` |
 | Current-location source flow | PASS | Foreground coarse/fine location only; automatic Lat/Lng fill verified on real device |
 | Map handoff | PASS | Decoded Geo test fixture opened Google Maps on the physical device |
-| CameraX preview / analysis | PASS | Real device opened camera id 0 with Preview + ImageAnalysis |
+| CameraX preview / analysis | PASS | Real device opened camera id 0 with Preview + ImageAnalysis on the previously verified build. |
+| CameraX 1.6.2 compatibility | TO VERIFY | Source updated from CameraX 1.4.1 to 1.6.2 in `ebd601b2414a4d26a58472c4e4ba201480387195` after official release-note review; current CI and physical camera regression are required before this compatibility gate is PASS. |
 | Torch / flash | PASS | Real device metadata reported TORCH/FIRED |
 | Zoom | PASS | Real device camera zoom ratio changed after in-app control |
 | Front/rear camera switching | PASS | Real device closed camera id 0 and opened id 1 |
@@ -45,7 +46,7 @@ Source of Truth: `main`. GitHub Actions status for the current HEAD is authorita
 | Pre-Ship 20 audit | TO VERIFY | See `PRE_SHIP_20.md`: source/static audit has 11 PASS/source-PASS, 3 N/A and 6 TO VERIFY/blocked; Production remains NO until runtime/release blockers clear. |
 | QR generator required-field validation | TO VERIFY | Source fix `80ce8ca259b1b12fa8010fdda1892f9c6c18f3aa` rejects empty required fields and adds TH/EN feedback plus regression tests. Android Release Gate run `37831701910` passed; physical UI verification remains pending. |
 | Generated-history localization | TO VERIFY | Source fix `48dc3c9acc8e2525309792da520cd748220bf913` prevents new generated history records from persisting English-only prefixes. Android Release Gate run `37831815248` passed; TH/EN device verification remains pending. |
-| Real CSV history export | TO VERIFY | Effective source at `97df4c7c2eea8cc610ed2d4bdf3be5c9920725d3` creates a real `.csv` file, shares it as `text/csv` via FileProvider, retains formula-injection protection and redacts Wi-Fi credentials. CI and physical share/file-open verification remain pending. |
+| Real CSV history export | TO VERIFY | Effective source at `97df4c7c2eea8cc610ed2d4bdf3be5c9920725d3` creates a real `.csv` file, shares it as `text/csv` via FileProvider, retains formula-injection protection and redacts Wi-Fi credentials. Android Release Gate run `37832179574` passed; physical share/file-open verification remains pending. |
 | Light-theme contrast | TO VERIFY | Source fix `6e71c0fb28294534b2baf67e1acec7bad251a065` raises the identified normal-text pairs above 4.5:1 and Android Release Gate run `37831350417` passed. Current physical light-theme visual regression remains required before this gate is PASS. |
 | Store listing copy | PASS | See `STORE_LISTING.md` |
 | Play Store app icon | PASS | `store-assets/play_store_icon_512.png` is a valid 32-bit RGBA PNG at 512x512. The prior file had a malformed PNG data stream: System.Drawing could decode it, but Pillow and Play Console rejected it. It was re-encoded without visual redesign in commit `68da0a55295e7f3aef7328a6ac0544f78b9da1fa`; Pillow verification passed, GitHub bytes matched the verified local file, Android Release Gate run `36294091474` passed, and Play Console app `4973757644072737097` accepted the clean asset and saved the Store listing change on 2026-09-27. |
