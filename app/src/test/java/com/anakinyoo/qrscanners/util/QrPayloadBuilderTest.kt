@@ -68,6 +68,16 @@ class QrPayloadBuilderTest {
     }
 
     @Test
+    fun testRequiredFieldsRejectEmptyPayloads() {
+        assertEquals("", QrPayloadBuilder.buildUrl("   "))
+        assertEquals("", QrPayloadBuilder.buildWifi(WifiData(ssid = "")))
+        assertEquals("", QrPayloadBuilder.buildContact(ContactData(name = "")))
+        assertEquals("", QrPayloadBuilder.buildEmail(EmailData(address = "")))
+        assertEquals("", QrPayloadBuilder.buildPhone("  -  "))
+        assertEquals("", QrPayloadBuilder.buildSms(SmsData(number = "")))
+    }
+
+    @Test
     fun testBuildGeo() {
         val geo = GeoData(latitude = 13.7563, longitude = 100.5018)
         val payload = QrPayloadBuilder.buildGeo(geo)

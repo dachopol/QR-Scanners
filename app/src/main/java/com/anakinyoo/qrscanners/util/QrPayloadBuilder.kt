@@ -15,6 +15,7 @@ object QrPayloadBuilder {
 
     fun buildUrl(url: String): String {
         val trimmed = url.trim()
+        if (trimmed.isBlank()) return ""
         return if (!trimmed.startsWith("http://", ignoreCase = true) &&
             !trimmed.startsWith("https://", ignoreCase = true)
         ) {
@@ -25,6 +26,7 @@ object QrPayloadBuilder {
     }
 
     fun buildWifi(wifi: WifiData): String {
+        if (wifi.ssid.isBlank()) return ""
         val type = when (wifi.securityType.uppercase()) {
             "WEP" -> "WEP"
             "NOPASS", "OPEN", "NONE" -> "nopass"
@@ -46,6 +48,13 @@ object QrPayloadBuilder {
     }
 
     fun buildContact(contact: ContactData): String {
+        if (
+            contact.name.isBlank() &&
+            contact.phone.isBlank() &&
+            contact.email.isBlank() &&
+            contact.organization.isBlank() &&
+            contact.title.isBlank()
+        ) return ""
         val sb = StringBuilder()
         sb.append("BEGIN:VCARD\n")
         sb.append("VERSION:3.0\n")
@@ -70,6 +79,7 @@ object QrPayloadBuilder {
     }
 
     fun buildEmail(email: EmailData): String {
+        if (email.address.isBlank()) return ""
         val encodedSubject = try {
             URLEncoder.encode(email.subject, "UTF-8").replace("+", "%20")
         } catch (_: Exception) {
@@ -90,11 +100,13 @@ object QrPayloadBuilder {
 
     fun buildPhone(phone: String): String {
         val cleaned = phone.trim().replace(" ", "").replace("-", "")
+        if (cleaned.isBlank()) return ""
         return "tel:$cleaned"
     }
 
     fun buildSms(sms: SmsData): String {
         val cleanedNumber = sms.number.trim().replace(" ", "").replace("-", "")
+        if (cleanedNumber.isBlank()) return ""
         return if (sms.message.isNotBlank()) {
             "smsto:$cleanedNumber:${sms.message}"
         } else {

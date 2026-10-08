@@ -1480,6 +1480,12 @@ fun GeneratorScreen(
                     isGenerated = true
                 )
             )
+        } else {
+            android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.invalid_qr_input),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
