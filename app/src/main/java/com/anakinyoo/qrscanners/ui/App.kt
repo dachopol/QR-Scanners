@@ -1518,9 +1518,6 @@ fun GeneratorScreen(
                         selected = selectedType == type,
                         onClick = {
                             selectedType = type
-                            if (type == QrType.GEO) {
-                                requestCurrentLocation()
-                            }
                         },
                         label = { Text(label) },
                         modifier = Modifier.testTag("chip_type_${type.name.lowercase()}")
