@@ -47,3 +47,15 @@ Production may be marked ready only after every applicable item above has real e
 - Static/source result: 11 PASS/source-PASS, 3 N/A, 6 TO VERIFY/blocked.
 - Light-theme contrast issue was found and fixed in source at `6e71c0fb28294534b2baf67e1acec7bad251a065`; CI/visual verification is required before marking that gate PASS.
 - Production Ready remains **NO**.
+
+
+## 2026-10-09 current-code CI consolidation
+- Latest code-bearing automated evidence: Android Release Gate run `37832590688` / commit `8fac8f400aa2c15df5f43c2666f67b2c0e8f06e1` — PASS.
+- That revision includes QR required-field validation, real CSV export, CameraX 1.6.2, locale-neutral generated history titles and System-locale restoration; earlier dedicated runs for those code changes also passed.
+- CameraX 1.6.2 dedicated run `37832411397` — PASS.
+- CSV effective-source run `37832179574` — PASS.
+- Generator validation run `37831701910` — PASS.
+- History localization run `37831815248` — PASS.
+- Light-theme contrast run `37831350417` — PASS.
+- Physical QA remains blocked only at the execution-channel level in this chat: the authorized workstation was online/pingable, but Desktop Commander monthly usage was exhausted before ADB could run. This is not evidence that ADB or the phones are offline.
+- Production Ready remains **NO** until current physical regression and Google Play production gates are complete.

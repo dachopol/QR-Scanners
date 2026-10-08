@@ -4,7 +4,7 @@
   "project": "QR Scanners",
   "repository": "dachopol/QR-Scanners",
   "branch": "main",
-  "source_revision": "401ae19aa6311d283ec74673c32c3db208aca972",
+  "source_revision": "9e650181ac1e10280e7da7fb34aa6a2d595a9171",
   "updated_at": "2026-10-09",
   "current": {
     "key": "qa",
@@ -14,10 +14,15 @@
     "evidence_refs": [
       "REAL_DEVICE_EVIDENCE.md",
       "RELEASE_GATE.md",
-      "CHECKPOINT.md",
-      "https://github.com/dachopol/QR-Scanners/issues/1"
+      "PRE_SHIP_20.md",
+      "https://github.com/dachopol/QR-Scanners/issues/1",
+      "https://github.com/dachopol/QR-Scanners/issues/2",
+      "https://github.com/dachopol/QR-Scanners/issues/3",
+      "https://github.com/dachopol/QR-Scanners/issues/4",
+      "https://github.com/dachopol/QR-Scanners/issues/5",
+      "https://github.com/dachopol/QR-Scanners/issues/6"
     ],
-    "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
+    "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
   },
   "steps": [
     {
@@ -100,10 +105,10 @@
       "status": "PASS",
       "evidence_refs": [
         "app/",
-        "README.md",
-        "https://github.com/dachopol/QR-Scanners/actions/runs/37279673023"
+        "gradle/libs.versions.toml",
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37832590688"
       ],
-      "reason": "Current main builds successfully; latest Android Release Gate for HEAD completed successfully."
+      "reason": "Latest current-code automated gate passed after validation, CSV, CameraX 1.6.2 and localization fixes."
     },
     {
       "key": "security",
@@ -126,10 +131,15 @@
       "evidence_refs": [
         "REAL_DEVICE_EVIDENCE.md",
         "RELEASE_GATE.md",
-        "CHECKPOINT.md",
-        "https://github.com/dachopol/QR-Scanners/issues/1"
+        "PRE_SHIP_20.md",
+        "https://github.com/dachopol/QR-Scanners/issues/1",
+        "https://github.com/dachopol/QR-Scanners/issues/2",
+        "https://github.com/dachopol/QR-Scanners/issues/3",
+        "https://github.com/dachopol/QR-Scanners/issues/4",
+        "https://github.com/dachopol/QR-Scanners/issues/5",
+        "https://github.com/dachopol/QR-Scanners/issues/6"
       ],
-      "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
+      "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
     },
     {
       "key": "fix_verify",
@@ -140,7 +150,7 @@
         "https://github.com/dachopol/QR-Scanners/issues/1",
         "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
       ],
-      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and its CI run passed. Physical Android 13+ permission/connection regression is still required before closing the issue."
+      "reason": "All identified source fixes currently pass automated gates; physical UI/camera/Wi-Fi/share/localization regression is still required before closing their Problem Logs."
     },
     {
       "key": "release",
@@ -170,7 +180,7 @@
   ],
   "phase_tracking": {
     "source": "PROJECT.governance.json",
-    "source_revision": "401ae19aa6311d283ec74673c32c3db208aca972",
+    "source_revision": "9e650181ac1e10280e7da7fb34aa6a2d595a9171",
     "current": {
       "key": "qa",
       "index": 9,
@@ -179,10 +189,15 @@
       "evidence_refs": [
         "REAL_DEVICE_EVIDENCE.md",
         "RELEASE_GATE.md",
-        "CHECKPOINT.md",
-        "https://github.com/dachopol/QR-Scanners/issues/1"
+        "PRE_SHIP_20.md",
+        "https://github.com/dachopol/QR-Scanners/issues/1",
+        "https://github.com/dachopol/QR-Scanners/issues/2",
+        "https://github.com/dachopol/QR-Scanners/issues/3",
+        "https://github.com/dachopol/QR-Scanners/issues/4",
+        "https://github.com/dachopol/QR-Scanners/issues/5",
+        "https://github.com/dachopol/QR-Scanners/issues/6"
       ],
-      "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
+      "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
     },
     "steps": [
       {
@@ -265,10 +280,10 @@
         "status": "PASS",
         "evidence_refs": [
           "app/",
-          "README.md",
-          "https://github.com/dachopol/QR-Scanners/actions/runs/37279673023"
+          "gradle/libs.versions.toml",
+          "https://github.com/dachopol/QR-Scanners/actions/runs/37832590688"
         ],
-        "reason": "Current main builds successfully; latest Android Release Gate for HEAD completed successfully."
+        "reason": "Latest current-code automated gate passed after validation, CSV, CameraX 1.6.2 and localization fixes."
       },
       {
         "key": "security",
@@ -291,10 +306,15 @@
         "evidence_refs": [
           "REAL_DEVICE_EVIDENCE.md",
           "RELEASE_GATE.md",
-          "CHECKPOINT.md",
-          "https://github.com/dachopol/QR-Scanners/issues/1"
+          "PRE_SHIP_20.md",
+          "https://github.com/dachopol/QR-Scanners/issues/1",
+          "https://github.com/dachopol/QR-Scanners/issues/2",
+          "https://github.com/dachopol/QR-Scanners/issues/3",
+          "https://github.com/dachopol/QR-Scanners/issues/4",
+          "https://github.com/dachopol/QR-Scanners/issues/5",
+          "https://github.com/dachopol/QR-Scanners/issues/6"
         ],
-        "reason": "v2 has real-device evidence and current v3 CI passes, but v3 physical regression is blocked in this execution path because Desktop Commander monthly usage is exhausted. The device itself was online and pingable; ADB readiness was not tested."
+        "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
       },
       {
         "key": "fix_verify",
@@ -305,7 +325,7 @@
           "https://github.com/dachopol/QR-Scanners/issues/1",
           "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
         ],
-        "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and its CI run passed. Physical Android 13+ permission/connection regression is still required before closing the issue."
+        "reason": "All identified source fixes currently pass automated gates; physical UI/camera/Wi-Fi/share/localization regression is still required before closing their Problem Logs."
       },
       {
         "key": "release",

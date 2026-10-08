@@ -5,11 +5,11 @@
     "branch": "main"
   },
   "current_task_id": "QR-PLAY-PRODUCTION-GATE",
-  "status": "V3_CI_PASS_PHYSICAL_QA_BLOCKED_BY_REMOTE_USAGE",
+  "status": "V3_CURRENT_CODE_CI_PASS_PHYSICAL_QA_BLOCKED_BY_REMOTE_USAGE",
   "last_verified": "2026-10-09",
   "latest_observed_ci": {
-    "run_id": 37824849545,
-    "head_sha": "102b6cac7a900025d255c0d96799c1ce4fb5fa27",
+    "run_id": 37832590688,
+    "head_sha": "8fac8f400aa2c15df5f43c2666f67b2c0e8f06e1",
     "conclusion": "success",
     "passed_steps": [
       "source-of-truth hygiene",
@@ -36,7 +36,13 @@
     "current-main versionCode 2 signed CI artifact 10923177572 verified and published to Play Internal testing",
     "Xiaomi 23078PND5G updated through Google Play to version 1.0 (2), installerPackageName=com.android.vending, MainActivity launched",
     "live-camera exact payload verified on realme RC: QRSCANNERS_LIVE_20260927_V2 persisted as TEXT / QR Code with isGenerated=false",
-    "successful WPA2 Wi-Fi association on realme RC through an authorized temporary Windows Mobile hotspot; Supplicant COMPLETED and RC-owned CONNECTED/VALIDATED network verified with full rollback"
+    "successful WPA2 Wi-Fi association on realme RC through an authorized temporary Windows Mobile hotspot; Supplicant COMPLETED and RC-owned CONNECTED/VALIDATED network verified with full rollback",
+    "QR generator rejects incomplete required fields with TH/EN feedback; CI run 37831701910 passed",
+    "generated history titles are locale-neutral; CI run 37831815248 passed",
+    "real CSV history export source preserves formula-injection protection and Wi-Fi redaction; CI run 37832179574 passed",
+    "CameraX upgraded to 1.6.2; CI run 37832411397 passed",
+    "system locale restoration after leaving TH/EN override; CI run 37832590688 passed",
+    "light-theme contrast source fix; CI run 37831350417 passed"
   ],
   "remaining": [
     "closed test with at least 12 opted-in testers for at least 14 days before Production Access",
@@ -51,25 +57,21 @@
     "wifi_association": "PASS: authorized temporary Windows Mobile hotspot was visible to the realme; RC decoded the WPA2 QR and requested it with WifiNetworkSpecifier; Android/Oplus NetworkRequestDialogActivity displayed the matching access point; after selection the Wi-Fi supplicant reached COMPLETED and dumpsys connectivity reported a CONNECTED/VALIDATED RC-owned Wi-Fi network. Hotspot and power-saving settings were restored, RC request released, saved Wi-Fi automatically recovered, and credential-bearing temporary files/history were removed.",
     "remote_physical_qa": "BLOCKED: DESKTOP-IL7PNGM was online and ping succeeded, but Desktop Commander monthly usage was exhausted before `adb devices -l` could execute. ADB/device readiness was therefore not tested in this attempt."
   },
-  "next_action": "Resume targeted v3 physical regression on an Android 13+ real device when an authorized ADB-capable execution channel is available: verify Nearby Wi-Fi permission prompt/deny/grant, Wi-Fi request/association/cleanup, live scanner, history privacy/persistence and TH/EN switching. Keep Production blocked until closed-test and any applicable monetization gates have evidence.",
+  "next_action": "Resume targeted v3 physical regression on an Android 13+ real device when an authorized ADB-capable execution channel is available: Nearby Wi-Fi prompt deny/grant + association/cleanup; live scanner; rear/front camera; torch; zoom; CameraX lifecycle re-entry; generator invalid-input feedback; CSV share/open; light theme; history privacy/persistence; EN → TH → System switching/date formatting. Keep Production blocked until closed-test and any applicable monetization gates have real evidence.",
   "do_not_claim": "Production ready until all applicable remaining gates have real evidence.",
   "latest_change": {
-    "area": "v3 reliability/privacy hardening",
-    "status": "CI_PASS_PHYSICAL_TO_VERIFY",
+    "area": "v3 release hardening: validation, accessibility, localization, CSV export and CameraX compatibility",
+    "status": "CURRENT_CODE_CI_PASS_PHYSICAL_TO_VERIFY",
     "version_code": 3,
     "changes": [
-      "atomic history persistence",
-      "single active Wi-Fi NetworkCallback ownership",
-      "sensitive clipboard metadata for Wi-Fi passwords",
-      "ML Kit scanner resource cleanup",
-      "reusable/released ToneGenerator",
-      "live preference state for scan actions",
-      "pause live scanner while result sheet is open",
-      "48dp history quick-action targets",
-      "TH/EN language resources packaged together for offline in-app switching",
-      "Android 12+ backup/device-transfer exclusion rules",
-      "Wi-Fi credentials hidden in history previews and redacted from CSV export",
-      "regression tests for history persistence and clipboard privacy"
+      "Android 13+ Nearby Wi-Fi permission and runtime request",
+      "light-theme contrast pairs raised above 4.5:1 target",
+      "required-field validation for QR generator",
+      "locale-neutral generated history titles",
+      "system locale reset when leaving app override",
+      "real text/csv history file export via FileProvider with Wi-Fi redaction and formula-injection protection",
+      "CameraX 1.6.2 compatibility upgrade",
+      "CI path filter to avoid full Android build for docs-only commits"
     ]
   }
 }
