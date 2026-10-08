@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.0",
+  "standard": "Universal Project Governance v1",
+  "project": "QR Scanners",
+  "repository": "dachopol/QR-Scanners",
+  "branch": "main",
+  "source_revision": "36feff194ea57cd0fcf365c9ca2883d6d02c2f57",
+  "updated_at": "2026-10-09",
+  "current": {
+    "key": "fix_verify",
+    "index": 10,
+    "name": "แก้ไขและยืนยันผล",
+    "status": "IN_PROGRESS",
+    "evidence_refs": [
+      "https://github.com/dachopol/QR-Scanners/issues/1",
+      "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+    ],
+    "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+  },
+  "steps": [
+    {
+      "key": "problem",
+      "index": 1,
+      "name": "วิเคราะห์ปัญหา",
+      "status": "AWAITING_VERIFICATION",
+      "evidence_refs": [
+        "README.md",
+        "CHECKPOINT.md"
+      ],
+      "reason": "Core QR/barcode scan/generate use case is implemented and documented, but a dedicated approved Problem/Target User/Success Criteria record is not present."
+    },
+    {
+      "key": "research",
+      "index": 2,
+      "name": "ค้นคว้า/วิจัย",
+      "status": "PASS",
+      "evidence_refs": [
+        "DATA_SAFETY.md",
+        "PRIVACY_POLICY.md",
+        "RELEASE_GATE.md"
+      ],
+      "reason": "Current Android/Google Play requirements were re-verified on 2026-10-09, including API 36 target, Nearby Wi-Fi permission, closed-test gate, and 16 KB compatibility."
+    },
+    {
+      "key": "prd",
+      "index": 3,
+      "name": "กำหนดความต้องการ",
+      "status": "AWAITING_VERIFICATION",
+      "evidence_refs": [
+        "README.md",
+        "TEST_PLAN.md",
+        "PLAY_CONSOLE_CHECKLIST.md"
+      ],
+      "reason": "Functional and release requirements exist across repository documents, but no single approved PRD/traceability document is present."
+    },
+    {
+      "key": "user_flow",
+      "index": 4,
+      "name": "ออกแบบ User Flow",
+      "status": "AWAITING_VERIFICATION",
+      "evidence_refs": [
+        "README.md",
+        "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt"
+      ],
+      "reason": "Implemented navigation and core flows are visible in source, but a dedicated user-flow artifact has not been verified."
+    },
+    {
+      "key": "ui_ux",
+      "index": 5,
+      "name": "ออกแบบ UX/UI",
+      "status": "PASS",
+      "evidence_refs": [
+        "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt",
+        "store-assets/screenshots/th/",
+        "RELEASE_GATE.md"
+      ],
+      "reason": "Responsive mobile/wide Compose UI, TH/EN resources, store screenshots, launcher/splash branding, and tap-target hardening have recorded evidence."
+    },
+    {
+      "key": "architecture",
+      "index": 6,
+      "name": "ออกแบบสถาปัตยกรรม",
+      "status": "PASS",
+      "evidence_refs": [
+        "README.md",
+        "app/build.gradle.kts",
+        "gradle/libs.versions.toml",
+        "app/src/main/AndroidManifest.xml"
+      ],
+      "reason": "Kotlin/Jetpack Compose, CameraX, ML Kit barcode scanning, local app-private history, Photo Picker and Android system handoffs are verified in source."
+    },
+    {
+      "key": "development",
+      "index": 7,
+      "name": "พัฒนาแอป",
+      "status": "PASS",
+      "evidence_refs": [
+        "app/",
+        "README.md",
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37279673023"
+      ],
+      "reason": "Current main builds successfully; latest Android Release Gate for HEAD completed successfully."
+    },
+    {
+      "key": "security",
+      "index": 8,
+      "name": "ความปลอดภัย",
+      "status": "PASS",
+      "evidence_refs": [
+        "DATA_SAFETY.md",
+        "PRIVACY_POLICY.md",
+        "SIGNING_EVIDENCE.md",
+        "app/src/main/AndroidManifest.xml"
+      ],
+      "reason": "Backup restrictions, local-data handling, ML Kit disclosure, sensitive Wi-Fi clipboard/history hardening, release signing, and least-necessary media permission strategy are documented and verified."
+    },
+    {
+      "key": "qa",
+      "index": 9,
+      "name": "ทดสอบ QA",
+      "status": "AWAITING_VERIFICATION",
+      "evidence_refs": [
+        "REAL_DEVICE_EVIDENCE.md",
+        "RELEASE_GATE.md",
+        "CHECKPOINT.md"
+      ],
+      "reason": "Extensive real-device v2 evidence exists and v3 CI passes, but current v3 physical regression remains unverified."
+    },
+    {
+      "key": "fix_verify",
+      "index": 10,
+      "name": "แก้ไขและยืนยันผล",
+      "status": "IN_PROGRESS",
+      "evidence_refs": [
+        "https://github.com/dachopol/QR-Scanners/issues/1",
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+      ],
+      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+    },
+    {
+      "key": "release",
+      "index": 11,
+      "name": "เผยแพร่",
+      "status": "BLOCKED",
+      "evidence_refs": [
+        "RELEASE_GATE.md",
+        "CHECKPOINT.md",
+        "PLAY_CONSOLE_CHECKLIST.md"
+      ],
+      "reason": "Internal testing/Play delivery are verified, but Production Access remains blocked by the required 12-testers/14-day closed test and production monetization configuration if ads/Ad-Free are enabled."
+    },
+    {
+      "key": "maintenance",
+      "index": 12,
+      "name": "บำรุงรักษา",
+      "status": "IN_PROGRESS",
+      "evidence_refs": [
+        "task_state.json",
+        "CHECKPOINT.md",
+        "RELEASE_GATE.md",
+        "https://github.com/dachopol/QR-Scanners/issues/1"
+      ],
+      "reason": "Checkpoint, release gate, task state, CI and Problem Log are active; maintenance remains ongoing until production gates and post-release monitoring are complete."
+    }
+  ],
+  "phase_tracking": {
+    "source": "PROJECT.governance.json",
+    "source_revision": "36feff194ea57cd0fcf365c9ca2883d6d02c2f57",
+    "current": {
+      "key": "fix_verify",
+      "index": 10,
+      "name": "แก้ไขและยืนยันผล",
+      "status": "IN_PROGRESS",
+      "evidence_refs": [
+        "https://github.com/dachopol/QR-Scanners/issues/1",
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+      ],
+      "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+    },
+    "steps": [
+      {
+        "key": "problem",
+        "index": 1,
+        "name": "วิเคราะห์ปัญหา",
+        "status": "AWAITING_VERIFICATION",
+        "evidence_refs": [
+          "README.md",
+          "CHECKPOINT.md"
+        ],
+        "reason": "Core QR/barcode scan/generate use case is implemented and documented, but a dedicated approved Problem/Target User/Success Criteria record is not present."
+      },
+      {
+        "key": "research",
+        "index": 2,
+        "name": "ค้นคว้า/วิจัย",
+        "status": "PASS",
+        "evidence_refs": [
+          "DATA_SAFETY.md",
+          "PRIVACY_POLICY.md",
+          "RELEASE_GATE.md"
+        ],
+        "reason": "Current Android/Google Play requirements were re-verified on 2026-10-09, including API 36 target, Nearby Wi-Fi permission, closed-test gate, and 16 KB compatibility."
+      },
+      {
+        "key": "prd",
+        "index": 3,
+        "name": "กำหนดความต้องการ",
+        "status": "AWAITING_VERIFICATION",
+        "evidence_refs": [
+          "README.md",
+          "TEST_PLAN.md",
+          "PLAY_CONSOLE_CHECKLIST.md"
+        ],
+        "reason": "Functional and release requirements exist across repository documents, but no single approved PRD/traceability document is present."
+      },
+      {
+        "key": "user_flow",
+        "index": 4,
+        "name": "ออกแบบ User Flow",
+        "status": "AWAITING_VERIFICATION",
+        "evidence_refs": [
+          "README.md",
+          "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt"
+        ],
+        "reason": "Implemented navigation and core flows are visible in source, but a dedicated user-flow artifact has not been verified."
+      },
+      {
+        "key": "ui_ux",
+        "index": 5,
+        "name": "ออกแบบ UX/UI",
+        "status": "PASS",
+        "evidence_refs": [
+          "app/src/main/java/com/anakinyoo/qrscanners/ui/App.kt",
+          "store-assets/screenshots/th/",
+          "RELEASE_GATE.md"
+        ],
+        "reason": "Responsive mobile/wide Compose UI, TH/EN resources, store screenshots, launcher/splash branding, and tap-target hardening have recorded evidence."
+      },
+      {
+        "key": "architecture",
+        "index": 6,
+        "name": "ออกแบบสถาปัตยกรรม",
+        "status": "PASS",
+        "evidence_refs": [
+          "README.md",
+          "app/build.gradle.kts",
+          "gradle/libs.versions.toml",
+          "app/src/main/AndroidManifest.xml"
+        ],
+        "reason": "Kotlin/Jetpack Compose, CameraX, ML Kit barcode scanning, local app-private history, Photo Picker and Android system handoffs are verified in source."
+      },
+      {
+        "key": "development",
+        "index": 7,
+        "name": "พัฒนาแอป",
+        "status": "PASS",
+        "evidence_refs": [
+          "app/",
+          "README.md",
+          "https://github.com/dachopol/QR-Scanners/actions/runs/37279673023"
+        ],
+        "reason": "Current main builds successfully; latest Android Release Gate for HEAD completed successfully."
+      },
+      {
+        "key": "security",
+        "index": 8,
+        "name": "ความปลอดภัย",
+        "status": "PASS",
+        "evidence_refs": [
+          "DATA_SAFETY.md",
+          "PRIVACY_POLICY.md",
+          "SIGNING_EVIDENCE.md",
+          "app/src/main/AndroidManifest.xml"
+        ],
+        "reason": "Backup restrictions, local-data handling, ML Kit disclosure, sensitive Wi-Fi clipboard/history hardening, release signing, and least-necessary media permission strategy are documented and verified."
+      },
+      {
+        "key": "qa",
+        "index": 9,
+        "name": "ทดสอบ QA",
+        "status": "AWAITING_VERIFICATION",
+        "evidence_refs": [
+          "REAL_DEVICE_EVIDENCE.md",
+          "RELEASE_GATE.md",
+          "CHECKPOINT.md"
+        ],
+        "reason": "Extensive real-device v2 evidence exists and v3 CI passes, but current v3 physical regression remains unverified."
+      },
+      {
+        "key": "fix_verify",
+        "index": 10,
+        "name": "แก้ไขและยืนยันผล",
+        "status": "IN_PROGRESS",
+        "evidence_refs": [
+          "https://github.com/dachopol/QR-Scanners/issues/1",
+          "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
+        ],
+        "reason": "Android 13+ Nearby Wi-Fi permission fix is merged and CI passes; physical permission/connection regression is still required before issue closure."
+      },
+      {
+        "key": "release",
+        "index": 11,
+        "name": "เผยแพร่",
+        "status": "BLOCKED",
+        "evidence_refs": [
+          "RELEASE_GATE.md",
+          "CHECKPOINT.md",
+          "PLAY_CONSOLE_CHECKLIST.md"
+        ],
+        "reason": "Internal testing/Play delivery are verified, but Production Access remains blocked by the required 12-testers/14-day closed test and production monetization configuration if ads/Ad-Free are enabled."
+      },
+      {
+        "key": "maintenance",
+        "index": 12,
+        "name": "บำรุงรักษา",
+        "status": "IN_PROGRESS",
+        "evidence_refs": [
+          "task_state.json",
+          "CHECKPOINT.md",
+          "RELEASE_GATE.md",
+          "https://github.com/dachopol/QR-Scanners/issues/1"
+        ],
+        "reason": "Checkpoint, release gate, task state, CI and Problem Log are active; maintenance remains ongoing until production gates and post-release monitoring are complete."
+      }
+    ]
+  },
+  "release_rule": "Production ready may be claimed only when all applicable GAP / TO VERIFY / BLOCKED items have real evidence and current Build/Test/Runtime/Security verification passes."
+}
