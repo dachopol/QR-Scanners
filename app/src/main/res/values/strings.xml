@@ -19,6 +19,7 @@
     <string name="switch_camera">Switch Camera</string>
     <string name="no_code_found_in_image">No QR or barcode found in the selected image.</string>
     <string name="image_scan_error">Failed to analyze image.</string>
+    <string name="camera_start_error">Unable to start the camera. You can still scan an image from the gallery.</string>
 
     <!-- Result Screen / Dialog -->
     <string name="action_open_browser">Open in Browser</string>
