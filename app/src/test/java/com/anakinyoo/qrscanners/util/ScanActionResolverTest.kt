@@ -77,6 +77,26 @@ class ScanActionResolverTest {
     }
 
     @Test
+    fun testVCardEscapedTextRoundTrip() {
+        val original = com.anakinyoo.qrscanners.model.ContactData(
+            name = "Doe; Jane, PhD",
+            phone = "+1;555",
+            email = "jane@example.com",
+            organization = "Acme, Inc.\nBangkok",
+            title = "R&D; Lead"
+        )
+        val payload = QrPayloadBuilder.buildContact(original)
+        val parsed = ScanActionResolver.parseContact(payload)
+
+        assertEquals(original.name, parsed.name)
+        assertEquals(original.phone, parsed.phone)
+        assertEquals(original.email, parsed.email)
+        assertEquals(original.organization, parsed.organization)
+        assertEquals(original.title, parsed.title)
+        assertEquals("a\\b;c,d\ne", ScanActionResolver.unescapeVCardText("a\\\\b\\;c\\,d\\ne"))
+    }
+
+    @Test
     fun testResolvePhone() {
         val phoneRaw = "tel:+66812345678"
         assertEquals(QrType.PHONE, ScanActionResolver.resolveType(phoneRaw))

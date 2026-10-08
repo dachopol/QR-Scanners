@@ -139,6 +139,48 @@ object ScanActionResolver {
         return fields
     }
 
+    internal fun unescapeVCardText(value: String): String {
+        val result = StringBuilder()
+        var index = 0
+        while (index < value.length) {
+            val ch = value[index]
+            if (ch == '\\' && index + 1 < value.length) {
+                when (val next = value[index + 1]) {
+                    'n', 'N' -> result.append('\n')
+                    '\\', ';', ',' -> result.append(next)
+                    else -> result.append(next)
+                }
+                index += 2
+            } else {
+                result.append(ch)
+                index++
+            }
+        }
+        return result.toString()
+    }
+
+    private fun splitVCardComponents(value: String): List<String> {
+        val result = mutableListOf<String>()
+        val current = StringBuilder()
+        var escaped = false
+        for (ch in value) {
+            when {
+                escaped -> {
+                    current.append('\\').append(ch)
+                    escaped = false
+                }
+                ch == '\\' -> escaped = true
+                ch == ';' -> {
+                    result.add(current.toString())
+                    current.setLength(0)
+                }
+                else -> current.append(ch)
+            }
+        }
+        if (escaped) current.append('\\')
+        result.add(current.toString())
+        return result
+    }
     fun parseContact(raw: String): ContactData {
         var name = ""
         var phone = ""
@@ -152,21 +194,21 @@ object ScanActionResolver {
                 val trimmed = line.trim()
                 val upper = trimmed.uppercase()
                 when {
-                    upper.startsWith("FN:") -> name = trimmed.substring(3).trim()
+                    upper.startsWith("FN:") -> name = unescapeVCardText(trimmed.substring(3).trim())
                     upper.startsWith("N:") && name.isBlank() -> {
-                        val parts = trimmed.substring(2).split(";")
+                        val parts = splitVCardComponents(trimmed.substring(2)).map(::unescapeVCardText)
                         name = parts.filter { it.isNotBlank() }.reversed().joinToString(" ")
                     }
                     upper.startsWith("TEL") -> {
                         val num = trimmed.substringAfter(":")
-                        if (phone.isBlank()) phone = num.trim()
+                        if (phone.isBlank()) phone = unescapeVCardText(num.trim())
                     }
                     upper.startsWith("EMAIL") -> {
                         val mail = trimmed.substringAfter(":")
-                        if (email.isBlank()) email = mail.trim()
+                        if (email.isBlank()) email = unescapeVCardText(mail.trim())
                     }
-                    upper.startsWith("ORG:") -> org = trimmed.substring(4).trim()
-                    upper.startsWith("TITLE:") -> title = trimmed.substring(6).trim()
+                    upper.startsWith("ORG:") -> org = unescapeVCardText(trimmed.substring(4).trim())
+                    upper.startsWith("TITLE:") -> title = unescapeVCardText(trimmed.substring(6).trim())
                 }
             }
         } else if (raw.startsWith("mecard:", ignoreCase = true)) {

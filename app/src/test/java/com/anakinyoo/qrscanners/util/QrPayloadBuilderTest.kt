@@ -47,6 +47,25 @@ class QrPayloadBuilderTest {
     }
 
     @Test
+    fun testBuildContactEscapesVCardText() {
+        val payload = QrPayloadBuilder.buildContact(
+            ContactData(
+                name = "Doe; Jane, PhD",
+                phone = "+1;555",
+                email = "jane@example.com",
+                organization = "Acme, Inc.\nBangkok",
+                title = "R&D; Lead"
+            )
+        )
+
+        assertTrue(payload.contains("FN:Doe\\; Jane\\, PhD"))
+        assertTrue(payload.contains("TEL;TYPE=CELL:+1\\;555"))
+        assertTrue(payload.contains("ORG:Acme\\, Inc.\\nBangkok"))
+        assertTrue(payload.contains("TITLE:R&D\\; Lead"))
+        assertEquals("a\\\\b\\;c\\,d\\ne", QrPayloadBuilder.escapeVCardText("a\\b;c,d\ne"))
+    }
+
+    @Test
     fun testBuildEmail() {
         val email = EmailData(address = "test@domain.com", subject = "Hi there", body = "Nice QR!")
         val payload = QrPayloadBuilder.buildEmail(email)

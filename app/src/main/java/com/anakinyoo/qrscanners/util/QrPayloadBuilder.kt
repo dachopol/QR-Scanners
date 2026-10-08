@@ -47,6 +47,15 @@ object QrPayloadBuilder {
             .replace("\"", "\\\"")
     }
 
+    internal fun escapeVCardText(value: String): String {
+        return value
+            .replace("\\", "\\\\")
+            .replace("\r\n", "\\n")
+            .replace("\r", "\\n")
+            .replace("\n", "\\n")
+            .replace(";", "\\;")
+            .replace(",", "\\,")
+    }
     fun buildContact(contact: ContactData): String {
         if (
             contact.name.isBlank() &&
@@ -59,20 +68,21 @@ object QrPayloadBuilder {
         sb.append("BEGIN:VCARD\n")
         sb.append("VERSION:3.0\n")
         if (contact.name.isNotBlank()) {
-            sb.append("FN:${contact.name.trim()}\n")
-            sb.append("N:;${contact.name.trim()};;;\n")
+            val name = escapeVCardText(contact.name.trim())
+            sb.append("FN:$name\n")
+            sb.append("N:;$name;;;\n")
         }
         if (contact.phone.isNotBlank()) {
-            sb.append("TEL;TYPE=CELL:${contact.phone.trim()}\n")
+            sb.append("TEL;TYPE=CELL:${escapeVCardText(contact.phone.trim())}\n")
         }
         if (contact.email.isNotBlank()) {
-            sb.append("EMAIL:${contact.email.trim()}\n")
+            sb.append("EMAIL:${escapeVCardText(contact.email.trim())}\n")
         }
         if (contact.organization.isNotBlank()) {
-            sb.append("ORG:${contact.organization.trim()}\n")
+            sb.append("ORG:${escapeVCardText(contact.organization.trim())}\n")
         }
         if (contact.title.isNotBlank()) {
-            sb.append("TITLE:${contact.title.trim()}\n")
+            sb.append("TITLE:${escapeVCardText(contact.title.trim())}\n")
         }
         sb.append("END:VCARD")
         return sb.toString()
