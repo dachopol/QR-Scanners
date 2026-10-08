@@ -257,19 +257,32 @@ object ScanActionResolver {
     }
 
     fun parseSms(raw: String): SmsData {
-        // smsto:123456:message or sms:123456?body=message
+        // smsto:123456:message or sms:/mms:123456?body=message
         if (raw.startsWith("smsto:", ignoreCase = true)) {
             val withoutPrefix = raw.substring(6)
             val number = withoutPrefix.substringBefore(":")
             val message = if (withoutPrefix.contains(":")) withoutPrefix.substringAfter(":") else ""
-            return SmsData(number = number, message = message)
-        } else if (raw.startsWith("sms:", ignoreCase = true)) {
-            val uri = Uri.parse(raw)
-            val number = uri.schemeSpecificPart?.substringBefore("?") ?: ""
-            val message = uri.getQueryParameter("body") ?: ""
+            return SmsData(number = number.trim(), message = message)
+        }
+
+        val prefixLength = when {
+            raw.startsWith("sms:", ignoreCase = true) -> 4
+            raw.startsWith("mms:", ignoreCase = true) -> 4
+            else -> 0
+        }
+        if (prefixLength > 0) {
+            val schemeSpecific = raw.substring(prefixLength)
+            val number = decodeUrlComponent(schemeSpecific.substringBefore("?")).trim()
+            val query = schemeSpecific.substringAfter("?", "")
+            val message = query.split("&")
+                .firstOrNull { it.substringBefore("=").equals("body", ignoreCase = true) }
+                ?.substringAfter("=", "")
+                ?.let(::decodeUrlComponent)
+                .orEmpty()
             return SmsData(number = number, message = message)
         }
-        return SmsData(number = raw)
+
+        return SmsData(number = raw.trim())
     }
 
     fun parseGeoOrNull(raw: String): GeoData? {

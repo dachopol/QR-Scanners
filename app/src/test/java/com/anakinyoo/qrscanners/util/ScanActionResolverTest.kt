@@ -113,6 +113,19 @@ class ScanActionResolverTest {
     }
 
     @Test
+    fun testResolveSmsQueryAndMms() {
+        val sms = ScanActionResolver.parseSms("sms:+66812345678?body=Hello%20World%20%26%20QR")
+        assertEquals("+66812345678", sms.number)
+        assertEquals("Hello World & QR", sms.message)
+        assertEquals(QrType.SMS, ScanActionResolver.resolveType("sms:+66812345678?body=Hello"))
+
+        val mms = ScanActionResolver.parseSms("mms:+66812345678?body=Photo%20ready")
+        assertEquals("+66812345678", mms.number)
+        assertEquals("Photo ready", mms.message)
+        assertEquals(QrType.SMS, ScanActionResolver.resolveType("mms:+66812345678?body=Photo"))
+    }
+
+    @Test
     fun testResolveGeo() {
         val geoRaw = "geo:13.7563,100.5018"
         assertEquals(QrType.GEO, ScanActionResolver.resolveType(geoRaw))
