@@ -1464,12 +1464,18 @@ fun GeneratorScreen(
             val displayTitle = when (selectedType) {
                 QrType.TEXT -> payload.take(30)
                 QrType.URL -> payload
-                QrType.WIFI -> "Wi-Fi: $wifiSsid"
-                QrType.CONTACT -> if (contactName.isNotBlank()) contactName else "Contact"
-                QrType.EMAIL -> "Email: $emailAddress"
-                QrType.PHONE -> "Phone: $phoneNumber"
-                QrType.SMS -> "SMS: $smsNumber"
-                QrType.GEO -> "Location: $geoLat, $geoLng"
+                QrType.WIFI -> wifiSsid.trim()
+                QrType.CONTACT -> listOf(
+                    contactName,
+                    contactPhone,
+                    contactEmail,
+                    contactOrg,
+                    contactTitle
+                ).firstOrNull { it.isNotBlank() }?.trim().orEmpty()
+                QrType.EMAIL -> emailAddress.trim()
+                QrType.PHONE -> phoneNumber.trim()
+                QrType.SMS -> smsNumber.trim()
+                QrType.GEO -> "$geoLat, $geoLng"
             }
             historyStore.addRecord(
                 HistoryRecord(
