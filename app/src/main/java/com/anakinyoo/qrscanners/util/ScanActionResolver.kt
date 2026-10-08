@@ -272,7 +272,7 @@ object ScanActionResolver {
         }
         if (prefixLength > 0) {
             val schemeSpecific = raw.substring(prefixLength)
-            val number = decodeUrlComponent(schemeSpecific.substringBefore("?")).trim()
+            val number = decodeUrlComponentPreservingPlus(schemeSpecific.substringBefore("?")).trim()
             val query = schemeSpecific.substringAfter("?", "")
             val message = query.split("&")
                 .firstOrNull { it.substringBefore("=").equals("body", ignoreCase = true) }
@@ -380,6 +380,10 @@ object ScanActionResolver {
         URLDecoder.decode(value, "UTF-8")
     } catch (_: Exception) {
         value
+    }
+
+    private fun decodeUrlComponentPreservingPlus(value: String): String {
+        return decodeUrlComponent(value.replace("+", "%2B"))
     }
 
     fun parseGeo(raw: String): GeoData {

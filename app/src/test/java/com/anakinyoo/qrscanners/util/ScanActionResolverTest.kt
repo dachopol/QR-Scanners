@@ -118,6 +118,10 @@ class ScanActionResolverTest {
         assertEquals("+66812345678", sms.number)
         assertEquals("Hello World & QR", sms.message)
         assertEquals(QrType.SMS, ScanActionResolver.resolveType("sms:+66812345678?body=Hello"))
+        assertEquals(
+            "+66812345678",
+            ScanActionResolver.parseSms("sms:%2B66812345678?body=Encoded").number
+        )
 
         val mms = ScanActionResolver.parseSms("mms:+66812345678?body=Photo%20ready")
         assertEquals("+66812345678", mms.number)
