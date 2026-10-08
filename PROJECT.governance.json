@@ -4,25 +4,18 @@
   "project": "QR Scanners",
   "repository": "dachopol/QR-Scanners",
   "branch": "main",
-  "source_revision": "9e650181ac1e10280e7da7fb34aa6a2d595a9171",
+  "source_revision": "0aa910fcbab3dc8051d242d97e9d1badede1378d",
   "updated_at": "2026-10-09",
   "current": {
-    "key": "qa",
-    "index": 9,
-    "name": "ทดสอบ QA",
-    "status": "BLOCKED",
+    "key": "fix_verify",
+    "index": 10,
+    "name": "แก้ไขและยืนยันผล",
+    "status": "IN_PROGRESS",
     "evidence_refs": [
-      "REAL_DEVICE_EVIDENCE.md",
-      "RELEASE_GATE.md",
-      "PRE_SHIP_20.md",
       "https://github.com/dachopol/QR-Scanners/issues/1",
-      "https://github.com/dachopol/QR-Scanners/issues/2",
-      "https://github.com/dachopol/QR-Scanners/issues/3",
-      "https://github.com/dachopol/QR-Scanners/issues/4",
-      "https://github.com/dachopol/QR-Scanners/issues/5",
-      "https://github.com/dachopol/QR-Scanners/issues/6"
+      "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
     ],
-    "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
+    "reason": "FTP and vCard fixes passed CI. SMS root-cause correction plus later location, generator and camera safety fixes are in current HEAD and await run 37834529910."
   },
   "steps": [
     {
@@ -102,13 +95,11 @@
       "key": "development",
       "index": 7,
       "name": "พัฒนาแอป",
-      "status": "PASS",
+      "status": "IN_PROGRESS",
       "evidence_refs": [
-        "app/",
-        "gradle/libs.versions.toml",
-        "https://github.com/dachopol/QR-Scanners/actions/runs/37832590688"
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37834529910"
       ],
-      "reason": "Latest current-code automated gate passed after validation, CSV, CameraX 1.6.2 and localization fixes."
+      "reason": "Current HEAD includes additional core-flow, privacy and error-state fixes. Android Release Gate run 37834529910 is still in progress."
     },
     {
       "key": "security",
@@ -139,18 +130,18 @@
         "https://github.com/dachopol/QR-Scanners/issues/5",
         "https://github.com/dachopol/QR-Scanners/issues/6"
       ],
-      "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
+      "reason": "Current automated gate is still running and physical regression remains blocked by the exhausted Desktop Commander execution quota. The authorized workstation itself was online and pingable."
     },
     {
       "key": "fix_verify",
       "index": 10,
       "name": "แก้ไขและยืนยันผล",
-      "status": "AWAITING_VERIFICATION",
+      "status": "IN_PROGRESS",
       "evidence_refs": [
         "https://github.com/dachopol/QR-Scanners/issues/1",
         "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
       ],
-      "reason": "All identified source fixes currently pass automated gates; physical UI/camera/Wi-Fi/share/localization regression is still required before closing their Problem Logs."
+      "reason": "FTP and vCard fixes passed CI. SMS root-cause correction plus later location, generator and camera safety fixes are in current HEAD and await run 37834529910."
     },
     {
       "key": "release",
@@ -180,24 +171,17 @@
   ],
   "phase_tracking": {
     "source": "PROJECT.governance.json",
-    "source_revision": "9e650181ac1e10280e7da7fb34aa6a2d595a9171",
+    "source_revision": "0aa910fcbab3dc8051d242d97e9d1badede1378d",
     "current": {
-      "key": "qa",
-      "index": 9,
-      "name": "ทดสอบ QA",
-      "status": "BLOCKED",
+      "key": "fix_verify",
+      "index": 10,
+      "name": "แก้ไขและยืนยันผล",
+      "status": "IN_PROGRESS",
       "evidence_refs": [
-        "REAL_DEVICE_EVIDENCE.md",
-        "RELEASE_GATE.md",
-        "PRE_SHIP_20.md",
         "https://github.com/dachopol/QR-Scanners/issues/1",
-        "https://github.com/dachopol/QR-Scanners/issues/2",
-        "https://github.com/dachopol/QR-Scanners/issues/3",
-        "https://github.com/dachopol/QR-Scanners/issues/4",
-        "https://github.com/dachopol/QR-Scanners/issues/5",
-        "https://github.com/dachopol/QR-Scanners/issues/6"
+        "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
       ],
-      "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
+      "reason": "FTP and vCard fixes passed CI. SMS root-cause correction plus later location, generator and camera safety fixes are in current HEAD and await run 37834529910."
     },
     "steps": [
       {
@@ -277,13 +261,11 @@
         "key": "development",
         "index": 7,
         "name": "พัฒนาแอป",
-        "status": "PASS",
+        "status": "IN_PROGRESS",
         "evidence_refs": [
-          "app/",
-          "gradle/libs.versions.toml",
-          "https://github.com/dachopol/QR-Scanners/actions/runs/37832590688"
+          "https://github.com/dachopol/QR-Scanners/actions/runs/37834529910"
         ],
-        "reason": "Latest current-code automated gate passed after validation, CSV, CameraX 1.6.2 and localization fixes."
+        "reason": "Current HEAD includes additional core-flow, privacy and error-state fixes. Android Release Gate run 37834529910 is still in progress."
       },
       {
         "key": "security",
@@ -314,18 +296,18 @@
           "https://github.com/dachopol/QR-Scanners/issues/5",
           "https://github.com/dachopol/QR-Scanners/issues/6"
         ],
-        "reason": "Current code passes automated release gates, but current physical regression is blocked by the exhausted Desktop Commander execution quota; the connected workstation itself was online and pingable."
+        "reason": "Current automated gate is still running and physical regression remains blocked by the exhausted Desktop Commander execution quota. The authorized workstation itself was online and pingable."
       },
       {
         "key": "fix_verify",
         "index": 10,
         "name": "แก้ไขและยืนยันผล",
-        "status": "AWAITING_VERIFICATION",
+        "status": "IN_PROGRESS",
         "evidence_refs": [
           "https://github.com/dachopol/QR-Scanners/issues/1",
           "https://github.com/dachopol/QR-Scanners/actions/runs/37279618439"
         ],
-        "reason": "All identified source fixes currently pass automated gates; physical UI/camera/Wi-Fi/share/localization regression is still required before closing their Problem Logs."
+        "reason": "FTP and vCard fixes passed CI. SMS root-cause correction plus later location, generator and camera safety fixes are in current HEAD and await run 37834529910."
       },
       {
         "key": "release",

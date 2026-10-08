@@ -59,3 +59,14 @@ Production may be marked ready only after every applicable item above has real e
 - Light-theme contrast run `37831350417` — PASS.
 - Physical QA remains blocked only at the execution-channel level in this chat: the authorized workstation was online/pingable, but Desktop Commander monthly usage was exhausted before ADB could run. This is not evidence that ADB or the phones are offline.
 - Production Ready remains **NO** until current physical regression and Google Play production gates are complete.
+
+
+## 2026-10-09 current HEAD corrective gate
+- Current code HEAD before this docs-only checkpoint: `0aa910fcbab3dc8051d242d97e9d1badede1378d`.
+- FTP URL normalization CI: PASS (run 37833321925).
+- vCard 3.0 escaping/round-trip CI: PASS (run 37833512215).
+- Safe external-map intent flow CI: PASS (run 37833676737).
+- SMS/MMS first parser run failed because URLDecoder converted the literal plus sign in international numbers; RCA is recorded in Issue #11 and corrective code is in HEAD.
+- A later run exposed a separate locale-resource parity defect: TH had camera_start_error while EN did not; RCA is recorded in Issue #14 and current HEAD includes the English resource.
+- Current corrective Android Release Gate run 37834529910: IN PROGRESS at latest check; source hygiene PASS and Unit/Lint/Build still running.
+- Do not mark current HEAD or Production Ready until this run and required physical gates pass.
