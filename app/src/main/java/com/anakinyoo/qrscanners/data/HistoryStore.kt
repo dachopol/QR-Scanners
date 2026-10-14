@@ -18,10 +18,24 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
 
+/** Internal fault seam for deterministic no-device I/O regression tests only. */
+internal enum class HistoryIoStage {
+    BEFORE_READ, BEFORE_BACKUP_START, BEFORE_BACKUP_WRITE,
+    BEFORE_PERSIST_START, BEFORE_PERSIST_WRITE, BEFORE_DELETE
+}
+
+internal fun interface HistoryFaultInjector {
+    fun before(stage: HistoryIoStage)
+}
+
 /** History stays fail-closed when unreadable content cannot be safely preserved. */
 enum class HistoryReadStatus { LOADING, READY, RECOVERY_SAVED, BLOCKED }
 
-class HistoryStore(context: Context) {
+class HistoryStore internal constructor(
+    context: Context,
+    private val faultInjector: HistoryFaultInjector
+) {
+    constructor(context: Context) : this(context, HistoryFaultInjector { _ -> })
 
     private val filesDir = context.applicationContext.filesDir
     private val file = File(filesDir, "history_records.json")
@@ -67,11 +81,13 @@ class HistoryStore(context: Context) {
             ) continue
             val snapshot = AtomicFile(target)
             val output = try {
+                faultInjector.before(HistoryIoStage.BEFORE_BACKUP_START)
                 snapshot.startWrite()
             } catch (_: Exception) {
                 return false
             }
             try {
+                faultInjector.before(HistoryIoStage.BEFORE_BACKUP_WRITE)
                 output.write(original)
                 snapshot.finishWrite(output)
                 return target.exists() && target.readBytes().contentEquals(original)
@@ -87,6 +103,7 @@ class HistoryStore(context: Context) {
         mutex.withLock {
             var original: ByteArray? = null
             try {
+                faultInjector.before(HistoryIoStage.BEFORE_READ)
                 original = atomicFile.openRead().use { it.readBytes() }
                 val jsonArray = JSONArray(String(original, Charsets.UTF_8))
                 val recovered = mutableListOf<HistoryRecord>()
@@ -182,11 +199,13 @@ class HistoryStore(context: Context) {
             })
         }
         val output = try {
+            faultInjector.before(HistoryIoStage.BEFORE_PERSIST_START)
             atomicFile.startWrite()
         } catch (_: Exception) {
             return false
         }
         return try {
+            faultInjector.before(HistoryIoStage.BEFORE_PERSIST_WRITE)
             output.write(array.toString().toByteArray(Charsets.UTF_8))
             atomicFile.finishWrite(output)
             true
@@ -255,6 +274,7 @@ class HistoryStore(context: Context) {
             loaded.await()
             mutex.withLock {
                 try {
+                    faultInjector.before(HistoryIoStage.BEFORE_DELETE)
                     atomicFile.delete()
                     val historyGone = listOf(
                         file,
