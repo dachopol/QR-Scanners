@@ -249,6 +249,82 @@ class HistoryStoreTest {
     }
 
     @Test
+    fun malformedUtf8BytesPreserveExactOriginalBeforeAnyRewrite() = runBlocking {
+        val validJson = validArray("UTF8_PROBE")
+        val markerIndex = validJson.indexOf("UTF8_PROBE")
+        assertTrue(markerIndex >= 0)
+        // Two bytes that Android's permissive UTF-8 conversion would mangle.
+        val original = validJson.substring(0, markerIndex).toByteArray(Charsets.UTF_8) +
+            byteArrayOf(0xC3.toByte(), 0x28) +
+            validJson.substring(markerIndex + "UTF8_PROBE".length).toByteArray(Charsets.UTF_8)
+        base.writeBytes(original)
+
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.RECOVERY_SAVED)
+        assertTrue(store.records.value.isEmpty())
+        assertTrue(base.readBytes().contentEquals(original))
+        assertTrue(recoveryFiles().single().readBytes().contentEquals(original))
+
+        store.addRecord(
+            HistoryRecord(
+                content = "SYNTHETIC_AFTER_BAD_UTF8",
+                displayTitle = "Synthetic",
+                qrType = QrType.TEXT
+            )
+        )
+        withTimeout(3_000) {
+            while (!base.readText().contains("SYNTHETIC_AFTER_BAD_UTF8")) delay(20)
+        }
+        assertTrue(recoveryFiles().single().readBytes().contentEquals(original))
+    }
+
+    @Test
+    fun validThaiUtf8HistoryDoesNotCreateRecoverySnapshot() = runBlocking {
+        val original = validArray("ทดสอบประวัติภาษาไทย ✅")
+        base.writeText(original, Charsets.UTF_8)
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.READY)
+        assertEquals("ทดสอบประวัติภาษาไทย ✅", store.records.value.single().content)
+        assertTrue(recoveryFiles().isEmpty())
+    }
+
+    @Test
+    fun fractionalTimestampIsRejectedWithoutLosingOtherRecords() = runBlocking {
+        val bad = JSONObject()
+            .put("id", "fractional-timestamp")
+            .put("content", "MUST_NOT_TRUNCATE")
+            .put("qrType", "TEXT")
+            .put("timestamp", 1_724_000_000_000.5)
+        val original = JSONArray(validArray()).put(bad).toString()
+        base.writeText(original)
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.RECOVERY_SAVED)
+
+        assertEquals(1, store.records.value.size)
+        assertEquals("USER_DATA_ON_DISK", store.records.value.single().content)
+        assertEquals(original, base.readText())
+        assertEquals(original, recoveryFiles().single().readText())
+    }
+
+    @Test
+    fun timestampBeyondSignedLongRangeIsNotClamped() = runBlocking {
+        val bad = JSONObject()
+            .put("id", "overflow-timestamp")
+            .put("content", "MUST_NOT_CLAMP")
+            .put("qrType", "TEXT")
+            .put("timestamp", java.math.BigInteger("9223372036854775808"))
+        val original = JSONArray(validArray()).put(bad).toString()
+        base.writeText(original)
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.RECOVERY_SAVED)
+
+        assertEquals(1, store.records.value.size)
+        assertEquals("USER_DATA_ON_DISK", store.records.value.single().content)
+        assertEquals(original, base.readText())
+        assertEquals(original, recoveryFiles().single().readText())
+    }
+
+    @Test
     fun persistedHistoryCanBeReloaded() = runBlocking {
         val payload = "QRSCANNERS_ATOMIC_HISTORY_TEST"
         val store = HistoryStore(context)
