@@ -284,8 +284,26 @@ class HistoryStore internal constructor(
         updated
     }
 
-    fun deleteRecord(id: String) = mutate { current ->
-        current.filterNot { it.id == id }
+    fun deleteRecord(id: String) {
+        scope.launch {
+            loaded.await()
+            mutex.withLock {
+                if (!writesEnabled) return@withLock
+                // A recovery snapshot can retain previously deleted entries.
+                // Never pretend individual erasure succeeded while it exists.
+                if (_readStatus.value != HistoryReadStatus.READY) return@withLock
+                val listing = filesDir.listFiles()
+                if (listing == null || listing.any {
+                        it.name.startsWith("history_records_recovery_")
+                    }
+                ) {
+                    writesEnabled = false
+                    _readStatus.value = HistoryReadStatus.BLOCKED
+                    return@withLock
+                }
+                commit(_records.value.filterNot { it.id == id })
+            }
+        }
     }
 
     /** A confirmed user deletion removes both history and every private recovery copy. */
@@ -294,22 +312,33 @@ class HistoryStore internal constructor(
             loaded.await()
             mutex.withLock {
                 try {
+                    // A null listing must never be treated as proof of no
+                    // remaining private recovery copy or primary-sidecar.
+                    val existing = filesDir.listFiles()
+                        ?: throw IllegalStateException("history directory inaccessible")
                     faultInjector.before(HistoryIoStage.BEFORE_DELETE)
                     atomicFile.delete()
-                    val historyGone = listOf(
-                        file,
-                        File(file.path + ".bak"),
-                        File(file.path + ".new")
-                    ).none { it.exists() }
-                    val recoveryGone = recoveryFiles().all { !it.exists() || it.delete() }
-                    if (historyGone && recoveryGone && recoveryFiles().isEmpty()) {
-                        _records.value = emptyList()
-                        writesEnabled = true
-                        _readStatus.value = HistoryReadStatus.READY
-                    } else {
-                        writesEnabled = false
-                        _readStatus.value = HistoryReadStatus.BLOCKED
+                    for (copy in existing) {
+                        if (!copy.name.startsWith("history_records_recovery_")) continue
+                        if (copy.exists() && !copy.delete()) {
+                            throw IllegalStateException("recovery copy deletion failed")
+                        }
                     }
+                    val remaining = filesDir.listFiles()
+                        ?: throw IllegalStateException("history directory inaccessible")
+                    val baseFiles = setOf(
+                        file.name, file.name + ".bak", file.name + ".new"
+                    )
+                    val verifiedGone = remaining.none {
+                        it.name in baseFiles ||
+                            it.name.startsWith("history_records_recovery_")
+                    }
+                    if (!verifiedGone) {
+                        throw IllegalStateException("history deletion not verified")
+                    }
+                    _records.value = emptyList()
+                    writesEnabled = true
+                    _readStatus.value = HistoryReadStatus.READY
                 } catch (_: Exception) {
                     writesEnabled = false
                     _readStatus.value = HistoryReadStatus.BLOCKED
