@@ -17,6 +17,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.io.FileNotFoundException
+import java.nio.ByteBuffer
+import java.nio.charset.CodingErrorAction
 
 /** Internal fault seam for deterministic no-device I/O regression tests only. */
 internal enum class HistoryIoStage {
@@ -118,7 +120,15 @@ class HistoryStore internal constructor(
             try {
                 faultInjector.before(HistoryIoStage.BEFORE_READ)
                 original = atomicFile.openRead().use { it.readBytes() }
-                val jsonArray = JSONArray(String(original, Charsets.UTF_8))
+                // Android's permissive String(bytes, UTF_8) replaces malformed
+                // sequences with U+FFFD. Rewriting that JSON would silently
+                // destroy original scan content. Preserve bad bytes instead.
+                val strictUtf8 = Charsets.UTF_8.newDecoder()
+                    .onMalformedInput(CodingErrorAction.REPORT)
+                    .onUnmappableCharacter(CodingErrorAction.REPORT)
+                    .decode(ByteBuffer.wrap(original))
+                    .toString()
+                val jsonArray = JSONArray(strictUtf8)
                 val recovered = mutableListOf<HistoryRecord>()
                 val seenIds = mutableSetOf<String>()
                 var discarded = 0
@@ -130,8 +140,13 @@ class HistoryStore internal constructor(
                             ?: throw IllegalArgumentException("invalid id")
                         val content = item.opt("content") as? String
                             ?: throw IllegalArgumentException("invalid content")
-                        val time = (item.opt("timestamp") as? Number)?.toLong()
-                            ?: throw IllegalArgumentException("invalid timestamp")
+                        // toLong() on Double/BigDecimal truncates fractions or
+                        // overflows silently. Only exact integer JSON numbers
+                        // are safe to replay into the canonical history store.
+                        val timestampNumber = item.opt("timestamp") as? Number
+                            ?: throw IllegalArgumentException("invalid timestamp type")
+                        val time = timestampNumber.toString().toLongOrNull()
+                            ?: throw IllegalArgumentException("lossy timestamp")
                         if (id.isBlank() || time <= 0L || seenIds.contains(id)) {
                             throw IllegalArgumentException("invalid or duplicate record")
                         }
