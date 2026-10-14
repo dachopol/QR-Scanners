@@ -17,6 +17,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
@@ -39,6 +41,149 @@ class HistoryStoreTest {
         withTimeout(3_000) {
             while (store.readStatus.value != status) delay(20)
         }
+    }
+
+    private fun validArray(content: String = "USER_DATA_ON_DISK"): String =
+        JSONArray().put(
+            JSONObject()
+                .put("id", "user-record-1")
+                .put("content", content)
+                .put("displayTitle", content)
+                .put("qrType", "TEXT")
+                .put("timestamp", 1_724_000_000_000L)
+        ).toString()
+
+    private fun faultAt(stage: HistoryIoStage, missingFile: Boolean = false): HistoryStore =
+        HistoryStore(context, HistoryFaultInjector { current ->
+            if (current == stage) {
+                if (missingFile) {
+                    throw FileNotFoundException("Injected inaccessible existing history")
+                }
+                throw IOException("Injected deterministic failure at $stage")
+            }
+        })
+
+    @Test
+    fun inaccessibleExistingHistoryFailsClosedRatherThanAppearingEmpty() = runBlocking {
+        val original = validArray()
+        base.writeText(original)
+        val store = faultAt(HistoryIoStage.BEFORE_READ, missingFile = true)
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        store.addRecord(
+            HistoryRecord(content = "MUST_NOT_OVERWRITE", displayTitle = "New", qrType = QrType.TEXT)
+        )
+        delay(120)
+        assertEquals(original, base.readText())
+        assertTrue(store.records.value.isEmpty())
+        assertTrue(recoveryFiles().isEmpty())
+        // An independent healthy reopen can still read the untouched bytes.
+        val reopened = HistoryStore(context)
+        waitStatus(reopened, HistoryReadStatus.READY)
+        assertEquals("USER_DATA_ON_DISK", reopened.records.value.single().content)
+    }
+
+    @Test
+    fun backupCreationFailureBlocksAllWritesWithoutDestroyingOriginal() = runBlocking {
+        val damaged = "{original damaged content"
+        base.writeText(damaged)
+        val store = faultAt(HistoryIoStage.BEFORE_BACKUP_START)
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        store.addRecord(
+            HistoryRecord(content = "SHOULD_NOT_WRITE", displayTitle = "New", qrType = QrType.TEXT)
+        )
+        delay(120)
+        assertEquals(damaged, base.readText())
+        assertTrue(store.records.value.isEmpty())
+        assertTrue(recoveryFiles().none { it.name.endsWith(".json") })
+    }
+
+    @Test
+    fun backupWriteFailurePreservesPrimaryAndKeepsRecoveryBlocked() = runBlocking {
+        val damaged = "{damaged original remains"
+        base.writeText(damaged)
+        val store = faultAt(HistoryIoStage.BEFORE_BACKUP_WRITE)
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        assertEquals(damaged, base.readText())
+        assertTrue(recoveryFiles().none { it.name.endsWith(".json") })
+        store.addRecord(
+            HistoryRecord(content = "CANNOT_SAVE", displayTitle = "New", qrType = QrType.TEXT)
+        )
+        delay(120)
+        assertEquals(damaged, base.readText())
+    }
+
+    @Test
+    fun persistStartFailureKeepsLastDurableHistoryAndVisibleRecords() = runBlocking {
+        val original = validArray()
+        base.writeText(original)
+        val store = faultAt(HistoryIoStage.BEFORE_PERSIST_START)
+        waitStatus(store, HistoryReadStatus.READY)
+        store.addRecord(
+            HistoryRecord(content = "INJECTED_WRITE_FAILURE", displayTitle = "New", qrType = QrType.TEXT)
+        )
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        assertEquals(original, base.readText())
+        assertEquals("USER_DATA_ON_DISK", store.records.value.single().content)
+    }
+
+    @Test
+    fun persistAfterAtomicStartFailureRollsBackAndBlocksMoreWrites() = runBlocking {
+        val original = validArray()
+        base.writeText(original)
+        val store = faultAt(HistoryIoStage.BEFORE_PERSIST_WRITE)
+        waitStatus(store, HistoryReadStatus.READY)
+        store.addRecord(
+            HistoryRecord(content = "INTERRUPTED_WRITE", displayTitle = "New", qrType = QrType.TEXT)
+        )
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        assertEquals(original, base.readText())
+        assertEquals(1, store.records.value.size)
+        val reopened = HistoryStore(context)
+        waitStatus(reopened, HistoryReadStatus.READY)
+        assertEquals("USER_DATA_ON_DISK", reopened.records.value.single().content)
+    }
+
+    @Test
+    fun explicitClearWithIoFailurePreservesExistingHistoryAndBlocks() = runBlocking {
+        val original = validArray()
+        base.writeText(original)
+        val store = faultAt(HistoryIoStage.BEFORE_DELETE)
+        waitStatus(store, HistoryReadStatus.READY)
+        store.clearAll()
+        waitStatus(store, HistoryReadStatus.BLOCKED)
+
+        assertEquals(original, base.readText())
+        assertEquals("USER_DATA_ON_DISK", store.records.value.single().content)
+    }
+
+    @Test
+    fun recoveredSnapshotRemainsVisibleAcrossAppRestartUntilExplicitClear() = runBlocking {
+        val damaged = "{incomplete history"
+        base.writeText(damaged)
+        val first = HistoryStore(context)
+        waitStatus(first, HistoryReadStatus.RECOVERY_SAVED)
+        assertEquals(damaged, recoveryFiles().single().readText())
+
+        first.addRecord(
+            HistoryRecord(content = "AFTER_RECOVERY", displayTitle = "After", qrType = QrType.TEXT)
+        )
+        withTimeout(3_000) {
+            while (!base.readText().contains("AFTER_RECOVERY")) delay(20)
+        }
+        val reopened = HistoryStore(context)
+        waitStatus(reopened, HistoryReadStatus.RECOVERY_SAVED)
+        assertEquals("AFTER_RECOVERY", reopened.records.value.single().content)
+        assertEquals(damaged, recoveryFiles().single().readText())
+
+        reopened.clearAll()
+        waitStatus(reopened, HistoryReadStatus.READY)
+        assertFalse(base.exists())
+        assertTrue(recoveryFiles().isEmpty())
     }
 
     @Test
