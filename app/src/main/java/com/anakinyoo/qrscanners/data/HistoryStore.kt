@@ -135,12 +135,16 @@ class HistoryStore(context: Context) {
                     }
                 }
             } catch (_: FileNotFoundException) {
-                // AtomicFile.openRead() has already attempted its own recovery.
-                writesEnabled = true
-                _readStatus.value = if (recoveryFiles().isNotEmpty()) {
-                    HistoryReadStatus.RECOVERY_SAVED
-                } else {
-                    HistoryReadStatus.READY
+                // Missing is safe only if neither base nor an atomic sidecar exists.
+                // A permission error may also throw FileNotFoundException.
+                val existingHistory = listOf(
+                    file, File(file.path + ".bak"), File(file.path + ".new")
+                ).any { it.exists() }
+                writesEnabled = !existingHistory
+                _readStatus.value = when {
+                    existingHistory -> HistoryReadStatus.BLOCKED
+                    recoveryFiles().isNotEmpty() -> HistoryReadStatus.RECOVERY_SAVED
+                    else -> HistoryReadStatus.READY
                 }
             } catch (_: Exception) {
                 // Do not downgrade a corrupt/unreadable file to normal empty history.
