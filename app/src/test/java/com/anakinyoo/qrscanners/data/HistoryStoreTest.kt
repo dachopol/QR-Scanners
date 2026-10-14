@@ -205,6 +205,50 @@ class HistoryStoreTest {
     }
 
     @Test
+    fun singleDeleteIsBlockedUntilRecoveryCopiesAreCleared() = runBlocking {
+        val original = JSONArray()
+            .put(JSONObject()
+                .put("id", "retained-1")
+                .put("content", "SYNTHETIC_PERSONAL_HISTORY")
+                .put("displayTitle", "Synthetic")
+                .put("qrType", "TEXT")
+                .put("timestamp", 1_724_000_000_000L))
+            .put(JSONObject().put("broken", true))
+            .toString()
+        base.writeText(original)
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.RECOVERY_SAVED)
+
+        // In the previous implementation this silently removed one record
+        // only from the primary, leaving the raw private backup unchanged.
+        store.deleteRecord("retained-1")
+        delay(120)
+        assertEquals(original, base.readText())
+        assertEquals(1, store.records.value.size)
+        assertEquals(original, recoveryFiles().single().readText())
+
+        store.clearAll()
+        waitStatus(store, HistoryReadStatus.READY)
+        assertFalse(base.exists())
+        assertTrue(recoveryFiles().isEmpty())
+    }
+
+    @Test
+    fun healthyHistoryStillAllowsIndividualDeleteWithoutBackup() = runBlocking {
+        base.writeText(validArray("SYNTHETIC_NORMAL_DELETE"))
+        val store = HistoryStore(context)
+        waitStatus(store, HistoryReadStatus.READY)
+
+        store.deleteRecord("user-record-1")
+        withTimeout(3_000) {
+            while (!base.exists() || JSONArray(base.readText()).length() != 0) delay(20)
+        }
+        assertTrue(store.records.value.isEmpty())
+        assertTrue(recoveryFiles().isEmpty())
+        assertEquals(HistoryReadStatus.READY, store.readStatus.value)
+    }
+
+    @Test
     fun persistedHistoryCanBeReloaded() = runBlocking {
         val payload = "QRSCANNERS_ATOMIC_HISTORY_TEST"
         val store = HistoryStore(context)
