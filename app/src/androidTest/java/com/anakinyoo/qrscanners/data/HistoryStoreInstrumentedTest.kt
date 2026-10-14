@@ -1,7 +1,9 @@
 package com.anakinyoo.qrscanners.data
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.res.Configuration
+import android.os.Build
 import android.os.SystemClock
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -21,31 +23,62 @@ import java.io.File
 import java.util.Locale
 
 /**
- * On-device Android filesystem checks. Only synthetic fixture strings are used;
- * no real user's scan content, screenshots, logs or credentials are collected.
+ * Synthetic-only emulator filesystem checks in a dedicated cache subdirectory.
+ * Never touch the installed app's real history_files or physical devices.
  */
 @RunWith(AndroidJUnit4::class)
 class HistoryStoreInstrumentedTest {
-    private val context: Context get() = InstrumentationRegistry.getInstrumentation().targetContext
-    private val base: File get() = File(context.filesDir, "history_records.json")
+    private val targetContext: Context
+        get() = InstrumentationRegistry.getInstrumentation().targetContext
+
+    // HistoryStore resolves context.applicationContext.filesDir. Override both so
+    // the real app's history path is never mounted in this test.
+    private val testDir: File get() = File(targetContext.cacheDir, "history_qa_synthetic_only")
+    private val context: Context
+        get() = object : ContextWrapper(targetContext) {
+            override fun getApplicationContext(): Context = this
+            override fun getFilesDir(): File = testDir
+        }
+    private val base: File get() = File(testDir, "history_records.json")
+    private var fixtureOwned = false
+
+    private fun assertDisposableEmulator() {
+        check(Build.HARDWARE == "ranchu" || Build.HARDWARE == "goldfish") {
+            "History instrumentation mutates files; physical Android devices are forbidden"
+        }
+        check(targetContext.packageName.endsWith(".rc")) {
+            "History instrumentation requires an isolated debug .rc package"
+        }
+    }
 
     private fun relatedFiles(): List<File> =
-        context.filesDir.listFiles()?.filter {
-            it.name == "history_records.json" ||
-                it.name == "history_records.json.bak" ||
-                it.name == "history_records.json.new" ||
-                it.name.startsWith("history_records_recovery_")
-        } ?: emptyList()
+        (testDir.listFiles() ?: throw IllegalStateException("test directory inaccessible"))
+            .filter {
+                it.name == "history_records.json" ||
+                    it.name == "history_records.json.bak" ||
+                    it.name == "history_records.json.new" ||
+                    it.name.startsWith("history_records_recovery_")
+            }
 
     @Before
-    fun setUp() = removeFixtures()
+    fun setUp() {
+        assertDisposableEmulator()
+        check(testDir.isDirectory || testDir.mkdirs()) { "Cannot create isolated test directory" }
+        val previous = testDir.listFiles()
+            ?: throw IllegalStateException("Cannot list test directory")
+        // A stale test or unknown data is not a fixture we own. Never purge it.
+        check(previous.isEmpty()) { "Test directory not empty; refusing any deletion" }
+        fixtureOwned = true
+    }
 
     @After
-    fun tearDown() = removeFixtures()
-
-    private fun removeFixtures() {
-        // Only the isolated emulator's synthetic test files. Never run against user data.
+    fun tearDown() {
+        if (!fixtureOwned) return
+        assertDisposableEmulator()
         relatedFiles().forEach { check(it.delete() || !it.exists()) { "fixture cleanup failed" } }
+        check(testDir.listFiles()?.isEmpty() == true) { "Unrecognized test files left intact" }
+        check(testDir.delete() || !testDir.exists()) { "Test directory cleanup failed" }
+        fixtureOwned = false
     }
 
     private fun waitUntil(label: String, deadlineMillis: Long = 10_000L, check: () -> Boolean) {
