@@ -68,6 +68,19 @@ class HistoryStore internal constructor(
 
     /** Atomic, verified private snapshot before *any* replacement of damaged history. */
     private fun saveOriginal(original: ByteArray): Boolean {
+        // Crash/restart replay of the same corrupt source must not create
+        // unbounded, privacy-sensitive backup duplicates.
+        val copies = filesDir.listFiles() ?: return false
+        for (copy in copies) {
+            if (!copy.name.startsWith("history_records_recovery_") ||
+                !copy.name.endsWith(".json")) continue
+            val matches = try {
+                copy.readBytes().contentEquals(original)
+            } catch (_: Exception) {
+                false
+            }
+            if (matches) return true
+        }
         for (index in 0 until 16) {
             val target = File(
                 filesDir,
@@ -160,14 +173,21 @@ class HistoryStore internal constructor(
             } catch (_: FileNotFoundException) {
                 // Missing is safe only if neither base nor an atomic sidecar exists.
                 // A permission error may also throw FileNotFoundException.
-                val existingHistory = listOf(
-                    file, File(file.path + ".bak"), File(file.path + ".new")
-                ).any { it.exists() }
-                writesEnabled = !existingHistory
+                // File.exists() may return false on permission errors. Treat
+                // missing as safe only with a readable directory listing.
+                val listing = filesDir.listFiles()
+                val names = setOf(
+                    file.name, file.name + ".bak", file.name + ".new"
+                )
+                val verifiedAbsent = listing != null &&
+                    listing.none { it.name in names }
+                writesEnabled = verifiedAbsent
                 _readStatus.value = when {
-                    existingHistory -> HistoryReadStatus.BLOCKED
-                    recoveryFiles().any { it.name.endsWith(".json") } ->
-                        HistoryReadStatus.RECOVERY_SAVED
+                    !verifiedAbsent -> HistoryReadStatus.BLOCKED
+                    listing!!.any {
+                        it.name.startsWith("history_records_recovery_") &&
+                            it.name.endsWith(".json")
+                    } -> HistoryReadStatus.RECOVERY_SAVED
                     else -> HistoryReadStatus.READY
                 }
             } catch (_: Exception) {
