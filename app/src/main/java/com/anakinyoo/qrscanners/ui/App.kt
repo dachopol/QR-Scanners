@@ -164,6 +164,7 @@ import com.anakinyoo.qrscanners.BuildConfig
 import com.anakinyoo.qrscanners.R
 import com.anakinyoo.qrscanners.camera.BarcodeScannerEngine
 import com.anakinyoo.qrscanners.data.AppPreferences
+import com.anakinyoo.qrscanners.data.HistoryReadStatus
 import com.anakinyoo.qrscanners.data.HistoryStore
 import com.anakinyoo.qrscanners.model.ContactData
 import com.anakinyoo.qrscanners.model.EmailData
@@ -1844,10 +1845,12 @@ fun HistoryScreen(
 ) {
     val context = LocalContext.current
     val allRecords by historyStore.records.collectAsState()
+    val readStatus by historyStore.readStatus.collectAsState()
 
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(0) } // 0: All, 1: Scanned, 2: Created, 3: Favorites
     var showClearDialog by remember { mutableStateOf(false) }
+    var showRecoveryDeleteWarning by remember { mutableStateOf(false) }
 
     val filteredRecords = remember(allRecords, searchQuery, selectedFilter) {
         allRecords.filter { record ->
@@ -1878,6 +1881,12 @@ fun HistoryScreen(
                         ) {
                             Icon(Icons.Default.Share, contentDescription = stringResource(R.string.btn_export))
                         }
+                    }
+                    // Recoverable or blocked history must still be explicitly deletable.
+                    if (allRecords.isNotEmpty() ||
+                        readStatus == HistoryReadStatus.RECOVERY_SAVED ||
+                        readStatus == HistoryReadStatus.BLOCKED
+                    ) {
                         IconButton(
                             onClick = { showClearDialog = true },
                             modifier = Modifier.testTag("btn_clear_history")
@@ -1894,6 +1903,24 @@ fun HistoryScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            if (readStatus == HistoryReadStatus.RECOVERY_SAVED ||
+                readStatus == HistoryReadStatus.BLOCKED
+            ) {
+                Text(
+                    text = if (readStatus == HistoryReadStatus.RECOVERY_SAVED) {
+                        stringResource(R.string.history_recovery_saved)
+                    } else {
+                        stringResource(R.string.history_recovery_blocked)
+                    },
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .testTag("history_recovery_warning")
+                )
+            }
+
             // Search Bar
             OutlinedTextField(
                 value = searchQuery,
@@ -1940,7 +1967,24 @@ fun HistoryScreen(
 
             Spacer(Modifier.height(4.dp))
 
-            if (filteredRecords.isEmpty()) {
+            if (readStatus == HistoryReadStatus.LOADING) {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(stringResource(R.string.history_loading))
+                }
+            } else if (readStatus == HistoryReadStatus.BLOCKED && filteredRecords.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        stringResource(R.string.history_recovery_blocked),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            } else if (filteredRecords.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -1974,11 +2018,40 @@ fun HistoryScreen(
                             dateStr = dateFormat.format(Date(record.timestamp)),
                             onSelect = { onSelectRecord(record) },
                             onToggleFavorite = { historyStore.toggleFavorite(record.id) },
-                            onDelete = { historyStore.deleteRecord(record.id) }
+                            onDelete = {
+                                if (readStatus == HistoryReadStatus.READY) {
+                                    historyStore.deleteRecord(record.id)
+                                } else {
+                                    showRecoveryDeleteWarning = true
+                                }
+                            }
                         )
                     }
                 }
             }
+        }
+
+        if (showRecoveryDeleteWarning) {
+            AlertDialog(
+                onDismissRequest = { showRecoveryDeleteWarning = false },
+                title = { Text(stringResource(R.string.history_individual_delete_blocked_title)) },
+                text = { Text(stringResource(R.string.history_individual_delete_blocked_msg)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showRecoveryDeleteWarning = false
+                            showClearDialog = true
+                        }
+                    ) {
+                        Text(stringResource(R.string.clear_history))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showRecoveryDeleteWarning = false }) {
+                        Text(stringResource(R.string.btn_cancel))
+                    }
+                }
+            )
         }
 
         if (showClearDialog) {

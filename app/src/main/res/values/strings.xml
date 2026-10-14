@@ -72,6 +72,11 @@
     <string name="color_customization">QR Style Colors</string>
 
     <!-- History Screen -->
+    <string name="history_individual_delete_blocked_title">Recovery copy is still stored</string>
+    <string name="history_individual_delete_blocked_msg">Deleting one item cannot permanently erase it while the private recovery copy remains. To erase both your history and its recovery copies, select Clear All History. Cancel to preserve potentially recoverable records.</string>
+    <string name="history_loading">Loading saved history…</string>
+    <string name="history_recovery_saved">Some history could not be read. The original was kept in a private recovery copy. The records shown may be incomplete.</string>
+    <string name="history_recovery_blocked">History could not be read or safely backed up. Saving is paused to prevent data loss. Your existing file has not been replaced.</string>
     <string name="history_title">Scan &amp; Create History</string>
     <string name="filter_all">All</string>
     <string name="filter_scanned">Scanned</string>

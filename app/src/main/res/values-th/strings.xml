@@ -72,6 +72,11 @@
     <string name="color_customization">โทนสี QR โค้ด</string>
 
     <!-- History Screen -->
+    <string name="history_individual_delete_blocked_title">ยังมีสำเนากู้คืนประวัติ</string>
+    <string name="history_individual_delete_blocked_msg">การลบรายการเดียวไม่สามารถรับรองการลบถาวรได้เมื่อยังมีสำเนากู้คืนส่วนตัว หากต้องการลบทั้งประวัติและสำเนากู้คืน ให้เลือก ล้างประวัติทั้งหมด หรือกดยกเลิกเพื่อเก็บข้อมูลที่อาจกู้คืนได้</string>
+    <string name="history_loading">กำลังโหลดประวัติที่บันทึกไว้…</string>
+    <string name="history_recovery_saved">อ่านประวัติบางส่วนไม่ได้ ระบบเก็บไฟล์ต้นฉบับไว้ในสำเนากู้คืนส่วนตัวแล้ว รายการที่แสดงอาจไม่ครบ</string>
+    <string name="history_recovery_blocked">อ่านหรือสำรองประวัติอย่างปลอดภัยไม่ได้ ระบบหยุดบันทึกเพื่อป้องกันข้อมูลสูญหาย และยังไม่เขียนทับไฟล์เดิม</string>
     <string name="history_title">ประวัติการสแกนและสร้าง</string>
     <string name="filter_all">ทั้งหมด</string>
     <string name="filter_scanned">ที่สแกน</string>
