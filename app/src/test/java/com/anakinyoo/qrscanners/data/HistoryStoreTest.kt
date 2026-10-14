@@ -187,6 +187,24 @@ class HistoryStoreTest {
     }
 
     @Test
+    fun repeatedRestartWithIdenticalCorruptionReusesExistingRecoverySnapshot() = runBlocking {
+        val damaged = "{same unreadable original"
+        base.writeText(damaged)
+        val first = HistoryStore(context)
+        waitStatus(first, HistoryReadStatus.RECOVERY_SAVED)
+        assertEquals(1, recoveryFiles().count { it.name.endsWith(".json") })
+
+        val second = HistoryStore(context)
+        waitStatus(second, HistoryReadStatus.RECOVERY_SAVED)
+        val third = HistoryStore(context)
+        waitStatus(third, HistoryReadStatus.RECOVERY_SAVED)
+
+        assertEquals(damaged, base.readText())
+        assertEquals(1, recoveryFiles().count { it.name.endsWith(".json") })
+        assertEquals(damaged, recoveryFiles().single().readText())
+    }
+
+    @Test
     fun persistedHistoryCanBeReloaded() = runBlocking {
         val payload = "QRSCANNERS_ATOMIC_HISTORY_TEST"
         val store = HistoryStore(context)
