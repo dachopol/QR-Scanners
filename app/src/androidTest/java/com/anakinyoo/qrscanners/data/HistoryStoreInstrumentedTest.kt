@@ -150,6 +150,36 @@ class HistoryStoreInstrumentedTest {
     }
 
     @Test
+    fun deleteOneRecordCannotPretendRecoverySnapshotWasErased() {
+        val original = JSONArray()
+            .put(fixture("only-valid-id", "SYNTHETIC_PRIVATE_ITEM"))
+            .put(JSONObject().put("invalid", true))
+            .toString()
+        base.writeText(original)
+        val store = HistoryStore(context)
+        waitUntil("recovery snapshot created") {
+            store.readStatus.value == HistoryReadStatus.RECOVERY_SAVED
+        }
+
+        store.deleteRecord("only-valid-id")
+        // Deleting in recovery mode must not claim privacy erasure while
+        // the raw private snapshot still includes this synthetic record.
+        SystemClock.sleep(180)
+        assertEquals(original, base.readText())
+        assertEquals("SYNTHETIC_PRIVATE_ITEM", store.records.value.single().content)
+        assertEquals(
+            original,
+            relatedFiles().single { it.name.startsWith("history_records_recovery_") }
+                .readText()
+        )
+        store.clearAll()
+        waitUntil("user-confirmed erasure") {
+            store.readStatus.value == HistoryReadStatus.READY &&
+                relatedFiles().isEmpty()
+        }
+    }
+
+    @Test
     fun historyWarningsResolveForThaiAndEnglishAndroidResources() {
         fun localized(lang: String): String {
             val config = Configuration(context.resources.configuration)
