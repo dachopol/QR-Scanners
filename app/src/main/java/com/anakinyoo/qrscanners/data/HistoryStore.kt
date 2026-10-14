@@ -59,7 +59,12 @@ class HistoryStore(context: Context) {
                 filesDir,
                 "history_records_recovery_" + System.currentTimeMillis() + "_" + index + ".json"
             )
-            if (target.exists()) continue
+            if (listOf(
+                    target,
+                    File(target.path + ".bak"),
+                    File(target.path + ".new")
+                ).any { it.exists() }
+            ) continue
             val snapshot = AtomicFile(target)
             val output = try {
                 snapshot.startWrite()
@@ -97,7 +102,7 @@ class HistoryStore(context: Context) {
                             ?: throw IllegalArgumentException("invalid content")
                         val time = (item.opt("timestamp") as? Number)?.toLong()
                             ?: throw IllegalArgumentException("invalid timestamp")
-                        if (id.isBlank() || time <= 0L || !seenIds.add(id)) {
+                        if (id.isBlank() || time <= 0L || seenIds.contains(id)) {
                             throw IllegalArgumentException("invalid or duplicate record")
                         }
                         val type = QrType.valueOf(item.getString("qrType"))
@@ -114,6 +119,7 @@ class HistoryStore(context: Context) {
                                 isGenerated = item.optBoolean("isGenerated", false)
                             )
                         )
+                        seenIds.add(id)
                     } catch (_: Exception) {
                         discarded++
                     }
@@ -128,7 +134,7 @@ class HistoryStore(context: Context) {
                     }
                 } else {
                     writesEnabled = true
-                    _readStatus.value = if (recoveryFiles().isNotEmpty()) {
+                    _readStatus.value = if (recoveryFiles().any { it.name.endsWith(".json") }) {
                         HistoryReadStatus.RECOVERY_SAVED
                     } else {
                         HistoryReadStatus.READY
@@ -143,7 +149,8 @@ class HistoryStore(context: Context) {
                 writesEnabled = !existingHistory
                 _readStatus.value = when {
                     existingHistory -> HistoryReadStatus.BLOCKED
-                    recoveryFiles().isNotEmpty() -> HistoryReadStatus.RECOVERY_SAVED
+                    recoveryFiles().any { it.name.endsWith(".json") } ->
+                        HistoryReadStatus.RECOVERY_SAVED
                     else -> HistoryReadStatus.READY
                 }
             } catch (_: Exception) {
