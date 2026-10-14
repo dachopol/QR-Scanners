@@ -1850,6 +1850,7 @@ fun HistoryScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilter by remember { mutableStateOf(0) } // 0: All, 1: Scanned, 2: Created, 3: Favorites
     var showClearDialog by remember { mutableStateOf(false) }
+    var showRecoveryDeleteWarning by remember { mutableStateOf(false) }
 
     val filteredRecords = remember(allRecords, searchQuery, selectedFilter) {
         allRecords.filter { record ->
@@ -2017,11 +2018,40 @@ fun HistoryScreen(
                             dateStr = dateFormat.format(Date(record.timestamp)),
                             onSelect = { onSelectRecord(record) },
                             onToggleFavorite = { historyStore.toggleFavorite(record.id) },
-                            onDelete = { historyStore.deleteRecord(record.id) }
+                            onDelete = {
+                                if (readStatus == HistoryReadStatus.READY) {
+                                    historyStore.deleteRecord(record.id)
+                                } else {
+                                    showRecoveryDeleteWarning = true
+                                }
+                            }
                         )
                     }
                 }
             }
+        }
+
+        if (showRecoveryDeleteWarning) {
+            AlertDialog(
+                onDismissRequest = { showRecoveryDeleteWarning = false },
+                title = { Text(stringResource(R.string.history_individual_delete_blocked_title)) },
+                text = { Text(stringResource(R.string.history_individual_delete_blocked_msg)) },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showRecoveryDeleteWarning = false
+                            showClearDialog = true
+                        }
+                    ) {
+                        Text(stringResource(R.string.clear_history))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showRecoveryDeleteWarning = false }) {
+                        Text(stringResource(R.string.btn_cancel))
+                    }
+                }
+            )
         }
 
         if (showClearDialog) {
