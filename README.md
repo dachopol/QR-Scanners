@@ -33,3 +33,23 @@ See `RELEASE_GATE.md`, `REAL_DEVICE_EVIDENCE.md`, and `CHECKPOINT.md`. Automated
 - Planned production release: ads enabled.
 - Planned Ad-Free option: one-time in-app purchase to permanently remove ads.
 - Play Console Ads/Data Safety/Billing declarations must be updated only when the corresponding production code is actually integrated and verified.
+
+
+## UCISE Local — คู่มือเริ่มต้นและ Documentation Gate / Getting started
+
+<!-- UCISE_DOCUMENTATION_GATE_V1 -->
+
+**ขั้นตอนเริ่มต้น (TH):** อ่าน Core features, Project identity และ Privacy → ตรวจ Android SDK และ build entry point จาก source จริง → อนุญาตกล้องหรือเลือกรูปเท่าที่จำเป็น → ทดสอบสแกน QR/บาร์โค้ดและสร้าง QR ด้วยข้อมูลทดสอบที่ไม่เป็นความลับ → ตรวจผลและ permission denial → ตรวจ Release gate แยกจากผล source.
+
+**Getting started (EN):** Read the project-specific sections above. Confirm exact version, authorized workspace, platform and prerequisites before following any command. Run only documented, authorized steps; record actual output and errors. Do not infer runtime or release readiness from this documentation.
+
+### Required documentation before closing work
+
+- [ ] Purpose, exact version/source identity, prerequisites and installation/configuration.
+- [ ] Step-by-step user workflow, examples, expected outputs, and TH/EN guidance appropriate to the audience.
+- [ ] Build/run/test commands from actual source where applicable; record host, exact command, exit status and evidence. Untested commands are NOT_VERIFIED, not PASS.
+- [ ] Architecture, permissions, safety constraints, troubleshooting, recovery/rollback and limitations.
+- [ ] AI handoff: checkpoint, changed files, remaining tasks, dependency and next authorized action; research assumptions and evidence scope when applicable.
+- [ ] Review existing documentation first; update it without duplication; never copy secrets or local-only data to the cloud.
+
+Use README sections or existing linked guides; split into QUICKSTART, USER_GUIDE, AGENTS, TESTING, SECURITY, RESEARCH or RECOVERY files only when useful. Missing required documentation or evidence keeps the relevant DoD item INCOMPLETE/BLOCKED. This checklist is not a test receipt, native approval, release authorization or permission to bypass Owner/Watchdog Hold. Production and existing security gates remain unchanged. Documentation-only candidate; command execution and independent QA are NOT_RUN in this edit.
