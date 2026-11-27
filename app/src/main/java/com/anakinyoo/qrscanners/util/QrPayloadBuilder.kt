@@ -6,6 +6,7 @@ import com.anakinyoo.qrscanners.model.GeoData
 import com.anakinyoo.qrscanners.model.SmsData
 import com.anakinyoo.qrscanners.model.WifiData
 import java.net.URLEncoder
+import java.math.BigDecimal
 
 object QrPayloadBuilder {
 
@@ -127,7 +128,7 @@ object QrPayloadBuilder {
     fun buildGeo(geo: GeoData): String {
         if (!geo.latitude.isFinite() || !geo.longitude.isFinite()) return ""
         if (geo.latitude !in -90.0..90.0 || geo.longitude !in -180.0..180.0) return ""
-        return "geo:${geo.latitude},${geo.longitude}"
+        return "geo:${BigDecimal.valueOf(geo.latitude).toPlainString()},${BigDecimal.valueOf(geo.longitude).toPlainString()}"
     }
 
     fun buildGeo(latitude: String, longitude: String): String {
