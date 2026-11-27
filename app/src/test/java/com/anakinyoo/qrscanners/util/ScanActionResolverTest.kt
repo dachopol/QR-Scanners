@@ -170,6 +170,30 @@ class ScanActionResolverTest {
     }
 
     @Test
+    fun testGeoRoundTripBoundaryGrid() {
+        val latitudes = listOf(-90.0, -89.999, -1e-7, 0.0, 1e-7, 13.7563, 89.999, 90.0)
+        val longitudes = listOf(-180.0, -179.999, -1e-9, 0.0, 1e-9, 100.5018, 179.999, 180.0)
+        for (latitude in latitudes) {
+            for (longitude in longitudes) {
+                val original = com.anakinyoo.qrscanners.model.GeoData(latitude, longitude)
+                val payload = QrPayloadBuilder.buildGeo(original)
+                assertEquals(original, ScanActionResolver.parseGeoOrNull(payload))
+            }
+        }
+        assertEquals(null, ScanActionResolver.parseGeoOrNull("geo:0,0?q=Bangkok"))
+        assertEquals(com.anakinyoo.qrscanners.model.GeoData(13.75, 100.5),
+            ScanActionResolver.parseGeoOrNull("geo:0,0?q=13.75%2C100.5"))
+        for (invalid in listOf(
+            com.anakinyoo.qrscanners.model.GeoData(91.0, 0.0),
+            com.anakinyoo.qrscanners.model.GeoData(0.0, 181.0),
+            com.anakinyoo.qrscanners.model.GeoData(Double.NaN, 0.0),
+            com.anakinyoo.qrscanners.model.GeoData(0.0, Double.POSITIVE_INFINITY)
+        )) {
+            assertEquals("", QrPayloadBuilder.buildGeo(invalid))
+        }
+    }
+
+    @Test
     fun testResolvePlainText() {
         assertEquals(QrType.TEXT, ScanActionResolver.resolveType("Just a random plain text string"))
         assertEquals(QrType.TEXT, ScanActionResolver.resolveType("1234567890123"))
