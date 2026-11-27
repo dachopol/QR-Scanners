@@ -301,7 +301,7 @@ object ScanActionResolver {
                 .firstOrNull()
 
             // geo:0,0 is a placeholder used when the actual coordinates are in q=.
-            return if (base?.let { it.latitude == 0.0 && it.longitude == 0.0 } == true) {
+            return if (base?.let { it.latitude == 0.0 && it.longitude == 0.0 } == true && query.isNotBlank()) {
                 queryCoordinates
             } else {
                 base ?: queryCoordinates
